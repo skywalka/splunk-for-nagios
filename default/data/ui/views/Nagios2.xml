@@ -30,7 +30,7 @@
     </module>
   </module>
   <module name="HiddenSearch" layoutPanel="panel_row1_col2" group="Critical Alerts - Last 60 Minutes" autoRun="True">
-    <param name="search">index="nagios" (nagiosevent="SERVICE ALERT" state="HARD" status="CRITICAL") OR (nagiosevent="HOST ALERT" hoststatus="DOWN" hoststate="HARD") minutesago=60 | stats count | rangemap field=count low=0-0 severe=1-1</param>
+    <param name="search">index="nagios" (nagiosevent="SERVICE ALERT" state="HARD" status="CRITICAL") OR (nagiosevent="HOST ALERT" hoststatus="DOWN" hoststate="HARD") minutesago=60 | stats count | rangemap field=count low=0-0 severe=1-1 default=severe</param>
     <param name="groupLabel">Critical Alerts</param>
     <module name="ViewstateAdapter">
       <module name="HiddenFieldPicker">
