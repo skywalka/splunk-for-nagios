@@ -1,5 +1,5 @@
 <view autoCancelInterval="90" isVisible="true" objectMode="SimpleForm" onunloadCancelJobs="true" template="dashboard.html">
-  <label>Nagios Alerts - Form Search</label>
+  <label>Nagios Disk Usage Graphs - File System Only</label>
   <module name="AccountBar" layoutPanel="appHeader"/>
   <module name="AppBar" layoutPanel="navigationHeader"/>
   <module name="Message" layoutPanel="messaging">
@@ -16,32 +16,26 @@
     <param name="actionsMenuFilter">dashboard</param>
   </module>
   <module name="HiddenSearch" layoutPanel="viewHeader">
-    <param name="search">index="nagios" (nagiosevent="SERVICE ALERT" state="HARD" status="WARNING" OR status="CRITICAL") OR (nagiosevent="HOST ALERT" hoststate="HARD" hoststatus="DOWN") hostalert="$nagiosdevice$" | fields + hostalert, servicealertname, status, statusinfo, hoststatus, hostinfo</param>
+    <param name="search">index=nagiosdev sourcetype="nagiosserviceperf" hostname="dev1web07" plugin="Disk" | rex max_match=1 field=_raw "\Q$filesystem$=\E(?&lt;fs_used&gt;[^M]*)MB;[0-9]+;[0-9]+;[0-9]+;(?&lt;fs_total&gt;[0-9]+)" | timechart span=5m avg(fs_total) as "Total $filesystem$",avg(fs_used) as "Used $filesystem$"</param>
     <module name="SearchSelectLister">
-      <param name="staticFieldsToDisplay">
-        <list>
-          <param name="value">*</param>
-          <param name="label">All</param>
-        </list>
-      </param>
-      <param name="search">earliest=-24h index="nagios" nagiosevent="CURRENT HOST STATE" | rex ".+CURRENT HOST STATE\: (?P&lt;device&gt;[^;]*)(?=;)"| stats count by device</param>
-      <param name="selected">syd1inf16</param>
-      <param name="label">Select a Hostname</param>
-      <param name="settingToCreate">nagiosdevice_setting</param>
+      <param name="search">earliest=-8m index="nagiosdev" sourcetype="nagiosserviceperf" hostname="*" plugin="Disk" | rex max_match=1000 field=_raw "(?&lt;filesystem&gt;\/[^= ]*)=" | stats count by filesystem</param>
+      <param name="selected">/opt</param>
+      <param name="label">Select a Filesystem</param>
+      <param name="settingToCreate">fs_setting</param>
       <param name="searchFieldsToDisplay">
         <list>
-          <param name="value">device</param>
-          <param name="label">device</param>
+          <param name="value">filesystem</param>
+          <param name="label">filesystem</param>
         </list>
       </param>
       <param name="searchWhenChanged">False</param>
       <module name="ConvertToIntention">
-        <param name="settingToConvert">nagiosdevice_setting</param>
+        <param name="settingToConvert">fs_setting</param>
         <param name="intention">
           <param name="name">stringreplace</param>
           <param name="arg">
-            <param name="nagiosdevice">
-              <param name="default">syd1inf16</param>
+            <param name="filesystem">
+              <param name="default">/opt</param>
               <param name="fillOnEmpty">True</param>
               <param name="value">$target$</param>
             </param>
@@ -57,10 +51,19 @@
         <param name="strictMode">True</param>
         <module name="JobProgressIndicator">
           <module name="JobStatus">
-          <module name="SimpleResultsTable" layoutPanel="panel_row1_col1" group="Results">
-            <param name="count">100</param>
-            <param name="groupLabel">Results</param>
-            </module>
+            <module name="HiddenChartFormatter" layoutPanel="panel_row1_col1" group="Results">
+         <param name="chart">area</param>
+          <param name="secondaryAxisTitle.text">MB</param>	
+          <param name="primaryAxisTitle.text">time</param>
+              <module name="FlashChart">
+                <param name="width">100%</param>
+                <module name="ConvertToDrilldownSearch">
+                  <module name="ViewRedirector">
+                    <param name="viewTarget">flashtimeline</param>
+                  </module>
+                </module>
+              </module>
+          </module>
            </module>
           </module>
         </module>
