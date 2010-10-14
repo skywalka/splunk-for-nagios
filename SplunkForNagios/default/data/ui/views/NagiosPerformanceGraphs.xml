@@ -25,7 +25,7 @@
         </list>
       </param>
       <param name="search">earliest=-24h index="nagiosdev" nagiosevent="CURRENT HOST STATE" | rex ".+CURRENT HOST STATE\: (?P&lt;device&gt;[^;]*)(?=;)"| stats count by device</param>
-      <param name="selected">tst1web02</param>
+      <param name="selected">tst1app45</param>
       <param name="label">Select a Hostname</param>
       <param name="settingToCreate">nagiosdevice_setting</param>
       <param name="searchFieldsToDisplay">
@@ -41,7 +41,7 @@
           <param name="name">stringreplace</param>
           <param name="arg">
             <param name="nagiosdevice">
-              <param name="default">tst1web02</param>
+              <param name="default">tst1app45</param>
               <param name="fillOnEmpty">True</param>
               <param name="value">$target$</param>
             </param>
@@ -57,7 +57,61 @@
         <param name="strictMode">True</param>
         <module name="JobProgressIndicator">
           <module name="JobStatus">
-            <module name="HiddenPostProcess" layoutPanel="panel_row1_col1" group="CPU Usage" autoRun="False">
+
+      <module name="ConvertToIntention">
+        <param name="settingToConvert">nagiosdevice_setting</param>
+        <param name="intention">
+          <param name="name">stringreplace</param>
+          <param name="arg">
+            <param name="nagiosdevice">
+              <param name="default">tst1app45</param>
+              <param name="fillOnEmpty">True</param>
+              <param name="value">$target$</param>
+            </param>
+          </param>
+        </param>
+            <module name="GenericHeader" layoutPanel="panel_row1_col1">
+              <param name="label">Warning and Critical Alerts</param>
+  <module name="HiddenSearch">
+        <param name="search">index="nagiosdev" (nagiosevent="SERVICE ALERT" state="HARD" status="WARNING" OR status="CRITICAL") OR (nagiosevent="HOST ALERT" hoststate="HARD" hoststatus="DOWN") hostalert="$nagiosdevice$" | fields + hostalert, servicealertname, status, statusinfo, hoststatus, hostinfo</param>
+        <param name="groupLabel">Warning and Critical Alerts</param>
+        <module name="ViewstateAdapter">
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="SimpleResultsTable">
+            <param name="count">5</param>
+            </module>
+           </module>
+          </module>
+          </module>
+        </module>
+        </module>
+
+            <module name="GenericHeader" layoutPanel="panel_row1_col2">
+              <param name="label">Top 10 Service Notifications</param>
+  <module name="HiddenSearch">
+        <param name="search">index=nagiosdev nagiosevent="SERVICE NOTIFICATION" (statusnotification="WARNING" OR statusnotification="CRITICAL") hostnotification="$nagiosdevice$" | dedup servicenamenotification hostnotification | top servicenamenotification limit="10" | fields +  servicenamenotification count</param>
+        <param name="groupLabel">Top 10 Service Notifications</param>
+        <module name="ViewstateAdapter">
+        <module name="HiddenChartFormatter">
+          <param name="chart">bar</param>
+          <param name="primaryAxisTitle.text">Services</param>
+          <module name="FlashChart">
+            <module name="ConvertToDrilldownSearch">
+              <module name="ViewRedirector">
+                <param name="viewTarget">flashtimeline</param>
+              </module>
+            </module>
+          </module>
+        </module>
+        </module>
+      </module>
+      </module>
+
+      </module>
+
+            <module name="HiddenPostProcess" layoutPanel="panel_row2_col1" group="CPU Usage" autoRun="False">
               <param name="search">timechart span=5m avg(CpuSystem) as System,avg(CpuUser) as User,avg(CpuNice) as Nice,avg(CpuIowait) as Wait</param>
               <param name="groupLabel">CPU Usage</param>
               <module name="ViewstateAdapter">
@@ -90,7 +144,7 @@
                 </module>
               </module>
             </module>
-            <module name="HiddenPostProcess" layoutPanel="panel_row1_col2" group="Load Average" autoRun="False">
+            <module name="HiddenPostProcess" layoutPanel="panel_row2_col2" group="Load Average" autoRun="False">
               <param name="search">timechart span=5m avg(load15) as "Load 15m",avg(load5) as "Load 5m",avg(load1) as "Load 1m"</param>
               <param name="groupLabel">Load Average</param>
               <module name="ViewstateAdapter">
@@ -120,7 +174,7 @@
                 </module>
               </module>
             </module>
-            <module name="HiddenPostProcess" layoutPanel="panel_row2_col1" group="Memory Usage" autoRun="False">
+            <module name="HiddenPostProcess" layoutPanel="panel_row3_col1" group="Memory Usage" autoRun="False">
               <param name="search">timechart span=5m avg(USED) as Used,avg(CACHES) as Cache,avg(FREE) as Free</param>
               <param name="groupLabel">Memory Usage</param>
               <module name="ViewstateAdapter">
@@ -151,7 +205,7 @@
                 </module>
               </module>
             </module>
-            <module name="HiddenPostProcess" layoutPanel="panel_row2_col2" group="Swap Usage" autoRun="False">
+            <module name="HiddenPostProcess" layoutPanel="panel_row3_col2" group="Swap Usage" autoRun="False">
               <param name="search">eval swap_used=(swap_total-swap_free) | timechart span=5m avg(swap_total) as "Swap Total",avg(swap_used) as "Swap Used"</param>
               <param name="groupLabel">Swap Usage</param>
               <module name="ViewstateAdapter">
@@ -181,7 +235,7 @@
                 </module>
               </module>
             </module>
-            <module name="HiddenPostProcess" layoutPanel="panel_row3_col1" group="Total Processes" autoRun="False">
+            <module name="HiddenPostProcess" layoutPanel="panel_row4_col1" group="Total Processes" autoRun="False">
               <param name="search">timechart span=5m avg(Processes) as Processes</param>
               <param name="groupLabel">Total Processes</param>
               <module name="ViewstateAdapter">
@@ -211,7 +265,7 @@
                 </module>
               </module>
             </module>
-            <module name="HiddenPostProcess" layoutPanel="panel_row3_col2" group="Zombie Processes" autoRun="False">
+            <module name="HiddenPostProcess" layoutPanel="panel_row4_col2" group="Zombie Processes" autoRun="False">
               <param name="search">timechart span=5m last(Zombies) as Zombies</param>
               <param name="groupLabel">Zombie Processes</param>
               <module name="ViewstateAdapter">
@@ -240,7 +294,7 @@
                 </module>
               </module>
             </module>
-            <module name="HiddenPostProcess" layoutPanel="panel_row4_col1" group="NTP Offset" autoRun="False">
+            <module name="HiddenPostProcess" layoutPanel="panel_row5_col1" group="NTP Offset" autoRun="False">
               <param name="search">timechart span=5m avg(offset) as Offset</param>
               <param name="groupLabel">NTP Offset</param>
               <module name="ViewstateAdapter">
@@ -269,7 +323,7 @@
                 </module>
               </module>
             </module>
-            <module name="HiddenPostProcess" layoutPanel="panel_row4_col2" group="Network Traffic" autoRun="False">
+            <module name="HiddenPostProcess" layoutPanel="panel_row5_col2" group="Network Traffic" autoRun="False">
               <param name="search">sort _time | delta inAbsolut as inabs_change | delta outAbsolut as outabs_change | where inabs_change>=0 | where outabs_change>=0 | eval inkilobits=(inabs_change*8/1000) | eval outkilobits=(outabs_change*8/1000)| timechart span=5m per_second(inkilobits) as in_kbps, per_second(outkilobits) as out_kbps</param>
               <param name="groupLabel">Network Traffic</param>
               <module name="ViewstateAdapter">
