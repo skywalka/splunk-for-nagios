@@ -14,7 +14,7 @@
   </module>
 
   <module name="HiddenSearch" layoutPanel="mainSearchControls" autoRun="True">
-    <param name="search">index=nagiosdev sourcetype="nagiosserviceperf" hostname="$device$" plugin="Disk"</param>  
+    <param name="search">index=nagiosdev sourcetype="nagiosserviceperf" plugin="Disk" | timechart span=5m avg(fs_total) as "Total $filesystem$",avg(fs_used) as "Used $filesystem$" </param>  
     <module name="SearchSelectLister">
       <param name="search">index="nagiosdev" nagiosevent="CURRENT HOST STATE" | rex ".+CURRENT HOST STATE\: (?P&lt;device&gt;[^;]*)(?=;)"| stats count by device</param>
       <param name="earliest">-24h</param>
@@ -43,7 +43,7 @@
           <param name="label">Select a Filesystem:</param>
           <param name="applyOuterIntentionsToInternalSearch">True</param>
           <param name="search">index=nagiosdev sourcetype="nagiosserviceperf" plugin="Disk" | rex max_match=1000 field=_raw "(?&lt;filesystem&gt;\/[^= ]*)=" | stats count by filesystem</param>
-          <param name="earliest">-24h</param>
+          <param name="earliest">-1h</param>
           <param name="searchFieldsToDisplay">
             <list>
               <param name="label">filesystem</param>
@@ -62,10 +62,7 @@
 
 
             <module name="TimeRangePicker">
-              <!-- 
-              <param name="label">time range:</param>
-              -->
-              <param name="selected">Last 24 hours</param>
+              <param name="selected">Last 4 hours</param>
               <param name="searchWhenChanged">True</param>
               <module name="SubmitButton">
                 <param name="allowSoftSubmit">True</param>
@@ -82,10 +79,9 @@
                   <module name="HiddenSearch" layoutPanel="resultsAreaLeft">
                     <param name="search">index=nagiosdev sourcetype="nagiosserviceperf" plugin="Disk" | rex max_match=1 field=_raw "\Q$filesystem$=\E(?&lt;fs_used&gt;[^M]*)MB;[0-9]+;[0-9]+;[0-9]+;(?&lt;fs_total&gt;[0-9]+)" | timechart span=5m avg(fs_total) as "Total $filesystem$",avg(fs_used) as "Used $filesystem$"</param>
                     <module name="HiddenChartFormatter">
-                      <param name="chart">column</param>
-                      <param name="primaryAxisTitle.text">time</param>
+                      <param name="chart">area</param>
+                      <param name="primaryAxisTitle.text">Time</param>
                       <param name="secondaryAxisTitle.text">MB</param>
-                      <param name="legend.placement">none</param>
                       <module name="JobProgressIndicator"/>
                       <module name="FlashChart">
                         <param name="width">100%</param>
