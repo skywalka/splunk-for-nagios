@@ -13,80 +13,74 @@
     <param name="actionsMenuFilter">dashboard</param>
   </module>
 
-  <module name="HiddenSearch" layoutPanel="mainSearchControls" autoRun="True">
-    <param name="search">index=nagiosdev sourcetype="nagiosserviceperf" plugin="Disk" | timechart span=5m avg(fs_total) as "Total $filesystem$",avg(fs_used) as "Used $filesystem$" </param>  
-    <module name="SearchSelectLister">
-      <param name="search">index="nagiosdev" nagiosevent="CURRENT HOST STATE" | rex ".+CURRENT HOST STATE\: (?P&lt;device&gt;[^;]*)(?=;)"| stats count by device</param>
-      <param name="earliest">-24h</param>
-      <param name="selected">dev1web07</param>
-      <param name="label">Select a Hostname:</param>
-      <param name="settingToCreate">hostname</param>
-      <param name="searchFieldsToDisplay">
-        <list>
-          <param name="value">device</param>
-          <param name="label">device</param>
-        </list>
-      </param>
-      <module name="ConvertToIntention">
-        <param name="settingToConvert">hostname</param>
-        <param name="intention">
-          <param name="name">addterm</param>
-          <param name="arg">
-            <param name="hostname">$target$</param>
+  <module name="SearchSelectLister" layoutPanel="mainSearchControls" autoRun="True">
+    <param name="search">index="nagiosdev" nagiosevent="CURRENT HOST STATE" | rex ".+CURRENT HOST STATE\: (?P&lt;device&gt;[^;]*)(?=;)"| stats count by device</param>
+    <param name="earliest">-24h</param>
+    <param name="selected">dev1web07</param>
+    <param name="label">Select a Hostname:</param>
+    <param name="settingToCreate">device_setting</param>
+    <param name="searchFieldsToDisplay">
+      <list>
+        <param name="value">device</param>
+        <param name="label">device</param>
+      </list>
+    </param>
+    <module name="ConvertToIntention">
+      <param name="settingToConvert">device_setting</param>
+      <param name="intention">
+        <param name="name">stringreplace</param>
+        <param name="arg">
+          <param name="deviceToken">
+            <param name="value">$target$</param>
           </param>
         </param>
-
-        <module name="SearchSelectLister">
-          <param name="searchWhenChanged">True</param>
-      
-          <param name="settingToCreate">series_setting</param>
-          <param name="label">Select a Filesystem:</param>
-          <param name="applyOuterIntentionsToInternalSearch">True</param>
-          <param name="search">index=nagiosdev sourcetype="nagiosserviceperf" plugin="Disk" | rex max_match=1000 field=_raw "(?&lt;filesystem&gt;\/[^= ]*)=" | stats count by filesystem</param>
-          <param name="earliest">-1h</param>
-          <param name="searchFieldsToDisplay">
-            <list>
-              <param name="label">filesystem</param>
-              <param name="value">filesystem</param>
-            </list>
-          </param>
-          <module name="ConvertToIntention">
-            <param name="settingToConvert">series_setting</param>
-            <param name="intention">
-              <param name="name">plot</param>
-              <param name="arg">
-                <param name="filesystem">$target$</param>
+      </param>
+      <module name="SearchSelectLister">
+        <param name="searchWhenChanged">True</param>
+         <param name="settingToCreate">filesystem_setting</param>
+        <param name="label">Select a Filesystem:</param>
+        <param name="applyOuterIntentionsToInternalSearch">True</param>
+        <param name="search">index=nagiosdev sourcetype="nagiosserviceperf" plugin="Disk" hostname=$deviceToken$ | rex max_match=1000 field=_raw "(?&lt;filesystem&gt;\/[^= ]*)=" | stats count by filesystem</param>
+        <param name="earliest">-1h</param>
+        <param name="searchFieldsToDisplay">
+          <list>
+            <param name="label">filesystem</param>
+            <param name="value">filesystem</param>
+          </list>
+        </param>
+        <module name="ConvertToIntention">
+          <param name="settingToConvert">filesystem_setting</param>
+          <param name="intention">
+            <param name="name">stringreplace</param>
+            <param name="arg">
+              <param name="filesystemToken">
+                <param name="value">$target$</param>
               </param>
             </param>
-
-
-
-            <module name="TimeRangePicker">
-              <param name="selected">Last 4 hours</param>
-              <param name="searchWhenChanged">True</param>
-              <module name="SubmitButton">
-                <param name="allowSoftSubmit">True</param>
-                <param name="label">Search</param>
-                
-            
-                <module name="Message" layoutPanel="graphArea">
-                  <param name="filter">splunk.search.job</param>
-                  <param name="clearOnJobDispatch">True</param>
-                  <param name="maxSize">2</param>
-                  <module name="GenericHeader" layoutPanel="resultsAreaLeft">
-                    <param name="label">Filesystem Usage over time</param>
-                  </module>
-                  <module name="HiddenSearch" layoutPanel="resultsAreaLeft">
-                    <param name="search">index=nagiosdev sourcetype="nagiosserviceperf" plugin="Disk" | rex max_match=1 field=_raw "\Q$filesystem$=\E(?&lt;fs_used&gt;[^M]*)MB;[0-9]+;[0-9]+;[0-9]+;(?&lt;fs_total&gt;[0-9]+)" | timechart span=5m avg(fs_total) as "Total $filesystem$",avg(fs_used) as "Used $filesystem$"</param>
-                    <module name="HiddenChartFormatter">
-                      <param name="chart">area</param>
-                      <param name="primaryAxisTitle.text">Time</param>
-                      <param name="secondaryAxisTitle.text">MB</param>
-                      <module name="JobProgressIndicator"/>
-                      <module name="FlashChart">
-                        <param name="width">100%</param>
-                        <param name="height">200px</param>
-                      </module>
+          </param>
+          <module name="TimeRangePicker">
+            <param name="selected">Last 4 hours</param>
+            <param name="searchWhenChanged">True</param>
+            <module name="SubmitButton">
+              <param name="allowSoftSubmit">True</param>
+              <param name="label">Search</param>
+              <module name="Message" layoutPanel="graphArea">
+                <param name="filter">splunk.search.job</param>
+                <param name="clearOnJobDispatch">True</param>
+                <param name="maxSize">2</param>
+                <module name="GenericHeader" layoutPanel="resultsAreaLeft">
+                  <param name="label">Filesystem Usage over time</param>
+                </module>
+                <module name="HiddenSearch" layoutPanel="resultsAreaLeft">
+                  <param name="search">index=nagiosdev sourcetype="nagiosserviceperf" plugin="Disk" hostname=$deviceToken$ | rex max_match=1 field=_raw "\Q$filesystemToken$=\E(?&lt;fs_used&gt;[^M]*)MB;[0-9]+;[0-9]+;[0-9]+;(?&lt;fs_total&gt;[0-9]+)" | timechart span=5m avg(fs_total) as "Total $filesystemToken$",avg(fs_used) as "Used $filesystemToken$"</param>
+                  <module name="HiddenChartFormatter">
+                    <param name="chart">area</param>
+                    <param name="primaryAxisTitle.text">Time</param>
+                    <param name="secondaryAxisTitle.text">MB</param>
+                    <module name="JobProgressIndicator"/>
+                    <module name="FlashChart">
+                      <param name="width">100%</param>
+                      <param name="height">200px</param>
                     </module>
                   </module>
                 </module>
