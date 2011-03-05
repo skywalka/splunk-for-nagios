@@ -155,7 +155,6 @@
                       <param name="enable">True</param>
                       <param name="display">False</param>
                       <module name="HiddenChartFormatter">
-                        <param name="charting.chart.stackMode">stacked100</param>
                         <param name="charting.chart">area</param>
                         <param name="charting.chart.nullValueMode">connect</param>
                         <module name="FlashChart">
@@ -206,7 +205,7 @@
               </module>
             </module>
             <module name="HiddenPostProcess" layoutPanel="panel_row3_col2" group="C Drive Usage" autoRun="False">
-              <param name="search">timechart span=5m avg(drive_used) as "Drive Used", avg(drive_total) as "Drive Total"</param>
+              <param name="search">search plugin="NT-DriveC" | timechart span=5m avg(drive_used) as "Drive Used", avg(drive_total) as "Drive Total"</param>
               <param name="groupLabel">C Drive Usage</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -216,7 +215,6 @@
                       <param name="enable">True</param>
                       <param name="display">False</param>
                       <module name="HiddenChartFormatter">
-                        <param name="charting.chart.stackMode">stacked100</param>
                         <param name="charting.chart">area</param>
                         <param name="charting.chart.nullValueMode">connect</param>
                         <module name="FlashChart">
