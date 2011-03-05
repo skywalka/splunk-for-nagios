@@ -111,7 +111,7 @@
       </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row2_col1" group="CPU Usage" autoRun="False">
-              <param name="search">eval CpuSystem2 = (CpuSystem/100) | eval CpuUser2 = (CpuUser/100) | eval CpuIowait2 = (CpuIowait/100) | eval CpuEntc2 = (CpuEntc/1000) | timechart span=5m avg(CpuIowait2) as Wait,,avg(CpuUser2) as User,avg(CpuSystem2) as System,avg(CpuEntc2) as "Physical CPU"</param>
+              <param name="search">eval CpuSystem2 = (CpuSystem/100) | eval CpuUser2 = (CpuUser/100) | eval CpuIowait2 = (CpuIowait/100) | eval CpuEntc2 = (CpuEntc/1000) | timechart span=5m avg(CpuUser2) as User,avg(CpuSystem2) as System,avg(CpuIowait2) as Wait,avg(CpuEntc2) as "Physical CPU"</param>
               <param name="groupLabel">CPU Usage</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
