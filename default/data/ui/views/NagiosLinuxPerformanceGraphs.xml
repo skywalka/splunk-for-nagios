@@ -124,6 +124,8 @@
                         <param name="charting.chart">area</param>
                         <param name="charting.chart.stackMode">stacked</param>
                         <param name="charting.chart.nullValueMode">connect</param>
+    			<param name="charting.seriesColors">[0xFF0000,0x0000FF,0x00FF00,0xFF00FF]</param>
+    			<param name="charting.legend.masterLegend"></param>
                         <module name="FlashChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
