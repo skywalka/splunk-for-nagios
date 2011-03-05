@@ -1,5 +1,5 @@
 <view autoCancelInterval="90" isVisible="true" objectMode="SimpleForm" onunloadCancelJobs="true" template="dashboard.html">
-  <label>Nagios Performance Graphs</label>
+  <label>Nagios *nix Performance Graphs</label>
   <module name="AccountBar" layoutPanel="appHeader"/>
   <module name="AppBar" layoutPanel="navigationHeader"/>
   <module name="Message" layoutPanel="messaging">
@@ -108,7 +108,6 @@
         </module>
       </module>
       </module>
-
       </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row2_col1" group="CPU Usage" autoRun="False">
@@ -144,6 +143,7 @@
                 </module>
               </module>
             </module>
+
             <module name="HiddenPostProcess" layoutPanel="panel_row2_col2" group="Load Average" autoRun="False">
               <param name="search">timechart span=5m avg(load15) as "Load 15m",avg(load5) as "Load 5m",avg(load1) as "Load 1m"</param>
               <param name="groupLabel">Load Average</param>
@@ -174,8 +174,9 @@
                 </module>
               </module>
             </module>
+
             <module name="HiddenPostProcess" layoutPanel="panel_row3_col1" group="Memory Usage" autoRun="False">
-              <param name="search">timechart span=5m avg(USED) as Used,avg(CACHES) as Cache,avg(FREE) as Free</param>
+              <param name="search">timechart span=5m avg(USED) as Used,avg(CACHES) as Cache,avg(TOTAL) as Total</param>
               <param name="groupLabel">Memory Usage</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -185,7 +186,6 @@
                       <param name="enable">True</param>
                       <param name="display">False</param>
                       <module name="HiddenChartFormatter">
-                        <param name="charting.chart.stackMode">stacked100</param>
                         <param name="charting.chart">area</param>
                         <param name="charting.chart.nullValueMode">connect</param>
                         <module name="FlashChart">
@@ -205,6 +205,7 @@
                 </module>
               </module>
             </module>
+
             <module name="HiddenPostProcess" layoutPanel="panel_row3_col2" group="Swap Usage" autoRun="False">
               <param name="search">eval swap_used=(swap_total-swap_free) | timechart span=5m avg(swap_total) as "Swap Total",avg(swap_used) as "Swap Used"</param>
               <param name="groupLabel">Swap Usage</param>
@@ -235,6 +236,7 @@
                 </module>
               </module>
             </module>
+
             <module name="HiddenPostProcess" layoutPanel="panel_row4_col1" group="Total Processes" autoRun="False">
               <param name="search">timechart span=5m avg(Processes) as Processes</param>
               <param name="groupLabel">Total Processes</param>
@@ -265,6 +267,7 @@
                 </module>
               </module>
             </module>
+
             <module name="HiddenPostProcess" layoutPanel="panel_row4_col2" group="Zombie Processes" autoRun="False">
               <param name="search">timechart span=5m last(Zombies) as Zombies</param>
               <param name="groupLabel">Zombie Processes</param>
@@ -294,6 +297,7 @@
                 </module>
               </module>
             </module>
+
             <module name="HiddenPostProcess" layoutPanel="panel_row5_col1" group="NTP Offset" autoRun="False">
               <param name="search">timechart span=5m avg(offset) as Offset</param>
               <param name="groupLabel">NTP Offset</param>
@@ -323,6 +327,7 @@
                 </module>
               </module>
             </module>
+
             <module name="HiddenPostProcess" layoutPanel="panel_row5_col2" group="Network Traffic" autoRun="False">
               <param name="search">sort _time | delta inAbsolut as inabs_change | delta outAbsolut as outabs_change | where inabs_change>=0 | where outabs_change>=0 | eval inkilobits=(inabs_change*8/1000) | eval outkilobits=(outabs_change*8/1000)| timechart span=5m per_second(inkilobits) as in_kbps, per_second(outkilobits) as out_kbps</param>
               <param name="groupLabel">Network Traffic</param>
