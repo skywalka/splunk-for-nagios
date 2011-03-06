@@ -179,7 +179,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row3_col1" group="Memory Usage" autoRun="False">
-              <param name="search">timechart span=5m avg(USED) as Used,avg(CACHES) as Cache,avg(TOTAL) as Total</param>
+              <param name="search">timechart span=5m avg(TOTAL) as Total,avg(CACHES) as Cache,avg(USED) as Used</param>
               <param name="groupLabel">Memory Usage</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
