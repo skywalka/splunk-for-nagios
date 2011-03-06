@@ -75,6 +75,7 @@
                   <param name="search">index=nagiosdev sourcetype="nagiosserviceperf" plugin="Disk" hostname=$deviceToken$ | rex max_match=1 field=_raw "\Q$filesystemToken$=\E(?&lt;fs_used&gt;[^M]*)MB;[0-9]+;[0-9]+;[0-9]+;(?&lt;fs_total&gt;[0-9]+)" | timechart span=5m avg(fs_total) as "Total $filesystemToken$",avg(fs_used) as "Used $filesystemToken$"</param>
                   <module name="HiddenChartFormatter">
                     <param name="chart">area</param>
+                    <param name="charting.chart.nullValueMode">connect</param>
                     <param name="primaryAxisTitle.text">Time</param>
                     <param name="secondaryAxisTitle.text">MB</param>
                     <module name="JobProgressIndicator"/>
