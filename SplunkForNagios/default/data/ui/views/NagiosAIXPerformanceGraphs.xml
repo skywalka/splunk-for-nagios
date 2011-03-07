@@ -179,7 +179,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row3_col1" group="Memory Usage" autoRun="False">
-              <param name="search">timechart span=5m avg(USED) as Used,avg(CACHES) as Cache,avg(TOTAL) as Total</param>
+              <param name="search">timechart span=5m avg(MemSystem) as System,avg(MemProcess) as Process,avg(MemFSCache) as Cache</param>
               <param name="groupLabel">Memory Usage</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -190,7 +190,9 @@
                       <param name="display">False</param>
                       <module name="HiddenChartFormatter">
                         <param name="charting.chart">area</param>
+                        <param name="charting.chart.stackMode">stacked</param>
                         <param name="charting.chart.nullValueMode">connect</param>
+                        <param name="charting.seriesColors">[0x707070,0xFFFF00,0xFF99FF]</param>
                         <module name="FlashChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
