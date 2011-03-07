@@ -193,6 +193,7 @@
                         <param name="charting.chart.stackMode">stacked</param>
                         <param name="charting.chart.nullValueMode">connect</param>
                         <param name="charting.seriesColors">[0x707070,0xFFFF00,0xFF99FF]</param>
+                        <param name="charting.legend.masterLegend"></param>
                         <module name="FlashChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
@@ -334,7 +335,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row5_col2" group="Network Traffic" autoRun="False">
-              <param name="search">sort _time | delta inAbsolut as inabs_change | delta outAbsolut as outabs_change | where inabs_change>=0 | where outabs_change>=0 | eval inkilobits=(inabs_change*8/1000) | eval outkilobits=(outabs_change*8/1000)| timechart span=5m per_second(inkilobits) as in_kbps, per_second(outkilobits) as out_kbps</param>
+              <param name="search">eval NetRead2=NetRead*8 | eval NetWrite2=NetWrite*8 | timechart span=5m avg(NetRead2) as Read, avg(NetWrite2) as Write</param>
               <param name="groupLabel">Network Traffic</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -346,6 +347,8 @@
                       <module name="HiddenChartFormatter">
                         <param name="charting.chart">area</param>
                         <param name="charting.chart.nullValueMode">connect</param>
+                        <param name="charting.seriesColors">[0x00FF00,0x0000FF]</param>
+                        <param name="charting.legend.masterLegend"></param>
                         <module name="FlashChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
