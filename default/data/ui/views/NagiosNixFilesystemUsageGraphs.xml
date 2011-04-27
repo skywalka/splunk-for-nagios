@@ -15,7 +15,7 @@
 
   <module name="SearchSelectLister" layoutPanel="mainSearchControls" autoRun="True">
     <param name="search">index="nagiosdev" nagiosevent="CURRENT HOST STATE" | rex ".+CURRENT HOST STATE\: (?P&lt;device&gt;[^;]*)(?=;)"| stats count by device</param>
-    <param name="earliest">-24h</param>
+    <param name="earliest">-7d</param>
     <param name="selected">dev1web07</param>
     <param name="label">Select a Hostname:</param>
     <param name="settingToCreate">device_setting</param>
@@ -41,7 +41,7 @@
         <param name="label">Select a Filesystem:</param>
         <param name="applyOuterIntentionsToInternalSearch">True</param>
         <param name="search">index=nagiosdev sourcetype="nagiosserviceperf" plugin="Disk" hostname=$deviceToken$ | rex max_match=1000 field=_raw "(?&lt;filesystem&gt;\/[^= ]*)=" | stats count by filesystem</param>
-        <param name="earliest">-1h</param>
+        <param name="earliest">-7d</param>
         <param name="searchFieldsToDisplay">
           <list>
             <param name="label">filesystem</param>

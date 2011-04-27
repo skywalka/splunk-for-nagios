@@ -24,7 +24,7 @@
           <param name="label">All</param>
         </list>
       </param>
-      <param name="search">earliest=-24h index="nagiosdev" nagiosevent="CURRENT HOST STATE" | rex ".+CURRENT HOST STATE\: (?P&lt;device&gt;[^;]*)(?=;)"| stats count by device</param>
+      <param name="search">earliest=-7d index="nagiosdev" nagiosevent="CURRENT HOST STATE" | rex ".+CURRENT HOST STATE\: (?P&lt;device&gt;[^;]*)(?=;)"| stats count by device</param>
       <param name="selected">dev1app05</param>
       <param name="label">Select a Hostname</param>
       <param name="settingToCreate">nagiosdevice_setting</param>
@@ -73,7 +73,7 @@
             <module name="GenericHeader" layoutPanel="panel_row1_col1">
               <param name="label">Warning and Critical Alerts</param>
   <module name="HiddenSearch">
-        <param name="search">index="nagiosdev" (nagiosevent="SERVICE ALERT" state="HARD" status="WARNING" OR status="CRITICAL") OR (nagiosevent="HOST ALERT" hoststate="HARD" hoststatus="DOWN") hostalert="$nagiosdevice$" | fields + hostalert, servicealertname, status, statusinfo, hoststatus, hostinfo</param>
+        <param name="search">index="nagiosdev" (nagiosevent="SERVICE ALERT" state="HARD" status="WARNING" OR status="CRITICAL") OR (nagiosevent="HOST ALERT" hoststate="HARD" hoststatus="DOWN") src_host="$nagiosdevice$" | fields + src_host, name, severity, reason</param>
         <param name="groupLabel">Warning and Critical Alerts</param>
         <module name="ViewstateAdapter">
       <module name="HiddenFieldPicker">
