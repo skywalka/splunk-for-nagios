@@ -16,7 +16,7 @@
     <param name="actionsMenuFilter">dashboard</param>
   </module>
   <module name="HiddenSearch" layoutPanel="viewHeader">
-    <param name="search">index=nagiosdev sourcetype="nagiosserviceperf" hostname="$nagiosdevice$" plugin="*" | bin span=5m _time | table *</param>
+    <param name="search">index=nagiosdev (sourcetype="nagioshostperf" OR sourcetype="nagiosserviceperf") hostname="$nagiosdevice$" | bin span=5m _time | table *</param>
     <module name="SearchSelectLister">
       <param name="staticFieldsToDisplay">
         <list>
@@ -24,8 +24,8 @@
           <param name="label">All</param>
         </list>
       </param>
-      <param name="search">earliest=-24h index="nagiosdev" nagiosevent="CURRENT HOST STATE" | rex ".+CURRENT HOST STATE\: (?P&lt;device&gt;[^;]*)(?=;)"| stats count by device</param>
-      <param name="selected">tst1app45</param>
+      <param name="search">earliest=-7d index="nagiosdev" nagiosevent="CURRENT HOST STATE" | rex ".+CURRENT HOST STATE\: (?P&lt;device&gt;[^;]*)(?=;)"| stats count by device</param>
+      <param name="selected">dev1app36</param>
       <param name="label">Select a Hostname</param>
       <param name="settingToCreate">nagiosdevice_setting</param>
       <param name="searchFieldsToDisplay">
@@ -41,7 +41,7 @@
           <param name="name">stringreplace</param>
           <param name="arg">
             <param name="nagiosdevice">
-              <param name="default">tst1app45</param>
+              <param name="default">dev1app36</param>
               <param name="fillOnEmpty">True</param>
               <param name="value">$target$</param>
             </param>
@@ -64,7 +64,7 @@
           <param name="name">stringreplace</param>
           <param name="arg">
             <param name="nagiosdevice">
-              <param name="default">tst1app45</param>
+              <param name="default">dev1app36</param>
               <param name="fillOnEmpty">True</param>
               <param name="value">$target$</param>
             </param>
@@ -73,7 +73,7 @@
             <module name="GenericHeader" layoutPanel="panel_row1_col1">
               <param name="label">Warning and Critical Alerts</param>
   <module name="HiddenSearch">
-        <param name="search">index="nagiosdev" (nagiosevent="SERVICE ALERT" state="HARD" status="WARNING" OR status="CRITICAL") OR (nagiosevent="HOST ALERT" hoststate="HARD" hoststatus="DOWN") hostalert="$nagiosdevice$" | fields + hostalert, servicealertname, status, statusinfo, hoststatus, hostinfo</param>
+        <param name="search">index="nagiosdev" (nagiosevent="SERVICE ALERT" state="HARD" status="WARNING" OR status="CRITICAL") OR (nagiosevent="HOST ALERT" hoststate="HARD" hoststatus="DOWN") src_host="$nagiosdevice$" | fields + src_host, name, severity, reason</param>
         <param name="groupLabel">Warning and Critical Alerts</param>
         <module name="ViewstateAdapter">
       <module name="HiddenFieldPicker">
@@ -160,6 +160,8 @@
                       <module name="HiddenChartFormatter">
                         <param name="charting.chart">area</param>
                         <param name="charting.chart.nullValueMode">connect</param>
+    			<param name="charting.seriesColors">[0xBF6400,0xEA8F00,0xF9D984]</param>
+    			<param name="charting.legend.masterLegend"></param>
                         <module name="FlashChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
@@ -179,7 +181,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row3_col1" group="Memory Usage" autoRun="False">
-              <param name="search">timechart span=5m avg(TOTAL) as Total,avg(CACHES) as Cache,avg(USED) as Used</param>
+              <param name="search">eval FreeMB = (freekb - cacheskb)/1024 | eval UsedMB = usedkb/1024 | eval CachesMB = cacheskb/1024 | timechart span=5m avg(UsedMB) as "Used (MB)", avg(CachesMB) as "Cache (MB)", avg(FreeMB) as "Free (MB)"</param>
               <param name="groupLabel">Memory Usage</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -190,7 +192,10 @@
                       <param name="display">False</param>
                       <module name="HiddenChartFormatter">
                         <param name="charting.chart">area</param>
+                        <param name="charting.chart.stackMode">stacked</param>
                         <param name="charting.chart.nullValueMode">connect</param>
+    			<param name="charting.seriesColors">[0xFFF200,0x00CF00,0x00FF00]</param>
+    			<param name="charting.legend.masterLegend"></param>
                         <module name="FlashChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
@@ -210,7 +215,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row3_col2" group="Swap Usage" autoRun="False">
-              <param name="search">eval swap_used=(swap_total-swap_free) | timechart span=5m avg(swap_total) as "Swap Total",avg(swap_used) as "Swap Used"</param>
+              <param name="search">eval swap_used=(swap_total-swap_free) | timechart span=5m avg(swap_total) as "Total (MB)",avg(swap_used) as "Used (MB)"</param>
               <param name="groupLabel">Swap Usage</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -222,6 +227,8 @@
                       <module name="HiddenChartFormatter">
                         <param name="charting.chart">area</param>
                         <param name="charting.chart.nullValueMode">connect</param>
+    			<param name="charting.seriesColors">[0x00CF00,0x002A97]</param>
+    			<param name="charting.legend.masterLegend"></param>
                         <module name="FlashChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
@@ -253,6 +260,8 @@
                       <module name="HiddenChartFormatter">
                         <param name="charting.chart">area</param>
                         <param name="charting.chart.nullValueMode">connect</param>
+    			<param name="charting.seriesColors">[0xF51D30]</param>
+    			<param name="charting.legend.masterLegend"></param>
                         <module name="FlashChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
@@ -283,6 +292,8 @@
                       <param name="display">False</param>
                       <module name="HiddenChartFormatter">
                         <param name="charting.chart">column</param>
+    			<param name="charting.seriesColors">[0xFF0000]</param>
+    			<param name="charting.legend.masterLegend"></param>
                         <module name="FlashChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
@@ -302,7 +313,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row5_col1" group="NTP Offset" autoRun="False">
-              <param name="search">timechart span=5m avg(offset) as Offset</param>
+              <param name="search">timechart span=5m avg(offset) as "Offset (secs)"</param>
               <param name="groupLabel">NTP Offset</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -314,6 +325,8 @@
                       <module name="HiddenChartFormatter">
                         <param name="charting.chart">line</param>
                         <param name="charting.chart.nullValueMode">connect</param>
+    			<param name="charting.seriesColors">[0x000000]</param>
+    			<param name="charting.legend.masterLegend"></param>
                         <module name="FlashChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
@@ -332,7 +345,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row5_col2" group="Network Traffic" autoRun="False">
-              <param name="search">sort _time | delta inAbsolut as inabs_change | delta outAbsolut as outabs_change | where inabs_change>=0 | where outabs_change>=0 | eval inkilobits=(inabs_change*8/1000) | eval outkilobits=(outabs_change*8/1000)| timechart span=5m per_second(inkilobits) as in_kbps, per_second(outkilobits) as out_kbps</param>
+              <param name="search">sort _time | delta inAbsolut as inabs_change | delta outAbsolut as outabs_change | where inabs_change>=0 | where outabs_change>=0 | eval inkilobits=(inabs_change*8/1000) | eval outkilobits=(outabs_change*8/1000)| timechart span=5m per_second(inkilobits) as "inbound (kbps)", per_second(outkilobits) as "outbound (kbps)"</param>
               <param name="groupLabel">Network Traffic</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -344,6 +357,8 @@
                       <module name="HiddenChartFormatter">
                         <param name="charting.chart">area</param>
                         <param name="charting.chart.nullValueMode">connect</param>
+    			<param name="charting.seriesColors">[0x00CF00,0x002A97]</param>
+    			<param name="charting.legend.masterLegend"></param>
                         <module name="FlashChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
@@ -361,10 +376,44 @@
                 </module>
               </module>
             </module>
+
+            <module name="HiddenPostProcess" layoutPanel="panel_row6_col1" group="Advanced Ping" autoRun="False">
+              <param name="search">timechart span=5m avg(pl) as "Packet Loss (%)", avg(rta) as "Latency (ms)"</param>
+              <param name="groupLabel">Advanced Ping</param>
+              <module name="ViewstateAdapter">
+                <module name="HiddenFieldPicker">
+                  <param name="strictMode">True</param>
+                  <module name="JobProgressIndicator">
+                    <module name="EnablePreview">
+                      <param name="enable">True</param>
+                      <param name="display">False</param>
+                      <module name="HiddenChartFormatter">
+                        <param name="charting.chart">line</param>
+                        <param name="charting.chart.nullValueMode">connect</param>
+    			<param name="charting.seriesColors">[0x000000,0x00CF00]</param>
+    			<param name="charting.legend.masterLegend"></param>
+                        <module name="FlashChart">
+                          <param name="width">100%</param>
+                          <module name="ConvertToDrilldownSearch">
+                            <module name="ViewRedirector">
+                              <param name="viewTarget">flashtimeline</param>
+                            </module>
+                          </module>
+                          <module name="ViewRedirectorLink">
+                          <param name="viewTarget">flashtimeline</param>
+                        </module>
+                      </module>
+                    </module>
+                  </module>
+                </module>
+              </module>
+
           </module>
         </module>
       </module>
     </module>
+  </module>
+  </module>
   </module>
   </module>
 </view>
