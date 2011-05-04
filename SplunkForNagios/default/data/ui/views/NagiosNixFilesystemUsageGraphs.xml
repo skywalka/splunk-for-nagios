@@ -40,7 +40,7 @@
          <param name="settingToCreate">filesystem_setting</param>
         <param name="label">Select a Filesystem:</param>
         <param name="applyOuterIntentionsToInternalSearch">True</param>
-        <param name="search">index=nagiosdev sourcetype="nagiosserviceperf" plugin="Disk" hostname=$deviceToken$ | rex max_match=1000 field=_raw "(?&lt;filesystem&gt;\/[^= ]*)=" | stats count by filesystem</param>
+        <param name="search">index=nagiosdev sourcetype="nagiosserviceperf" name="Disk" src_host=$deviceToken$ | rex max_match=1000 field=_raw "(?&lt;filesystem&gt;\/[^= ]*)=" | stats count by filesystem</param>
         <param name="earliest">-7d</param>
         <param name="searchFieldsToDisplay">
           <list>
@@ -72,7 +72,7 @@
                   <param name="label">Filesystem Usage over time</param>
                 </module>
                 <module name="HiddenSearch" layoutPanel="resultsAreaLeft">
-                  <param name="search">index=nagiosdev sourcetype="nagiosserviceperf" plugin="Disk" hostname=$deviceToken$ | rex max_match=1 field=_raw "\Q$filesystemToken$=\E(?&lt;fs_used&gt;[^M]*)MB;[0-9]+;[0-9]+;[0-9]+;(?&lt;fs_total&gt;[0-9]+)" | timechart span=5m avg(fs_total) as "Total $filesystemToken$",avg(fs_used) as "Used $filesystemToken$"</param>
+                  <param name="search">index=nagiosdev sourcetype="nagiosserviceperf" name="Disk" src_host=$deviceToken$ | rex max_match=1 field=_raw "\Q$filesystemToken$=\E(?&lt;fs_used&gt;[^M]*)MB;[0-9]+;[0-9]+;[0-9]+;(?&lt;fs_total&gt;[0-9]+)" | timechart span=5m avg(fs_total) as "Total $filesystemToken$",avg(fs_used) as "Used $filesystemToken$"</param>
                   <module name="HiddenChartFormatter">
                     <param name="chart">area</param>
                     <param name="charting.chart.nullValueMode">connect</param>
