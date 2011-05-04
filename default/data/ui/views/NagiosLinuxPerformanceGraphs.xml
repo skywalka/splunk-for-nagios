@@ -16,7 +16,7 @@
     <param name="actionsMenuFilter">dashboard</param>
   </module>
   <module name="HiddenSearch" layoutPanel="viewHeader">
-    <param name="search">index=nagiosdev (sourcetype="nagioshostperf" OR sourcetype="nagiosserviceperf") hostname="$nagiosdevice$" | bin span=5m _time | table *</param>
+    <param name="search">index=nagiosdev (sourcetype="nagioshostperf" OR sourcetype="nagiosserviceperf") src_host="$nagiosdevice$" | bin span=5m _time | table *</param>
     <module name="SearchSelectLister">
       <param name="staticFieldsToDisplay">
         <list>

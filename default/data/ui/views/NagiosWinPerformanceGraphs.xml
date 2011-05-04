@@ -16,7 +16,7 @@
     <param name="actionsMenuFilter">dashboard</param>
   </module>
   <module name="HiddenSearch" layoutPanel="viewHeader">
-    <param name="search">index=nagiosdev sourcetype="nagiosserviceperf" hostname="$nagiosdevice$" plugin="*" | bin span=5m _time | table *</param>
+    <param name="search">index=nagiosdev sourcetype="nagiosserviceperf" src_host="$nagiosdevice$" name="*" | bin span=5m _time | table *</param>
     <module name="SearchSelectLister">
       <param name="staticFieldsToDisplay">
         <list>
@@ -207,7 +207,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row3_col2" group="C Drive Usage" autoRun="False">
-              <param name="search">search plugin="NT-DriveC" | timechart span=5m avg(drive_used) as "Drive Used", avg(drive_total) as "Drive Total"</param>
+              <param name="search">search name="NT-DriveC" | timechart span=5m avg(drive_used) as "Drive Used", avg(drive_total) as "Drive Total"</param>
               <param name="groupLabel">C Drive Usage</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -238,7 +238,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row4_col1" group="D Drive Usage" autoRun="False">
-              <param name="search">search plugin="NT-DriveD" | timechart span=5m avg(drive_used) as "Drive Used", avg(drive_total) as "Drive Total"</param>
+              <param name="search">search name="NT-DriveD" | timechart span=5m avg(drive_used) as "Drive Used", avg(drive_total) as "Drive Total"</param>
               <param name="groupLabel">D Drive Usage</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
