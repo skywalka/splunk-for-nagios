@@ -78,6 +78,8 @@
                     <param name="charting.chart.nullValueMode">connect</param>
                     <param name="primaryAxisTitle.text">Time</param>
                     <param name="secondaryAxisTitle.text">MB</param>
+                    <param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
+                    <param name="charting.legend.masterLegend"></param>
                     <module name="JobProgressIndicator"/>
                     <module name="FlashChart">
                       <param name="width">100%</param>

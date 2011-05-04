@@ -227,7 +227,7 @@
                       <module name="HiddenChartFormatter">
                         <param name="charting.chart">area</param>
                         <param name="charting.chart.nullValueMode">connect</param>
-    			<param name="charting.seriesColors">[0x00CF00,0x002A97]</param>
+    			<param name="charting.seriesColors">[0x000000,0xFF0000]</param>
     			<param name="charting.legend.masterLegend"></param>
                         <module name="FlashChart">
                           <param name="width">100%</param>
