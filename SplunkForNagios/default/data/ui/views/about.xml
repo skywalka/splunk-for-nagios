@@ -10,8 +10,6 @@
   <module name="TitleBar" layoutPanel="viewHeader">
     <param name="actionsMenuFilter">dashboard</param>
   </module>
-
-
  
   <module name="ServerSideInclude" layoutPanel="panel_row1_col1" group="About">
     <param name="src">about.html</param>
@@ -25,7 +23,7 @@
         <param name="search">index=nagios | top sourcetype limit=10000</param>
         <module name="HiddenChartFormatter">
           <param name="chart">bar</param>
-          <param name="primaryAxisTitle.text">Services</param>
+          <param name="primaryAxisTitle.text">Sourcetypes</param>
           <module name="FlashChart">
             <module name="ConvertToDrilldownSearch">
               <module name="ViewRedirector">
