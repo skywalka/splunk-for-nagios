@@ -1,4 +1,4 @@
-<view template="dashboard.html" stylesheet="export_button.css">
+<view template="dashboard.html" stylesheet="dashboard.html">
   <label>About</label>
   <module name="AccountBar" layoutPanel="appHeader"/>
   <module name="AppBar" layoutPanel="navigationHeader"/>
