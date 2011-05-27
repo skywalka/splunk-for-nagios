@@ -1,0 +1,18 @@
+--- check_iftraffic_nrpe.pl	2011-05-06 15:53:01.000000000 +1000
++++ check_iftraffic_nrpe.pl.ce	2011-05-06 15:50:22.000000000 +1000
+@@ -213,11 +213,12 @@
+ $output .= "<br>$exit_status bandwidth utilization.\n"
+   if ( $exit_status ne "OK" );
+ 
+-#$output .=
++$output .=
+ #"| inUsage=$in_usage;$warn_usage;$crit_usage outUsage=$out_usage;$warn_usage;$crit_usage "  . "inAbsolut=$in_traffic_absolut outAbsolut=$out_traffic_absolut\n";
++"| inUsage=$in_usage;$warn_usage;$crit_usage outUsage=$out_usage;$warn_usage;$crit_usage inBandwidth=$in_traffic outBandwidth=$out_traffic inAbsolut=$in_traffic_absolut outAbsolut=$out_traffic_absolut\n";
+ 
+-$output .=
+-"| inUsage=$in_usage;$warn_usage;$crit_usage;; outUsage=$out_usage;$warn_usage;$crit_usage;;\n";
++##$output .=
++##"| inUsage=$in_usage;$warn_usage;$crit_usage;; outUsage=$out_usage;$warn_usage;$crit_usage;;\n";
+ 
+ 
+ print $output;

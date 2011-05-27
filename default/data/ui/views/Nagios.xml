@@ -1,0 +1,110 @@
+<view autoCancelInterval="90" isVisible="true" objectMode="SimpleDashboard" onunloadCancelJobs="true" refresh="-1" template="dashboard.html">
+  <label>Status Dashboard</label>
+  <module name="AccountBar" layoutPanel="appHeader"/>
+  <module name="AppBar" layoutPanel="navigationHeader"/>
+  <module name="Message" layoutPanel="messaging">
+    <param name="filter">*</param>
+    <param name="clearOnJobDispatch">False</param>
+    <param name="maxSize">1</param>
+  </module>
+  <module name="Message" layoutPanel="messaging">
+    <param name="filter">splunk.search.job</param>
+    <param name="clearOnJobDispatch">True</param>
+    <param name="maxSize">1</param>
+  </module>
+  <module name="TitleBar" layoutPanel="viewHeader">
+    <param name="actionsMenuFilter">dashboard</param>
+  </module>
+  <module name="HiddenSearch" layoutPanel="panel_row1_col1" group="Warning Alerts - Last 60 Minutes" autoRun="True">
+    <param name="search">index="nagios" nagiosevent="SERVICE ALERT" state="HARD" status="WARNING" minutesago=60 | stats count | rangemap field=count low=0-0 elevated=1-1 default=elevated</param>
+    <param name="groupLabel">Warning Alerts</param>
+    <module name="ViewstateAdapter">
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="SingleValue">
+            <param name="classField">range</param>
+          </module>
+        </module>
+      </module>
+    </module>
+  </module>
+  <module name="HiddenSearch" layoutPanel="panel_row1_col2" group="Critical Alerts - Last 60 Minutes" autoRun="True">
+    <param name="search">index="nagios" (nagiosevent="SERVICE ALERT" state="HARD" status="CRITICAL") OR (nagiosevent="HOST ALERT" hoststatus="DOWN" hoststate="HARD") minutesago=60 | stats count | rangemap field=count low=0-0 severe=1-1 default=severe</param>
+    <param name="groupLabel">Critical Alerts</param>
+    <module name="ViewstateAdapter">
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="SingleValue">
+            <param name="classField">range</param>
+          </module>
+        </module>
+      </module>
+    </module>
+  </module>
+
+
+  <module name="HiddenSearch" layoutPanel="panel_row2_col1" group="Warning and Critical Alerts" autoRun="True">
+    <module name="TimeRangePicker">
+      <param name="searchWhenChanged">True</param>
+      <param name="selected">Last 60 minutes</param>
+      <module name="HiddenSearch" autoRun="True">
+        <param name="search">index="nagios" ((nagiosevent="SERVICE ALERT" state="HARD") NOT status="OK") OR (nagiosevent="HOST ALERT" hoststatus="DOWN" hoststate="HARD") | fields + _time,src_host,name,severity,reason</param>
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="SimpleResultsTable">
+            <param name="count">5</param>
+            </module>
+           </module>
+          </module>
+        </module>
+      </module>
+    </module>
+
+  <module name="HiddenSearch" layoutPanel="panel_row3_col1" group="Top 10 Service Notifications with status Warning" autoRun="True">
+    <module name="TimeRangePicker">
+      <param name="searchWhenChanged">True</param>
+      <param name="selected">Last 60 minutes</param>
+      <module name="HiddenSearch" autoRun="True">
+        <param name="search">index="nagios" nagiosevent="SERVICE NOTIFICATION" statusnotification="WARNING" | dedup servicenamenotification hostnotification | top servicenamenotification limit="10" | fields +  servicenamenotification count</param>
+        <module name="HiddenChartFormatter">
+          <param name="chart">bar</param>
+          <param name="primaryAxisTitle.text">Services</param>
+          <module name="FlashChart">
+            <module name="ConvertToDrilldownSearch">
+              <module name="ViewRedirector">
+                <param name="viewTarget">flashtimeline</param>
+              </module>
+            </module>
+          </module>
+        </module>
+      </module>
+    </module>  
+  </module>
+
+
+
+  <module name="HiddenSearch" layoutPanel="panel_row3_col2" group="Top 10 Service Notifications with status Critical" autoRun="True">
+    <module name="TimeRangePicker">
+      <param name="searchWhenChanged">True</param>
+      <param name="selected">Last 60 minutes</param>
+      <module name="HiddenSearch" autoRun="True">
+        <param name="search">index="nagios" nagiosevent="SERVICE NOTIFICATION" statusnotification="CRITICAL" | dedup servicenamenotification hostnotification | top servicenamenotification limit="10" | fields +  servicenamenotification count</param>
+        <module name="HiddenChartFormatter">
+          <param name="chart">bar</param>
+          <param name="primaryAxisTitle.text">Services</param>
+          <module name="FlashChart">
+            <module name="ConvertToDrilldownSearch">
+              <module name="ViewRedirector">
+                <param name="viewTarget">flashtimeline</param>
+              </module>
+            </module>
+          </module>
+        </module>
+      </module>
+    </module>  
+  </module>
+
+</view>

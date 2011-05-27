@@ -1,366 +1,534 @@
-[viewstates/flashtimeline%3Aga99f3yx]
-access = read : [ * ]
-export = none
-owner = admin
+[default]
 
-[savedsearches/nagios%20-%20Warning%20Alert]
-access = read : [ * ], write : [ admin ]
-export = none
+[eventtypes/hostdowntimestart]
 owner = admin
+export = none
 
-[viewstates/flashtimeline%3Aga9abh7j]
-access = read : [ * ]
-export = none
+[eventtypes/hostdowntimestop]
 owner = admin
+export = none
 
-[props/nagios/EXTRACT-externalcommand]
-access = read : [ * ], write : [ admin ]
-export = none
+[eventtypes/servicedowntimestart]
 owner = admin
+export = none
 
-[props/nagios/EXTRACT-hostexternal]
-access = read : [ * ], write : [ admin ]
-export = none
+[eventtypes/servicedowntimestop]
 owner = admin
-
-[props/nagios/EXTRACT-serviceexternal]
-access = read : [ * ], write : [ admin ]
 export = none
-owner = admin
-
-[props/nagios/EXTRACT-statusinfoexternal]
-access = read : [ * ], write : [ admin ]
-export = none
-owner = admin
 
 [props/nagios/EXTRACT-attempt]
 access = read : [ * ], write : [ admin ]
-export = none
 owner = admin
+export = none
+
+[props/nagios/EXTRACT-downtimehoststatus]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-downtimeservicename]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-downtimeservicestatus]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-externalcommand]
+access = read : [ * ], write : [ admin ]
+owner = admin
+export = none
 
 [props/nagios/EXTRACT-hostalert]
 access = read : [ * ], write : [ admin ]
-export = none
 owner = admin
+export = none
+
+[props/nagios/EXTRACT-hostattempt]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-hostcurrent]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-hostcurrentattempt]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-hostcurrentinfo]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-hostcurrentstate]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-hostcurrentstatus]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-hostexternal]
+access = read : [ * ], write : [ admin ]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-hostinfo]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-hostnotification]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-hostnotificationinfo]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-hostnotificationstatus]
+owner = admin
+export = none
 
 [props/nagios/EXTRACT-hostpassive]
 access = read : [ * ], write : [ admin ]
-export = none
 owner = admin
+export = none
+
+[props/nagios/EXTRACT-hostservicestate]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-hoststate]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-hoststatus]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-nagiosevent]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-notificationcommand]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-notificationinfo]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-passiveserviceinfo]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-passiveservicestate]
+owner = admin
+export = none
 
 [props/nagios/EXTRACT-servicealertname]
 access = read : [ * ], write : [ admin ]
-export = none
 owner = admin
+export = none
+
+[props/nagios/EXTRACT-serviceattempt]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-serviceexternal]
+access = read : [ * ], write : [ admin ]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-servicenamenotification]
+owner = admin
+export = none
 
 [props/nagios/EXTRACT-servicepassivename]
 access = read : [ * ], write : [ admin ]
-export = none
 owner = admin
+export = none
+
+[props/nagios/EXTRACT-servicestate]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-servicestateinfo]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-servicestatename]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-servicestatus]
+owner = admin
+export = none
 
 [props/nagios/EXTRACT-state]
 access = read : [ * ], write : [ admin ]
-export = none
 owner = admin
+export = none
 
 [props/nagios/EXTRACT-status]
 access = read : [ * ], write : [ admin ]
-export = none
 owner = admin
-
-[props/nagios/EXTRACT-statusinfo]
-access = read : [ * ], write : [ admin ]
 export = none
-owner = admin
-
-[props/nagios/EXTRACT-username]
-access = read : [ * ], write : [ admin ]
-export = none
-owner = admin
 
 [props/nagios/EXTRACT-statusexternal]
 access = read : [ * ], write : [ admin ]
-export = none
 owner = admin
+export = none
+
+[props/nagios/EXTRACT-statusinfo]
+access = read : [ * ], write : [ admin ]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-statusinfoexternal]
+access = read : [ * ], write : [ admin ]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-statusnotification]
+owner = admin
+export = none
+
+[props/nagios/EXTRACT-username]
+access = read : [ * ], write : [ admin ]
+owner = admin
+export = none
+
+[props/nagioshostperf/EXTRACT-hostname]
+owner = admin
+export = none
+
+[props/nagiosserviceperf/EXTRACT-Processes]
+owner = admin
+export = none
+
+[props/nagiosserviceperf/EXTRACT-Zombies]
+owner = admin
+export = none
+
+[props/nagiosserviceperf/EXTRACT-boottotal]
+owner = nobody
+export = none
+
+[props/nagiosserviceperf/EXTRACT-bootused]
+owner = nobody
+export = none
+
+[props/nagiosserviceperf/EXTRACT-hometotal]
+owner = nobody
+export = none
+
+[props/nagiosserviceperf/EXTRACT-homeused]
+owner = nobody
+export = none
+
+[props/nagiosserviceperf/EXTRACT-hostname]
+owner = admin
+export = none
+
+[props/nagiosserviceperf/EXTRACT-opttotal]
+owner = admin
+export = none
+
+[props/nagiosserviceperf/EXTRACT-optused]
+owner = admin
+export = none
+
+[props/nagiosserviceperf/EXTRACT-plugin]
+owner = admin
+export = none
+
+[props/nagiosserviceperf/EXTRACT-roottotal]
+owner = nobody
+export = none
+
+[props/nagiosserviceperf/EXTRACT-rootused]
+owner = nobody
+export = none
+
+[props/nagiosserviceperf/EXTRACT-srvcpantotal]
+owner = nobody
+export = none
+
+[props/nagiosserviceperf/EXTRACT-srvcpanused]
+owner = nobody
+export = none
+
+[props/nagiosserviceperf/EXTRACT-swap_free]
+owner = admin
+export = none
+
+[props/nagiosserviceperf/EXTRACT-swap_total]
+owner = admin
+export = none
+
+[props/nagiosserviceperf/EXTRACT-tmptotal]
+owner = nobody
+export = none
+
+[props/nagiosserviceperf/EXTRACT-tmpused]
+owner = nobody
+export = none
+
+[props/nagiosserviceperf/EXTRACT-varcrashtotal]
+owner = nobody
+export = none
+
+[props/nagiosserviceperf/EXTRACT-varcrashused]
+owner = nobody
+export = none
+
+[props/nagiosserviceperf/EXTRACT-vartotal]
+owner = nobody
+export = none
+
+[props/nagiosserviceperf/EXTRACT-varused]
+owner = nobody
+export = none
+
+[savedsearches/Isilon%20-%20Storage%20Usage%20-%20Last%204%20hours]
+owner = admin
+version = 4.2
+
+[savedsearches/nagios%20-%20Host%20Down%20Notifications%20-%20Last%2060%20minutes]
+owner = admin
+export = none
+
+[savedsearches/nagios%20-%20Host%20or%20Service%20Alerts%20-%20Last%2060%20minutes]
+owner = admin
+export = none
+
+[savedsearches/nagios%20-%20Host%20or%20Service%20Notifications%20-%20Last%2060%20minutes]
+owner = admin
+export = none
+
+[savedsearches/nagios%20-%20Number%20of%20Alerts%20-%20Last%2060%20minutes]
+owner = admin
+export = none
+
+[savedsearches/nagios%20-%20Scheduled%20Downtime%20by%20host%20and%20service%20-%20Last%2024%20Hours]
+owner = admin
+export = none
+
+[savedsearches/nagios%20-%20Service%20Notifications%20with%20state%20Critical%20-%20Last%2060%20minutes]
+owner = admin
+export = none
+
+[savedsearches/nagios%20-%20Warning%20Alert]
+access = read : [ * ], write : [ admin ]
+owner = admin
+export = none
+
+[views/NagiosPerf]
+owner = admin
+export = none
+
+[views/NagiosPerformanceGraphs]
+owner = admin
+export = none
 
 [viewstates/%2A%3Aga9e3z0f]
 access = read : [ * ]
-export = none
 owner = admin
+export = system
 
 [viewstates/%2A%3Aga9e4ihy]
 access = read : [ * ]
-export = none
 owner = admin
-
-[viewstates/flashtimeline%3Agagpv1xz]
-access = read : [ * ]
-export = none
-owner = admin
-
-[viewstates/flashtimeline%3Agagpwole]
-access = read : [ * ]
-export = none
-owner = admin
-
-[viewstates/flashtimeline%3Aganpkw80]
-access = read : [ * ]
-export = none
-owner = admin
-
-[viewstates/flashtimeline%3Aganpm14y]
-access = read : [ * ]
-export = none
-owner = admin
-
-[viewstates/flashtimeline%3Agaoswcsg]
-access = read : [ * ]
-export = none
-owner = admin
-
-[viewstates/flashtimeline%3Agaosyloz]
-access = read : [ * ]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-passiveservicestate]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-passiveserviceinfo]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-hostattempt]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-hostinfo]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-hostnotification]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-hostnotificationinfo]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-hostnotificationstatus]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-hostservicestate]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-hoststate]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-hoststatus]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-nagiosevent]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-notificationcommand]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-notificationinfo]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-servicenamenotification]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-statusnotification]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-servicestatename]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-servicestatus]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-servicestate]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-serviceattempt]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-servicestateinfo]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-hostcurrent]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-hostcurrentstatus]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-hostcurrentstate]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-hostcurrentattempt]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-hostcurrentinfo]
-export = none
-owner = admin
+export = system
 
 [viewstates/%2A%3Agap2j2nr]
 access = read : [ * ]
-export = none
 owner = admin
+export = system
 
 [viewstates/%2A%3Agap2kbaq]
 access = read : [ * ]
-export = none
 owner = admin
+export = system
 
 [viewstates/%2A%3Agap2pmzc]
 access = read : [ * ]
-export = none
 owner = admin
-
-[viewstates/flashtimeline%3Agaqhpz8p]
-access = read : [ * ]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-downtimehoststatus]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-downtimeservicename]
-export = none
-owner = admin
-
-[props/nagios/EXTRACT-downtimeservicestatus]
-export = none
-owner = admin
-
-[eventtypes/hostdowntimestart]
-export = none
-owner = admin
-
-[eventtypes/hostdowntimestop]
-export = none
-owner = admin
-
-[eventtypes/servicedowntimestart]
-export = none
-owner = admin
-
-[eventtypes/servicedowntimestop]
-export = none
-owner = admin
+export = system
 
 [viewstates/%2A%3Agaykx8un]
 access = read : [ * ]
-export = none
 owner = admin
+export = system
 
 [viewstates/%2A%3Agaymv7k6]
 access = read : [ * ]
-export = none
 owner = admin
+export = system
 
 [viewstates/%2A%3Agayrzwa5]
 access = read : [ * ]
-export = none
 owner = admin
+export = system
 
 [viewstates/%2A%3Agaytkivf]
 access = read : [ * ]
-export = none
 owner = admin
+export = system
 
 [viewstates/%2A%3Agayumlb1]
 access = read : [ * ]
-export = none
 owner = admin
-
-[viewstates/flashtimeline%3Agaz1vim9]
-access = read : [ * ]
-export = none
-owner = admin
-
-[savedsearches/nagios%20-%20Host%20or%20Service%20Notifications%20-%20Last%2060%20minutes]
-export = none
-owner = admin
-
-[viewstates/flashtimeline%3Agaz26pu8]
-access = read : [ * ]
-export = none
-owner = admin
-
-[viewstates/flashtimeline%3Agaz28rlj]
-access = read : [ * ]
-export = none
-owner = admin
-
-[viewstates/flashtimeline%3Agaz2b3br]
-access = read : [ * ]
-export = none
-owner = admin
-
-[savedsearches/nagios%20-%20Service%20Notifications%20with%20state%20Critical%20-%20Last%2060%20minutes]
-export = none
-owner = admin
-
-[viewstates/flashtimeline%3Agaz2gtvi]
-access = read : [ * ]
-export = none
-owner = admin
+export = system
 
 [viewstates/%2A%3Agaz2l4kh]
 access = read : [ * ]
-export = none
 owner = admin
+export = system
 
-[savedsearches/nagios%20-%20Host%20Down%20Notifications%20-%20Last%2060%20minutes]
-export = none
+[viewstates/%2A%3Agdfm7rss]
+access = read : [ * ]
 owner = admin
+export = system
+
+[viewstates/%2A%3Age2c5x64]
+access = read : [ * ]
+owner = admin
+export = system
+
+[viewstates/%2A%3Age2c7fpw]
+access = read : [ * ]
+owner = admin
+export = system
+
+[viewstates/%2A%3Age2c9ea2]
+access = read : [ * ]
+owner = admin
+export = system
+
+[viewstates/%2A%3Age2cb6k8]
+access = read : [ * ]
+owner = admin
+export = system
+
+[viewstates/%2A%3Age2ccmk2]
+access = read : [ * ]
+owner = admin
+export = system
+
+[viewstates/%2A%3Age2cdzzb]
+access = read : [ * ]
+owner = admin
+export = system
+
+[viewstates/%2A%3Age2cf2cy]
+access = read : [ * ]
+owner = admin
+export = system
+
+[viewstates/%2A%3Age2ep2ob]
+access = read : [ * ]
+owner = admin
+export = system
+
+[viewstates/%2A%3Agmoroff0]
+access = read : [ * ]
+owner = nobody
+version = 4.2
+export = system
+
+[viewstates/flashtimeline%3Aga99f3yx]
+access = read : [ * ]
+owner = admin
+export = system
+
+[viewstates/flashtimeline%3Aga9abh7j]
+access = read : [ * ]
+owner = admin
+export = system
+
+[viewstates/flashtimeline%3Agagpv1xz]
+access = read : [ * ]
+owner = admin
+export = system
+
+[viewstates/flashtimeline%3Agagpwole]
+access = read : [ * ]
+owner = admin
+export = system
+
+[viewstates/flashtimeline%3Aganpkw80]
+access = read : [ * ]
+owner = admin
+export = system
+
+[viewstates/flashtimeline%3Aganpm14y]
+access = read : [ * ]
+owner = admin
+export = system
+
+[viewstates/flashtimeline%3Agaoswcsg]
+access = read : [ * ]
+owner = admin
+export = system
+
+[viewstates/flashtimeline%3Agaosyloz]
+access = read : [ * ]
+owner = admin
+export = system
+
+[viewstates/flashtimeline%3Agaqhpz8p]
+access = read : [ * ]
+owner = admin
+export = system
+
+[viewstates/flashtimeline%3Agaz1vim9]
+access = read : [ * ]
+owner = admin
+export = system
+
+[viewstates/flashtimeline%3Agaz26pu8]
+access = read : [ * ]
+owner = admin
+export = system
+
+[viewstates/flashtimeline%3Agaz28rlj]
+access = read : [ * ]
+owner = admin
+export = system
+
+[viewstates/flashtimeline%3Agaz2b3br]
+access = read : [ * ]
+owner = admin
+export = system
+
+[viewstates/flashtimeline%3Agaz2gtvi]
+access = read : [ * ]
+owner = admin
+export = system
 
 [viewstates/flashtimeline%3Agaz2t17n]
 access = read : [ * ]
-export = none
 owner = admin
-
-[savedsearches/nagios%20-%20Number%20of%20Alerts%20-%20Last%2060%20minutes]
-export = none
-owner = admin
+export = system
 
 [viewstates/flashtimeline%3Agaz2w7we]
 access = read : [ * ]
-export = none
 owner = admin
-
-[savedsearches/nagios%20-%20Host%20or%20Service%20Alerts%20-%20Last%2060%20minutes]
-export = none
-owner = admin
+export = system
 
 [viewstates/flashtimeline%3Agaz3kjaf]
 access = read : [ * ]
-export = none
 owner = admin
+export = system
 
-[savedsearches/nagios%20-%20Scheduled%20Downtime%20by%20host%20and%20service%20-%20Last%2024%20Hours]
-export = none
+[viewstates/%2A%3Agn8tgvpw]
+access = read : [ * ]
+export = system
+owner = nobody
+version = 4.2.1
+
+[views/.svn]
 owner = admin
+version = 4.2.1
+

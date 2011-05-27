@@ -1,0 +1,566 @@
+<view autoCancelInterval="90" isVisible="true" objectMode="SimpleForm" onunloadCancelJobs="true" template="dashboard.html">
+  <label>Nagios Isilon Performance Graphs</label>
+  <module name="AccountBar" layoutPanel="appHeader"/>
+  <module name="AppBar" layoutPanel="navigationHeader"/>
+  <module name="Message" layoutPanel="messaging">
+    <param name="filter">*</param>
+    <param name="clearOnJobDispatch">False</param>
+    <param name="maxSize">1</param>
+  </module>
+  <module name="Message" layoutPanel="messaging">
+    <param name="filter">splunk.search.job</param>
+    <param name="clearOnJobDispatch">True</param>
+    <param name="maxSize">1</param>
+  </module>
+  <module name="TitleBar" layoutPanel="viewHeader">
+    <param name="actionsMenuFilter">dashboard</param>
+  </module>
+  <module name="HiddenSearch" layoutPanel="viewHeader">
+    <param name="search">index=nagios (sourcetype="nagioshostperf" OR sourcetype="nagiosserviceperf") src_host="$hostname$" | bin span=5m _time | table *</param>
+
+    <module name="ExtendedFieldSearch">
+      <param name="intention">
+        <param name="name">stringreplace</param>
+        <param name="arg">
+            <param name="hostname">
+                <param name="default">syd1nas10</param>
+            </param>
+        </param>
+      </param>
+      <param name="replacementMap">
+        <param name="arg">
+          <param name="hostname">
+              <param name="value"></param>
+          </param>
+        </param>
+      </param>
+      <param name="field">Enter the hostname:</param>
+      <param name="q">syd1nas10</param>
+
+        <module name="SubmitButton">
+          <param name="allowSoftSubmit">True</param>
+          <param name="label">Search</param>
+    <module name="TimeRangePicker">
+      <param name="searchWhenChanged">True</param>
+      <param name="selected">Last 24 hours</param>
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="JobStatus">
+
+            <module name="GenericHeader" layoutPanel="panel_row1_col1">
+              <param name="label">Warning and Critical Alerts</param>
+  <module name="HiddenSearch">
+        <param name="search">index="nagios" (nagiosevent="SERVICE ALERT" state="HARD" status="WARNING" OR status="CRITICAL") OR (nagiosevent="HOST ALERT" hoststate="HARD" hoststatus="DOWN") src_host="$hostname$" | fields + src_host, name, severity, reason</param>
+        <param name="groupLabel">Warning and Critical Alerts</param>
+        <module name="ViewstateAdapter">
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="SimpleResultsTable">
+            <param name="count">5</param>
+            </module>
+           </module>
+          </module>
+          </module>
+        </module>
+        </module>
+
+            <module name="GenericHeader" layoutPanel="panel_row1_col2">
+              <param name="label">Top 10 Service Notifications</param>
+  <module name="HiddenSearch">
+        <param name="search">index="nagios" nagiosevent="SERVICE NOTIFICATION" (statusnotification="WARNING" OR statusnotification="CRITICAL") hostnotification="$hostname$" | dedup servicenamenotification hostnotification | top servicenamenotification limit="10" | fields +  servicenamenotification count</param>
+        <param name="groupLabel">Top 10 Service Notifications</param>
+        <module name="ViewstateAdapter">
+        <module name="HiddenChartFormatter">
+          <param name="chart">bar</param>
+          <param name="primaryAxisTitle.text">Services</param>
+          <module name="FlashChart">
+            <module name="ConvertToDrilldownSearch">
+              <module name="ViewRedirector">
+                <param name="viewTarget">flashtimeline</param>
+              </module>
+            </module>
+          </module>
+        </module>
+        </module>
+      </module>
+      </module>
+
+            <module name="HiddenPostProcess" layoutPanel="panel_row2_col1" group="Storage Usage" autoRun="False">
+              <param name="search">search name="Storage Usage" | eval SnapshotUsage2 = "0".SnapshotUsage | timechart span=5m avg(QuotaUsage) as "Quota Usage (TB)", avg(SnapshotUsage2) as "Snapshot Usage (TB)", avg(RaidUsage) as "Raid Usage (TB)", avg(StorageFree) as "Storage Free (TB)"</param>
+              <param name="groupLabel">Storage Usage</param>
+              <module name="ViewstateAdapter">
+                <module name="HiddenFieldPicker">
+                  <param name="strictMode">True</param>
+                  <module name="JobProgressIndicator">
+                    <module name="EnablePreview">
+                      <param name="enable">True</param>
+                      <param name="display">False</param>
+                      <module name="HiddenChartFormatter">
+                        <param name="charting.chart">area</param>
+                        <param name="charting.chart.stackMode">stacked</param>
+                        <param name="charting.chart.nullValueMode">connect</param>
+    			<param name="charting.seriesColors">[0xFF0000,0x00FF00,0xFF00FF,0x0000FF]</param>
+    			<param name="charting.legend.masterLegend"></param>
+                        <module name="FlashChart">
+                          <param name="width">100%</param>
+                          <module name="ConvertToDrilldownSearch">
+                            <module name="ViewRedirector">
+                              <param name="viewTarget">flashtimeline</param>
+                            </module>
+                          </module>
+                          </module>
+                          </module>
+                          </module>
+                        </module>
+                        <module name="ViewRedirectorLink">
+                          <param name="viewTarget">flashtimeline</param>
+                        </module>
+                      </module>
+                    </module>
+                  </module>
+                </module>
+              </module>
+            </module>
+
+            <module name="HiddenPostProcess" layoutPanel="panel_row2_col2" group="CIFS Connections" autoRun="False">
+              <param name="search">search name="Client Connections" | timechart span=5m avg(ActiveCIFSClients) as "Active CIFS Clients", avg(ConnectedCIFSClients) as "Connected CIFS Clients"</param>
+              <param name="groupLabel">CIFS Connections</param>
+              <module name="ViewstateAdapter">
+                <module name="HiddenFieldPicker">
+                  <param name="strictMode">True</param>
+                  <module name="JobProgressIndicator">
+                    <module name="EnablePreview">
+                      <param name="enable">True</param>
+                      <param name="display">False</param>
+                      <module name="HiddenChartFormatter">
+                        <param name="charting.chart">line</param>
+                        <param name="charting.chart.nullValueMode">connect</param>
+    			<param name="charting.seriesColors">[0xBF6400,0xEA8F00]</param>
+    			<param name="charting.legend.masterLegend"></param>
+                        <module name="FlashChart">
+                          <param name="width">100%</param>
+                          <module name="ConvertToDrilldownSearch">
+                            <module name="ViewRedirector">
+                              <param name="viewTarget">flashtimeline</param>
+                            </module>
+                          </module>
+                        </module>
+                        <module name="ViewRedirectorLink">
+                          <param name="viewTarget">flashtimeline</param>
+                        </module>
+                      </module>
+                    </module>
+                  </module>
+                </module>
+              </module>
+            </module>
+
+            <module name="HiddenPostProcess" layoutPanel="panel_row3_col1" group="NFS Connections" autoRun="False">
+              <param name="search">search name="Client Connections" | timechart span=5m avg(ActiveNFSClients) as "Active NFS Clients", avg(ConnectedNFSClients) as "Connected NFS Clients"</param>
+              <param name="groupLabel">NFS Connections</param>
+              <module name="ViewstateAdapter">
+                <module name="HiddenFieldPicker">
+                  <param name="strictMode">True</param>
+                  <module name="JobProgressIndicator">
+                    <module name="EnablePreview">
+                      <param name="enable">True</param>
+                      <param name="display">False</param>
+                      <module name="HiddenChartFormatter">
+                        <param name="charting.chart">line</param>
+                        <param name="charting.chart.nullValueMode">connect</param>
+    			<param name="charting.seriesColors">[0xFFF200,0x00CF00]</param>
+    			<param name="charting.legend.masterLegend"></param>
+                        <module name="FlashChart">
+                          <param name="width">100%</param>
+                          <module name="ConvertToDrilldownSearch">
+                            <module name="ViewRedirector">
+                              <param name="viewTarget">flashtimeline</param>
+                            </module>
+                          </module>
+                        </module>
+                        <module name="ViewRedirectorLink">
+                          <param name="viewTarget">flashtimeline</param>
+                        </module>
+                      </module>
+                    </module>
+                  </module>
+                </module>
+              </module>
+            </module>
+
+            <module name="HiddenPostProcess" layoutPanel="panel_row3_col2" group="Total Connections" autoRun="False">
+              <param name="search">search name="Client Connections" | timechart span=5m avg(TotalActiveClients) as "Total Active Clients", avg(TotalConnectedClients) as "Total Connected Clients"</param>
+              <param name="groupLabel">Total Connections</param>
+              <module name="ViewstateAdapter">
+                <module name="HiddenFieldPicker">
+                  <param name="strictMode">True</param>
+                  <module name="JobProgressIndicator">
+                    <module name="EnablePreview">
+                      <param name="enable">True</param>
+                      <param name="display">False</param>
+                      <module name="HiddenChartFormatter">
+                        <param name="charting.chart">line</param>
+                        <param name="charting.chart.nullValueMode">connect</param>
+    			<param name="charting.seriesColors">[0x000000,0xFF0000]</param>
+    			<param name="charting.legend.masterLegend"></param>
+                        <module name="FlashChart">
+                          <param name="width">100%</param>
+                          <module name="ConvertToDrilldownSearch">
+                            <module name="ViewRedirector">
+                              <param name="viewTarget">flashtimeline</param>
+                            </module>
+                          </module>
+                        </module>
+                        <module name="ViewRedirectorLink">
+                          <param name="viewTarget">flashtimeline</param>
+                        </module>
+                      </module>
+                    </module>
+                  </module>
+                </module>
+              </module>
+            </module>
+
+            <module name="HiddenPostProcess" layoutPanel="panel_row4_col1" group="Quota Usage apps" autoRun="False">
+              <param name="search">search name="Quota Usage apps" | eval QuotaUsage2 = "0".QuotaUsage | timechart span=5m avg(QuotaTotal) as "Total (GB)", avg(QuotaUsage2) as "Used (GB)"</param>
+              <param name="groupLabel">Quota Usage apps</param>
+              <module name="ViewstateAdapter">
+                <module name="HiddenFieldPicker">
+                  <param name="strictMode">True</param>
+                  <module name="JobProgressIndicator">
+                    <module name="EnablePreview">
+                      <param name="enable">True</param>
+                      <param name="display">False</param>
+                      <module name="HiddenChartFormatter">
+                        <param name="charting.chart">area</param>
+                        <param name="charting.chart.nullValueMode">connect</param>
+    			<param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
+    			<param name="charting.legend.masterLegend"></param>
+                        <module name="FlashChart">
+                          <param name="width">100%</param>
+                          <module name="ConvertToDrilldownSearch">
+                            <module name="ViewRedirector">
+                              <param name="viewTarget">flashtimeline</param>
+                            </module>
+                          </module>
+                        </module>
+                        <module name="ViewRedirectorLink">
+                          <param name="viewTarget">flashtimeline</param>
+                        </module>
+                      </module>
+                    </module>
+                  </module>
+                </module>
+              </module>
+            </module>
+
+            <module name="HiddenPostProcess" layoutPanel="panel_row4_col2" group="Quota Usage ev" autoRun="False">
+              <param name="search">search name="Quota Usage ev" | eval QuotaUsage2 = "0".QuotaUsage | timechart span=5m avg(QuotaTotal) as "Total (GB)", avg(QuotaUsage2) as "Used (GB)"</param>
+              <param name="groupLabel">Quota Usage ev</param>
+              <module name="ViewstateAdapter">
+                <module name="HiddenFieldPicker">
+                  <param name="strictMode">True</param>
+                  <module name="JobProgressIndicator">
+                    <module name="EnablePreview">
+                      <param name="enable">True</param>
+                      <param name="display">False</param>
+                      <module name="HiddenChartFormatter">
+                        <param name="charting.chart">area</param>
+                        <param name="charting.chart.nullValueMode">connect</param>
+    			<param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
+    			<param name="charting.legend.masterLegend"></param>
+                        <module name="FlashChart">
+                          <param name="width">100%</param>
+                          <module name="ConvertToDrilldownSearch">
+                            <module name="ViewRedirector">
+                              <param name="viewTarget">flashtimeline</param>
+                            </module>
+                          </module>
+                        </module>
+                        <module name="ViewRedirectorLink">
+                          <param name="viewTarget">flashtimeline</param>
+                        </module>
+                      </module>
+                    </module>
+                  </module>
+                </module>
+              </module>
+            </module>
+
+            <module name="HiddenPostProcess" layoutPanel="panel_row5_col1" group="Quota Usage group" autoRun="False">
+              <param name="search">search name="Quota Usage group" | eval QuotaUsage2 = "0".QuotaUsage | timechart span=5m avg(QuotaTotal) as "Total (GB)", avg(QuotaUsage2) as "Used (GB)"</param>
+              <param name="groupLabel">Quota Usage group</param>
+              <module name="ViewstateAdapter">
+                <module name="HiddenFieldPicker">
+                  <param name="strictMode">True</param>
+                  <module name="JobProgressIndicator">
+                    <module name="EnablePreview">
+                      <param name="enable">True</param>
+                      <param name="display">False</param>
+                      <module name="HiddenChartFormatter">
+                        <param name="charting.chart">area</param>
+                        <param name="charting.chart.nullValueMode">connect</param>
+    			<param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
+    			<param name="charting.legend.masterLegend"></param>
+                        <module name="FlashChart">
+                          <param name="width">100%</param>
+                          <module name="ConvertToDrilldownSearch">
+                            <module name="ViewRedirector">
+                              <param name="viewTarget">flashtimeline</param>
+                            </module>
+                          </module>
+                        </module>
+                        <module name="ViewRedirectorLink">
+                          <param name="viewTarget">flashtimeline</param>
+                        </module>
+                      </module>
+                    </module>
+                  </module>
+                </module>
+              </module>
+            </module>
+
+            <module name="HiddenPostProcess" layoutPanel="panel_row5_col2" group="Quota Usage group_mac" autoRun="False">
+              <param name="search">search name="Quota Usage group_mac" | eval QuotaUsage2 = "0".QuotaUsage | timechart span=5m avg(QuotaTotal) as "Total (GB)", avg(QuotaUsage2) as "Used (GB)"</param>
+              <param name="groupLabel">Quota Usage group_mac</param>
+              <module name="ViewstateAdapter">
+                <module name="HiddenFieldPicker">
+                  <param name="strictMode">True</param>
+                  <module name="JobProgressIndicator">
+                    <module name="EnablePreview">
+                      <param name="enable">True</param>
+                      <param name="display">False</param>
+                      <module name="HiddenChartFormatter">
+                        <param name="charting.chart">area</param>
+                        <param name="charting.chart.nullValueMode">connect</param>
+    			<param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
+    			<param name="charting.legend.masterLegend"></param>
+                        <module name="FlashChart">
+                          <param name="width">100%</param>
+                          <module name="ConvertToDrilldownSearch">
+                            <module name="ViewRedirector">
+                              <param name="viewTarget">flashtimeline</param>
+                            </module>
+                          </module>
+                        </module>
+                        <module name="ViewRedirectorLink">
+                          <param name="viewTarget">flashtimeline</param>
+                        </module>
+                      </module>
+                    </module>
+                  </module>
+                </module>
+              </module>
+            </module>
+
+            <module name="HiddenPostProcess" layoutPanel="panel_row6_col1" group="Quota Usage home" autoRun="False">
+              <param name="search">search name="Quota Usage home" | eval QuotaUsage2 = "0".QuotaUsage | timechart span=5m avg(QuotaTotal) as "Total (GB)", avg(QuotaUsage2) as "Used (GB)"</param>
+              <param name="groupLabel">Quota Usage home</param>
+              <module name="ViewstateAdapter">
+                <module name="HiddenFieldPicker">
+                  <param name="strictMode">True</param>
+                  <module name="JobProgressIndicator">
+                    <module name="EnablePreview">
+                      <param name="enable">True</param>
+                      <param name="display">False</param>
+                      <module name="HiddenChartFormatter">
+                        <param name="charting.chart">area</param>
+                        <param name="charting.chart.nullValueMode">connect</param>
+    			<param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
+    			<param name="charting.legend.masterLegend"></param>
+                        <module name="FlashChart">
+                          <param name="width">100%</param>
+                          <module name="ConvertToDrilldownSearch">
+                            <module name="ViewRedirector">
+                              <param name="viewTarget">flashtimeline</param>
+                            </module>
+                          </module>
+                        </module>
+                        <module name="ViewRedirectorLink">
+                          <param name="viewTarget">flashtimeline</param>
+                        </module>
+                      </module>
+                    </module>
+                  </module>
+                </module>
+              </module>
+            </module>
+
+            <module name="HiddenPostProcess" layoutPanel="panel_row6_col2" group="Quota Usage nfs" autoRun="False">
+              <param name="search">search name="Quota Usage nfs" | eval QuotaUsage2 = "0".QuotaUsage | timechart span=5m avg(QuotaTotal) as "Total (GB)", avg(QuotaUsage2) as "Used (GB)"</param>
+              <param name="groupLabel">Quota Usage nfs</param>
+              <module name="ViewstateAdapter">
+                <module name="HiddenFieldPicker">
+                  <param name="strictMode">True</param>
+                  <module name="JobProgressIndicator">
+                    <module name="EnablePreview">
+                      <param name="enable">True</param>
+                      <param name="display">False</param>
+                      <module name="HiddenChartFormatter">
+                        <param name="charting.chart">area</param>
+                        <param name="charting.chart.nullValueMode">connect</param>
+    			<param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
+    			<param name="charting.legend.masterLegend"></param>
+                        <module name="FlashChart">
+                          <param name="width">100%</param>
+                          <module name="ConvertToDrilldownSearch">
+                            <module name="ViewRedirector">
+                              <param name="viewTarget">flashtimeline</param>
+                            </module>
+                          </module>
+                        </module>
+                        <module name="ViewRedirectorLink">
+                          <param name="viewTarget">flashtimeline</param>
+                        </module>
+                      </module>
+                    </module>
+                  </module>
+                </module>
+              </module>
+            </module>
+
+            <module name="HiddenPostProcess" layoutPanel="panel_row7_col1" group="Quota Usage temp" autoRun="False">
+              <param name="search">search name="Quota Usage temp" | eval QuotaUsage2 = "0".QuotaUsage | timechart span=5m avg(QuotaTotal) as "Total (GB)", avg(QuotaUsage2) as "Used (GB)"</param>
+              <param name="groupLabel">Quota Usage temp</param>
+              <module name="ViewstateAdapter">
+                <module name="HiddenFieldPicker">
+                  <param name="strictMode">True</param>
+                  <module name="JobProgressIndicator">
+                    <module name="EnablePreview">
+                      <param name="enable">True</param>
+                      <param name="display">False</param>
+                      <module name="HiddenChartFormatter">
+                        <param name="charting.chart">area</param>
+                        <param name="charting.chart.nullValueMode">connect</param>
+    			<param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
+    			<param name="charting.legend.masterLegend"></param>
+                        <module name="FlashChart">
+                          <param name="width">100%</param>
+                          <module name="ConvertToDrilldownSearch">
+                            <module name="ViewRedirector">
+                              <param name="viewTarget">flashtimeline</param>
+                            </module>
+                          </module>
+                        </module>
+                        <module name="ViewRedirectorLink">
+                          <param name="viewTarget">flashtimeline</param>
+                        </module>
+                      </module>
+                    </module>
+                  </module>
+                </module>
+              </module>
+            </module>
+
+            <module name="HiddenPostProcess" layoutPanel="panel_row7_col2" group="Quota Usage video" autoRun="False">
+              <param name="search">search name="Quota Usage video" | eval QuotaUsage2 = "0".QuotaUsage | timechart span=5m avg(QuotaTotal) as "Total (GB)", avg(QuotaUsage2) as "Used (GB)"</param>
+              <param name="groupLabel">Quota Usage video</param>
+              <module name="ViewstateAdapter">
+                <module name="HiddenFieldPicker">
+                  <param name="strictMode">True</param>
+                  <module name="JobProgressIndicator">
+                    <module name="EnablePreview">
+                      <param name="enable">True</param>
+                      <param name="display">False</param>
+                      <module name="HiddenChartFormatter">
+                        <param name="charting.chart">area</param>
+                        <param name="charting.chart.nullValueMode">connect</param>
+    			<param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
+    			<param name="charting.legend.masterLegend"></param>
+                        <module name="FlashChart">
+                          <param name="width">100%</param>
+                          <module name="ConvertToDrilldownSearch">
+                            <module name="ViewRedirector">
+                              <param name="viewTarget">flashtimeline</param>
+                            </module>
+                          </module>
+                        </module>
+                        <module name="ViewRedirectorLink">
+                          <param name="viewTarget">flashtimeline</param>
+                        </module>
+                      </module>
+                    </module>
+                  </module>
+                </module>
+              </module>
+            </module>
+
+            <module name="HiddenPostProcess" layoutPanel="panel_row8_col1" group="Quota Usage vmware" autoRun="False">
+              <param name="search">search name="Quota Usage vmware" | timechart span=5m avg(QuotaTotal) as "Total (GB)", avg(QuotaUsage) as "Used (GB)"</param>
+              <param name="groupLabel">Quota Usage vmware</param>
+              <module name="ViewstateAdapter">
+                <module name="HiddenFieldPicker">
+                  <param name="strictMode">True</param>
+                  <module name="JobProgressIndicator">
+                    <module name="EnablePreview">
+                      <param name="enable">True</param>
+                      <param name="display">False</param>
+                      <module name="HiddenChartFormatter">
+                        <param name="charting.chart">area</param>
+                        <param name="charting.chart.nullValueMode">connect</param>
+    			<param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
+    			<param name="charting.legend.masterLegend"></param>
+                        <module name="FlashChart">
+                          <param name="width">100%</param>
+                          <module name="ConvertToDrilldownSearch">
+                            <module name="ViewRedirector">
+                              <param name="viewTarget">flashtimeline</param>
+                            </module>
+                          </module>
+                        </module>
+                        <module name="ViewRedirectorLink">
+                          <param name="viewTarget">flashtimeline</param>
+                        </module>
+                      </module>
+                    </module>
+                  </module>
+                </module>
+              </module>
+            </module>
+
+            <module name="HiddenPostProcess" layoutPanel="panel_row8_col2" group="Advanced Ping" autoRun="False">
+              <param name="search">timechart span=5m avg(pl) as "Packet Loss (%)", avg(rta) as "Latency (ms)"</param>
+              <param name="groupLabel">Advanced Ping</param>
+              <module name="ViewstateAdapter">
+                <module name="HiddenFieldPicker">
+                  <param name="strictMode">True</param>
+                  <module name="JobProgressIndicator">
+                    <module name="EnablePreview">
+                      <param name="enable">True</param>
+                      <param name="display">False</param>
+                      <module name="HiddenChartFormatter">
+                        <param name="charting.chart">line</param>
+                        <param name="charting.chart.nullValueMode">connect</param>
+                        <param name="charting.seriesColors">[0x000000,0x00CF00]</param>
+                        <param name="charting.legend.masterLegend"></param>
+                        <module name="FlashChart">
+                          <param name="width">100%</param>
+                          <module name="ConvertToDrilldownSearch">
+                            <module name="ViewRedirector">
+                              <param name="viewTarget">flashtimeline</param>
+                            </module>
+                          </module>
+                          <module name="ViewRedirectorLink">
+                          <param name="viewTarget">flashtimeline</param>
+                        </module>
+                      </module>
+                    </module>
+                  </module>
+                </module>
+              </module>
+             </module>
+
+
+
+
+
+
+          </module>
+        </module>
+      </module>
+      </module>
+      </module>
+</view>
+

@@ -1,0 +1,41 @@
+<view template="dashboard.html" stylesheet="dashboard.html">
+  <label>About</label>
+  <module name="AccountBar" layoutPanel="appHeader"/>
+  <module name="AppBar" layoutPanel="navigationHeader"/>
+  <module name="Message" layoutPanel="messaging">
+    <param name="filter">*</param>
+    <param name="clearOnJobDispatch">False</param>
+    <param name="maxSize">1</param>
+  </module>
+  <module name="TitleBar" layoutPanel="viewHeader">
+    <param name="actionsMenuFilter">dashboard</param>
+  </module>
+ 
+  <module name="ServerSideInclude" layoutPanel="panel_row1_col1" group="Overview">
+    <param name="src">about.html</param>
+  </module>
+
+  <module name="HiddenSearch" layoutPanel="panel_row2_col1" group="Top Nagios Sourcetypes" autoRun="True">
+    <module name="TimeRangePicker">
+      <param name="searchWhenChanged">True</param>
+      <param name="selected">Last 60 minutes</param>
+      <module name="HiddenSearch" autoRun="True">
+        <param name="search">index=nagios | chart count by sourcetype | head 10</param>
+        <module name="HiddenChartFormatter">
+          <param name="chart">bar</param>
+          <param name="primaryAxisTitle.text">Sourcetypes</param>
+          <module name="FlashChart">
+            <module name="ConvertToDrilldownSearch">
+              <module name="ViewRedirector">
+                <param name="viewTarget">flashtimeline</param>
+              </module>
+            </module>
+          </module>
+        </module>
+      </module>
+    </module>  
+  </module>
+
+
+
+ </view>

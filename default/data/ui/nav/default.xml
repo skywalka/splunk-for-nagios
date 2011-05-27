@@ -1,8 +1,16 @@
 <nav>
-    <view name="flashtimeline" default='true' />
-    <collection label="Views">
-        <view source="unclassified" />
+    <view name="about" default='true' />
+    <view name="flashtimeline" />
+    <view name="Nagios" />
+    <view name="alert_formsearch" />
+    <collection label="Performance Dashboards">
+        <view name="NagiosAIXPerformanceGraphs"/>
+        <view name="NagiosLinuxPerformanceGraphs"/>
+        <view name="NagiosNixFilesystemUsageGraphs"/>
+        <view name="NagiosWinPerformanceGraphs"/>
         <divider />
+        <view name="NagiosIsilonPerformanceGraphs"/>
+        <view name="NagiosCelerraPerformanceGraphs"/>
     </collection>
     <collection label="Searches &amp; Reports">
         <collection label="Reports">
