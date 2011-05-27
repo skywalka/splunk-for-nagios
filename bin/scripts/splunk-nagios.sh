@@ -1,5 +1,7 @@
 #!/bin/bash
 #
+# Licence : GPL - http://www.fsf.org/licenses/gpl.txt
+#
 # Author: Luke Harris <luke@verypowerful.info>
 #
 # Splunk to Nagios is Awesome.
@@ -25,8 +27,15 @@
 #  tick Trigger shell script
 # Filename of shell script to execute = splunk-nagios.sh
 # Note: must be located in $SPLUNK_HOME/etc/apps/SplunkForNagios/bin/scripts
+# Change the following variables so that they are relevant to your environment:
+#      * SPLUNKSERVER=splunk01 (ie. hostname of the splunk server)
+#      * WWW=splunk (ie. url of splunk search head)
+#      * NSCABIN=/usr/lib/nagios/plugins (ie. location of send_nsca on your splunk server)
+#      * NSCACFG=$NSCABIN (ie. location of send_nsca.cfg on your splunk server)
+#      * NSCAHOST=nagios.abc.com.au (ie. Fully Qualified Domain Name of your Nagios server)
+#      * NSCAPORT=5667 (ie. port number of the nsca daemon on your Nagios server)
 #
-# version: 2010071901
+# version: 2011052201
 #
 SPLUNKSERVER=splunk01
 WWW=splunk

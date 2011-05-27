@@ -20,7 +20,7 @@
       <param name="searchWhenChanged">True</param>
       <param name="selected">Last 60 minutes</param>
       <module name="HiddenSearch" autoRun="True">
-        <param name="search">index=nagios | top sourcetype limit=10000</param>
+        <param name="search">index=nagios | chart count by sourcetype | head 10</param>
         <module name="HiddenChartFormatter">
           <param name="chart">bar</param>
           <param name="primaryAxisTitle.text">Sourcetypes</param>
