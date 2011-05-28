@@ -109,13 +109,13 @@ Note: replace /opt/nagios with your $NAGIOS_HOME
 # 'nagios-process-host-perfdata' command definition
 define command{
         command_name    nagios-process-host-perfdata
-        command_line    /usr/bin/printf "%b" "$TIMET$ src_host=\"$HOSTNAME$\" perfdata=\"HOSTPERFDATA\" hoststate=\"$HOSTSTATE$\" attempt=\"$HOSTATTEMPT$\" statetype=\"$HOSTSTATETYPE$\" executi ontime=\"$HOSTEXECUTIONTIME$\" reason=\"$HOSTOUTPUT$\" result=\"$HOSTPERFDATA$\"\n" >> /opt/nagios/var/host-perfdata
+        command_line    /usr/bin/printf "%b" "$TIMET$ src_host=\"$HOSTNAME$\" perfdata=\"HOSTPERFDATA\" hoststate=\"$HOSTSTATE$\" attempt=\"$HOSTATTEMPT$\" statetype=\"$HOSTSTATETYPE$\" executiontime=\"$HOSTEXECUTIONTIME$\" reason=\"$HOSTOUTPUT$\" result=\"$HOSTPERFDATA$\"\n" >> /opt/nagios/var/host-perfdata
         }
 
 # 'nagios-process-service-perfdata' command definition
 define command{
         command_name    nagios-process-service-perfdata
-        command_line    /usr/bin/printf "%b" "$TIMET$ src_host=\"$HOSTNAME$\" perfdata=\"SERVICEPERFDATA\" name=\"$SERVICEDESC$\" severity=\"$SERVICESTATE$\" attempt=\"$SERVICEATTEMPT$\" statet ype=\"$SERVICESTATETYPE$\" executiontime=\"$SERVICEEXECUTIONTIME$\" latency=\"$SERVICELATENCY$\" reason=\"$SERVICEOUTPUT$\" result=\"$SERVICEPERFDATA$\"\n" >> /opt/nagios/var/service-perfdata
+        command_line    /usr/bin/printf "%b" "$TIMET$ src_host=\"$HOSTNAME$\" perfdata=\"SERVICEPERFDATA\" name=\"$SERVICEDESC$\" severity=\"$SERVICESTATE$\" attempt=\"$SERVICEATTEMPT$\" statetype=\"$SERVICESTATETYPE$\" executiontime=\"$SERVICEEXECUTIONTIME$\" latency=\"$SERVICELATENCY$\" reason=\"$SERVICEOUTPUT$\" result=\"$SERVICEPERFDATA$\"\n" >> /opt/nagios/var/service-perfdata
         }
 
 # 'nagios-process-host-perfdata-file' command definition
