@@ -5,6 +5,7 @@
     <view name="alert_formsearch" />
     <collection label="Performance Dashboards">
         <view name="NagiosAIXPerformanceGraphs"/>
+        <view name="NagiosAIXFilesystemUsageGraphs"/>
         <view name="NagiosLinuxPerformanceGraphs"/>
         <view name="NagiosNixFilesystemUsageGraphs"/>
         <view name="NagiosWinPerformanceGraphs"/>
