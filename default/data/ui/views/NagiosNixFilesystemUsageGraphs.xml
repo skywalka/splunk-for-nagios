@@ -41,7 +41,7 @@
         <param name="label">Select a Filesystem:</param>
         <param name="applyOuterIntentionsToInternalSearch">True</param>
         <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="Disk" src_host=$deviceToken$ | rex max_match=1000 field=_raw "(?&lt;filesystem&gt;\/[^= ]*)=" | stats count by filesystem</param>
-        <param name="earliest">-7d</param>
+        <param name="earliest">-24h</param>
         <param name="searchFieldsToDisplay">
           <list>
             <param name="label">filesystem</param>
