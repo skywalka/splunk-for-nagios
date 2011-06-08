@@ -16,7 +16,7 @@
     <param name="actionsMenuFilter">dashboard</param>
   </module>
   <module name="HiddenSearch" layoutPanel="viewHeader">
-    <param name="search">index=nagios (sourcetype="nagioshostperf" OR sourcetype="nagiosserviceperf") src_host="$nagiosdevice$" | bin span=$spanma$ _time | table *</param>
+    <param name="search">index=nagios (sourcetype="nagioshostperf" OR sourcetype="nagiosserviceperf") src_host="$nagiosdevice$" | bin span=5m _time | table *</param>
     <module name="SearchSelectLister">
       <param name="staticFieldsToDisplay">
         <list>
@@ -85,6 +85,19 @@
           <param name="arg">
             <param name="nagiosdevice">
               <param name="default">syd1inf09</param>
+              <param name="fillOnEmpty">True</param>
+              <param name="value">$target$</param>
+            </param>
+          </param>
+        </param>
+
+      <module name="ConvertToIntention">
+        <param name="settingToConvert">spanma</param>
+        <param name="intention">
+          <param name="name">stringreplace</param>
+          <param name="arg">
+            <param name="spanma">
+              <param name="default">5m</param>
               <param name="fillOnEmpty">True</param>
               <param name="value">$target$</param>
             </param>
@@ -165,6 +178,7 @@
         </module>
       </module>
     </module>
+  </module>
   </module>
   </module>
   </module>
