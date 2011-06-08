@@ -79,7 +79,7 @@
           <module name="JobStatus">
 
             <module name="HiddenPostProcess" layoutPanel="panel_row2_col1" group="CPU Usage" autoRun="False">
-              <param name="search">timechart span="$spanma" avg(CpuSystem) as System,avg(CpuUser) as User,avg(CpuNice) as Nice,avg(CpuIowait) as Wait</param>
+              <param name="search">timechart span="$spanma$" avg(CpuSystem) as System,avg(CpuUser) as User,avg(CpuNice) as Nice,avg(CpuIowait) as Wait</param>
               <param name="groupLabel">CPU Usage</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -116,7 +116,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row2_col2" group="Load Average" autoRun="False">
-              <param name="search">timechart span="$spanma" avg(load15) as "Load 15m",avg(load5) as "Load 5m",avg(load1) as "Load 1m"</param>
+              <param name="search">timechart span="$spanma$" avg(load15) as "Load 15m",avg(load5) as "Load 5m",avg(load1) as "Load 1m"</param>
               <param name="groupLabel">Load Average</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
