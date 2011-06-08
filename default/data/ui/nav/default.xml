@@ -7,6 +7,7 @@
         <view name="NagiosAIXPerformanceGraphs"/>
         <view name="NagiosAIXFilesystemUsageGraphs"/>
         <view name="NagiosLinuxPerformanceGraphs"/>
+        <view name="NagiosLinuxPerformanceGraphs2"/>
         <view name="NagiosNixFilesystemUsageGraphs"/>
         <view name="NagiosWinPerformanceGraphs"/>
         <divider />
