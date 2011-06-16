@@ -180,9 +180,9 @@
               </module>
             </module>
 
-            <module name="HiddenPostProcess" layoutPanel="panel_row3_col1" group="Memory Usage" autoRun="False">
-              <param name="search">timechart span=5m avg(MemSystem) as "System (%)",avg(MemProcess) as "Process (%)",avg(MemFSCache) as "Cache (%)",avg(MemFree) as "Free (%)"</param>
-              <param name="groupLabel">Memory Usage</param>
+            <module name="HiddenPostProcess" layoutPanel="panel_row3_col1" group="NTP Offset" autoRun="False">
+              <param name="search">timechart span=5m avg(offset) as "Offset (secs)"</param>
+              <param name="groupLabel">NTP Offset</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
                   <param name="strictMode">True</param>
@@ -191,10 +191,9 @@
                       <param name="enable">True</param>
                       <param name="display">False</param>
                       <module name="HiddenChartFormatter">
-                        <param name="charting.chart">area</param>
-                        <param name="charting.chart.stackMode">stacked</param>
+                        <param name="charting.chart">line</param>
                         <param name="charting.chart.nullValueMode">connect</param>
-                        <param name="charting.seriesColors">[0x707070,0xFFFF00,0xFF99FF,0x00FF00]</param>
+                        <param name="charting.seriesColors">[0x000000]</param>
                         <param name="charting.legend.masterLegend"></param>
                         <module name="FlashChart">
                           <param name="width">100%</param>
@@ -203,8 +202,7 @@
                               <param name="viewTarget">flashtimeline</param>
                             </module>
                           </module>
-                        </module>
-                        <module name="ViewRedirectorLink">
+                          <module name="ViewRedirectorLink">
                           <param name="viewTarget">flashtimeline</param>
                         </module>
                       </module>
@@ -312,72 +310,7 @@
               </module>
             </module>
 
-            <module name="HiddenPostProcess" layoutPanel="panel_row5_col1" group="NTP Offset" autoRun="False">
-              <param name="search">timechart span=5m avg(offset) as "Offset (secs)"</param>
-              <param name="groupLabel">NTP Offset</param>
-              <module name="ViewstateAdapter">
-                <module name="HiddenFieldPicker">
-                  <param name="strictMode">True</param>
-                  <module name="JobProgressIndicator">
-                    <module name="EnablePreview">
-                      <param name="enable">True</param>
-                      <param name="display">False</param>
-                      <module name="HiddenChartFormatter">
-                        <param name="charting.chart">line</param>
-                        <param name="charting.chart.nullValueMode">connect</param>
-                        <param name="charting.seriesColors">[0x000000]</param>
-                        <param name="charting.legend.masterLegend"></param>
-                        <module name="FlashChart">
-                          <param name="width">100%</param>
-                          <module name="ConvertToDrilldownSearch">
-                            <module name="ViewRedirector">
-                              <param name="viewTarget">flashtimeline</param>
-                            </module>
-                          </module>
-                          <module name="ViewRedirectorLink">
-                          <param name="viewTarget">flashtimeline</param>
-                        </module>
-                      </module>
-                    </module>
-                  </module>
-                </module>
-              </module>
-            </module>
-
-            <module name="HiddenPostProcess" layoutPanel="panel_row5_col2" group="Network Traffic" autoRun="False">
-              <param name="search">eval NetRead2=NetRead*8 | eval NetWrite2=NetWrite*8 | timechart span=5m avg(NetRead2) as "inbound (bps)", avg(NetWrite2) as "outbound (bps)"</param>
-              <param name="groupLabel">Network Traffic</param>
-              <module name="ViewstateAdapter">
-                <module name="HiddenFieldPicker">
-                  <param name="strictMode">True</param>
-                  <module name="JobProgressIndicator">
-                    <module name="EnablePreview">
-                      <param name="enable">True</param>
-                      <param name="display">False</param>
-                      <module name="HiddenChartFormatter">
-                        <param name="charting.chart">area</param>
-                        <param name="charting.chart.nullValueMode">connect</param>
-                        <param name="charting.seriesColors">[0x00CF00,0x002A97]</param>
-                        <param name="charting.legend.masterLegend"></param>
-                        <module name="FlashChart">
-                          <param name="width">100%</param>
-                          <module name="ConvertToDrilldownSearch">
-                            <module name="ViewRedirector">
-                              <param name="viewTarget">flashtimeline</param>
-                            </module>
-                          </module>
-                        </module>
-                        <module name="ViewRedirectorLink">
-                          <param name="viewTarget">flashtimeline</param>
-                        </module>
-                      </module>
-                    </module>
-                  </module>
-                </module>
-              </module>
-            </module>
-
-            <module name="HiddenPostProcess" layoutPanel="panel_row6_col1" group="Advanced Ping" autoRun="False">
+            <module name="HiddenPostProcess" layoutPanel="panel_row5_col1" group="Advanced Ping" autoRun="False">
               <param name="search">timechart span=5m avg(pl) as "Packet Loss (%)", avg(rta) as "Latency (ms)"</param>
               <param name="groupLabel">Advanced Ping</param>
               <module name="ViewstateAdapter">
