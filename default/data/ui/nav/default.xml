@@ -6,6 +6,7 @@
     <collection label="Performance Dashboards">
         <view name="NagiosAIXPerformanceGraphs"/>
         <view name="NagiosAIXFilesystemUsageGraphs"/>
+        <view name="NagiosBSDPerformanceGraphs"/>
         <view name="NagiosLinuxPerformanceGraphs"/>
         <view name="NagiosLinuxPerformanceGraphs2"/>
         <view name="NagiosNixFilesystemUsageGraphs"/>
