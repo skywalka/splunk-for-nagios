@@ -1,0 +1,64 @@
+<view template="dashboard.html">
+  <label>Nagios VMware LUN Total Usage Graphs</label>
+  <module name="AccountBar" layoutPanel="appHeader"/>
+  <module name="AppBar" layoutPanel="navigationHeader"/>
+  <module name="Message" layoutPanel="messaging">
+    <param name="filter">*</param>
+    <param name="clearOnJobDispatch">False</param>
+    <param name="maxSize">1</param>
+  </module>
+  <module name="TitleBar" layoutPanel="viewHeader">
+    <param name="actionsMenuFilter">dashboard</param>
+  </module>
+ 
+ 
+  <!-- SID selector -->
+  <module name="SearchSelectLister" layoutPanel="panel_row1_col1">
+    <param name="settingToCreate">group_setting</param>
+    <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="LUN:*" src_host=syd1vvc01 | rex "name=\"LUN:(?P&lt;SID&gt;\d+)" | stats count by SID</param>
+    <param name="earliest">-1h</param>
+    <param name="label">SID</param>
+    <param name="searchFieldsToDisplay">
+      <!--  TODO use list lookups and the lookup command to get another field that is a pretty label here. 'Sourcetypes' vs 'Sources' vs 'Indexes' -->
+      <list>
+        <param name="label">SID</param>
+        <param name="value">SID</param>
+      </list>
+    </param>
+    <module name="ConvertToIntention">
+      <param name="settingToConvert">group_setting</param>
+      <param name="intention">
+        <param name="name">addterm</param>
+        <param name="arg">
+          <param name="SID">$target$</param>
+        </param>
+      </param>
+      <module name="HiddenSearch">
+        <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="LUN:*" src_host=syd1vvc01 | stats max(DiskProvisioned) as "Provisioned",max(DiskTotal) as "Total",max(DiskUsage) as "Used" by LUN | addcoltotals Provisioned Total Used</param>
+        <param name="earliest">-1h</param>
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="SimpleResultsTable">
+            <param name="count">500</param>
+            </module>
+                  <module name="HiddenChartFormatter">
+                    <param name="chart">column</param>
+                    <param name="charting.chart.nullValueMode">connect</param>
+                    <param name="primaryAxisTitle.text">Time</param>
+                    <param name="secondaryAxisTitle.text">GB</param>
+                    <param name="charting.seriesColors">[0xF51D30,0x002A97,0x00FF00]</param>
+                    <param name="charting.legend.masterLegend"></param>
+          <module name="JobProgressIndicator"/>
+          <module name="FlashChart">
+            <param name="width">100%</param>
+            <param name="height">420px</param>
+          </module>
+        </module>
+      </module>
+    </module>
+  </module>
+  </module>
+  </module>
+
+ </view>
