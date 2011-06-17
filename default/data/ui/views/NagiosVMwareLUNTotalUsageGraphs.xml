@@ -41,14 +41,14 @@
         <module name="JobProgressIndicator">
           <module name="SimpleResultsTable">
             <param name="count">500</param>
-            </module>
-                  <module name="HiddenChartFormatter">
-                    <param name="chart">column</param>
-                    <param name="charting.chart.nullValueMode">connect</param>
-                    <param name="primaryAxisTitle.text">Time</param>
-                    <param name="secondaryAxisTitle.text">GB</param>
-                    <param name="charting.seriesColors">[0xF51D30,0x002A97,0x00FF00]</param>
-                    <param name="charting.legend.masterLegend"></param>
+          </module>
+          <module name="HiddenChartFormatter">
+            <param name="chart">column</param>
+            <param name="charting.chart.nullValueMode">connect</param>
+            <param name="primaryAxisTitle.text">Time</param>
+            <param name="secondaryAxisTitle.text">GB</param>
+            <param name="charting.seriesColors">[0xF51D30,0x002A97,0x00FF00]</param>
+            <param name="charting.legend.masterLegend"></param>
           <module name="JobProgressIndicator"/>
           <module name="FlashChart">
             <param name="width">100%</param>
