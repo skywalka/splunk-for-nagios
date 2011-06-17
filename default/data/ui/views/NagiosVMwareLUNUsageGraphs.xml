@@ -40,7 +40,7 @@
          <param name="settingToCreate">filesystem_setting</param>
         <param name="label">Select a LUN:</param>
         <param name="applyOuterIntentionsToInternalSearch">True</param>
-        <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="LUN:*" src_host=$deviceToken$ | rex max_match=1000 field=_raw "name=\"LUN:(?&lt;SID&gt;\d+)_(?&lt;LUN&gt;\w+)\"" | stats count by LUN</param>
+        <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="LUN:*" src_host=$deviceToken$ | rex max_match=1000 field=_raw "name=\"LUN:(?&lt;LUN&gt;\d+_\w+)\"" | stats count by LUN</param>
         <param name="earliest">-24h</param>
         <param name="searchFieldsToDisplay">
           <list>
@@ -69,16 +69,16 @@
                 <param name="clearOnJobDispatch">True</param>
                 <param name="maxSize">2</param>
                 <module name="GenericHeader" layoutPanel="resultsAreaLeft">
-                  <param name="label">Filesystem Usage over time</param>
+                  <param name="label">LUN Usage over time</param>
                 </module>
                 <module name="HiddenSearch" layoutPanel="resultsAreaLeft">
-                  <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="Disk: $filesystemToken$" src_host=$deviceToken$ | timechart span=5m avg(fs_total) as "Total $filesystemToken$",avg(fs_used) as "Used $filesystemToken$"</param>
+                  <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="LUN:$filesystemToken$" src_host=$deviceToken$ | timechart span=1h avg(DiskProvisioned) as "Provisioned $filesystemToken$",avg(DiskTotal) as "Total $filesystemToken$",avg(DiskUsage) as "Used $filesystemToken$"</param>
                   <module name="HiddenChartFormatter">
-                    <param name="chart">area</param>
+                    <param name="chart">line</param>
                     <param name="charting.chart.nullValueMode">connect</param>
                     <param name="primaryAxisTitle.text">Time</param>
-                    <param name="secondaryAxisTitle.text">MB</param>
-                    <param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
+                    <param name="secondaryAxisTitle.text">GB</param>
+                    <param name="charting.seriesColors">[0xF51D30,0x002A97,0x00FF00]</param>
                     <param name="charting.legend.masterLegend"></param>
                     <module name="JobProgressIndicator"/>
                     <module name="FlashChart">
