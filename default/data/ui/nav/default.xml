@@ -11,6 +11,8 @@
         <view name="NagiosLinuxPerformanceGraphs2"/>
         <view name="NagiosNixFilesystemUsageGraphs"/>
         <view name="NagiosWinPerformanceGraphs"/>
+        <view name="NagiosVMwareLUNUsageGraphs"/>
+        <view name="NagiosVMwareLUNTotalUsageGraphs"/>
         <divider />
         <view name="NagiosIsilonPerformanceGraphs"/>
         <view name="NagiosCelerraPerformanceGraphs"/>
