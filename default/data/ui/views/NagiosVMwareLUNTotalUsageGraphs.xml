@@ -19,7 +19,6 @@
     <param name="earliest">-1h</param>
     <param name="label">SID</param>
     <param name="searchFieldsToDisplay">
-      <!--  TODO use list lookups and the lookup command to get another field that is a pretty label here. 'Sourcetypes' vs 'Sources' vs 'Indexes' -->
       <list>
         <param name="label">SID</param>
         <param name="value">SID</param>
