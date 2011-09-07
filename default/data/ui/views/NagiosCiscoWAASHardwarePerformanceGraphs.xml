@@ -1,0 +1,287 @@
+<view autoCancelInterval="90" isVisible="true" objectMode="SimpleForm" onunloadCancelJobs="true" template="dashboard.html">
+  <label>Nagios Cisco WAAS Hardware Performance Graphs</label>
+  <module name="AccountBar" layoutPanel="appHeader"/>
+  <module name="AppBar" layoutPanel="navigationHeader"/>
+  <module name="Message" layoutPanel="messaging">
+    <param name="filter">*</param>
+    <param name="clearOnJobDispatch">False</param>
+    <param name="maxSize">1</param>
+  </module>
+  <module name="Message" layoutPanel="messaging">
+    <param name="filter">splunk.search.job</param>
+    <param name="clearOnJobDispatch">True</param>
+    <param name="maxSize">1</param>
+  </module>
+  <module name="TitleBar" layoutPanel="viewHeader">
+    <param name="actionsMenuFilter">dashboard</param>
+  </module>
+  <module name="HiddenSearch" layoutPanel="viewHeader">
+    <param name="search">index="nagios" (sourcetype="nagioshostperf" OR sourcetype="nagiosserviceperf") src_host="$nagiosdevice$" | bin span=5m _time | table *</param>
+    <module name="SearchSelectLister">
+      <param name="staticFieldsToDisplay">
+        <list>
+          <param name="value">*</param>
+          <param name="label">All</param>
+        </list>
+      </param>
+      <param name="search">earliest=-24h index="nagios" nagiosevent="CURRENT HOST STATE" (src_host="*wae*" OR src_host="syd1inf25") | rex ".+CURRENT HOST STATE\: (?P&lt;device&gt;[^;]*)(?=;)"| stats count by device</param>
+      <param name="selected">adl1wae01</param>
+      <param name="label">Select a Hostname</param>
+      <param name="settingToCreate">nagiosdevice_setting</param>
+      <param name="searchFieldsToDisplay">
+        <list>
+          <param name="value">device</param>
+          <param name="label">device</param>
+        </list>
+      </param>
+      <param name="searchWhenChanged">True</param>
+      <module name="ConvertToIntention">
+        <param name="settingToConvert">nagiosdevice_setting</param>
+        <param name="intention">
+          <param name="name">stringreplace</param>
+          <param name="arg">
+            <param name="nagiosdevice">
+              <param name="default">adl1wae01</param>
+              <param name="fillOnEmpty">True</param>
+              <param name="value">$target$</param>
+            </param>
+          </param>
+        </param>
+        <module name="SubmitButton">
+          <param name="allowSoftSubmit">True</param>
+          <param name="label">Search</param>
+    <module name="TimeRangePicker">
+      <param name="searchWhenChanged">True</param>
+      <param name="selected">Last 24 hours</param>
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="JobStatus">
+
+      <module name="ConvertToIntention">
+        <param name="settingToConvert">nagiosdevice_setting</param>
+        <param name="intention">
+          <param name="name">stringreplace</param>
+          <param name="arg">
+            <param name="nagiosdevice">
+              <param name="default">adl1wae01</param>
+              <param name="fillOnEmpty">True</param>
+              <param name="value">$target$</param>
+            </param>
+          </param>
+        </param>
+            <module name="GenericHeader" layoutPanel="panel_row1_col1">
+              <param name="label">Warning and Critical Alerts</param>
+  <module name="HiddenSearch">
+        <param name="search">index="nagios" (nagiosevent="SERVICE ALERT" state="HARD" status="WARNING" OR status="CRITICAL") OR (nagiosevent="HOST ALERT" hoststate="HARD" hoststatus="DOWN") src_host="$nagiosdevice$" | fields + src_host, name, severity, reason</param>
+        <param name="groupLabel">Warning and Critical Alerts</param>
+        <module name="ViewstateAdapter">
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="SimpleResultsTable">
+            <param name="count">5</param>
+            </module>
+           </module>
+          </module>
+          </module>
+        </module>
+        </module>
+
+            <module name="GenericHeader" layoutPanel="panel_row1_col2">
+              <param name="label">Top 10 Service Notifications</param>
+  <module name="HiddenSearch">
+        <param name="search">index="nagios" nagiosevent="SERVICE NOTIFICATION" (statusnotification="WARNING" OR statusnotification="CRITICAL") hostnotification="$nagiosdevice$" | dedup servicenamenotification hostnotification | top servicenamenotification limit="10" | fields +  servicenamenotification count</param>
+        <param name="groupLabel">Top 10 Service Notifications</param>
+        <module name="ViewstateAdapter">
+        <module name="HiddenChartFormatter">
+          <param name="chart">bar</param>
+          <param name="primaryAxisTitle.text">Services</param>
+          <module name="FlashChart">
+            <module name="ConvertToDrilldownSearch">
+              <module name="ViewRedirector">
+                <param name="viewTarget">flashtimeline</param>
+              </module>
+            </module>
+          </module>
+        </module>
+        </module>
+      </module>
+      </module>
+      </module>
+
+            <module name="HiddenSearch" layoutPanel="panel_row2_col1" group="WAAS Active Connections - Top 10" autoRun="False">
+              <param name="search">index=nagios sourcetype="nagiosserviceperf" name="WAAS Connections" | timechart avg(activeconn) by src_host</param>
+              <param name="groupLabel">WAAS Active Connections - Top 10</param>
+              <module name="ViewstateAdapter">
+                <module name="HiddenFieldPicker">
+                  <param name="strictMode">True</param>
+                  <module name="JobProgressIndicator">
+                    <module name="EnablePreview">
+                      <param name="enable">True</param>
+                      <param name="display">False</param>
+                      <module name="HiddenChartFormatter">
+                        <param name="charting.chart">line</param>
+                        <param name="charting.chart.stackMode">none</param>
+                        <param name="primaryAxisTitle.text">time</param>
+                        <param name="secondaryAxisTitle.text">Active Connections</param>
+                        <module name="FlashChart">
+                          <param name="width">100%</param>
+                          <module name="ConvertToDrilldownSearch">
+                            <module name="ViewRedirector">
+                              <param name="viewTarget">flashtimeline</param>
+                            </module>
+                          </module>
+                          <module name="ViewRedirectorLink">
+                          <param name="viewTarget">flashtimeline</param>
+                        </module>
+                      </module>
+                    </module>
+                  </module>
+                </module>
+                </module>
+                </module>
+                </module>
+
+            <module name="HiddenPostProcess" layoutPanel="panel_row3_col1" group="CPU Load %" autoRun="False">
+              <param name="search">eval Max = 100 | timechart span=5m max(Max) as "Maximum", avg(cpu_prct_used) as "Used"</param>
+              <param name="groupLabel">CPU Load</param>
+              <module name="ViewstateAdapter">
+                <module name="HiddenFieldPicker">
+                  <param name="strictMode">True</param>
+                  <module name="JobProgressIndicator">
+                    <module name="EnablePreview">
+                      <param name="enable">True</param>
+                      <param name="display">False</param>
+                      <module name="HiddenChartFormatter">
+                        <param name="charting.chart">area</param>
+                        <param name="charting.chart.nullValueMode">connect</param>
+                        <param name="charting.seriesColors">[0xFF0000,0x00FAAA]</param>
+                        <param name="charting.legend.masterLegend"></param>
+                        <module name="FlashChart">
+                          <param name="width">100%</param>
+                          <module name="ConvertToDrilldownSearch">
+                            <module name="ViewRedirector">
+                              <param name="viewTarget">flashtimeline</param>
+                            </module>
+                          </module>
+                          </module>
+                          </module>
+                          </module>
+                        </module>
+                        <module name="ViewRedirectorLink">
+                          <param name="viewTarget">flashtimeline</param>
+                        </module>
+                      </module>
+                    </module>
+                  </module>
+                </module>
+
+            <module name="HiddenPostProcess" layoutPanel="panel_row4_col1" group="WAAS Connections - Active vs Effective (Average)" autoRun="False">
+              <param name="search">timechart span=5m avg(activeconn) AS "Active Connections",avg(effectiveconn) AS "Effective Connections"</param>
+              <param name="groupLabel">WAAS Connections - Active vs Effective</param>
+              <module name="ViewstateAdapter">
+                <module name="HiddenFieldPicker">
+                  <param name="strictMode">True</param>
+                  <module name="JobProgressIndicator">
+                    <module name="EnablePreview">
+                      <param name="enable">True</param>
+                      <param name="display">False</param>
+                      <module name="HiddenChartFormatter">
+                        <param name="charting.chart">area</param>
+                        <param name="charting.chart.nullValueMode">connect</param>
+                        <param name="charting.seriesColors">[0x0000FF,0x00FFFF,0xC0C0C0]</param>
+                        <param name="charting.legend.masterLegend"></param>
+                        <module name="FlashChart">
+                          <param name="width">100%</param>
+                          <module name="ConvertToDrilldownSearch">
+                            <module name="ViewRedirector">
+                              <param name="viewTarget">flashtimeline</param>
+                            </module>
+                          </module>
+                          </module>
+                          </module>
+                          </module>
+                        </module>
+                        <module name="ViewRedirectorLink">
+                          <param name="viewTarget">flashtimeline</param>
+                        </module>
+                      </module>
+                    </module>
+                  </module>
+                </module>
+
+            <module name="HiddenPostProcess" layoutPanel="panel_row5_col1" group="WAAS Connections - Active vs Effective (MAX)" autoRun="False">
+              <param name="search">timechart span=5m max(activeconn) AS "Active Connections",max(effectiveconn) AS "Effective Connections"</param>
+              <param name="groupLabel">WAAS Connections - Active vs Effective (Max)</param>
+              <module name="ViewstateAdapter">
+                <module name="HiddenFieldPicker">
+                  <param name="strictMode">True</param>
+                  <module name="JobProgressIndicator">
+                    <module name="EnablePreview">
+                      <param name="enable">True</param>
+                      <param name="display">False</param>
+                      <module name="HiddenChartFormatter">
+                        <param name="charting.chart">area</param>
+                        <param name="charting.chart.nullValueMode">connect</param>
+                        <param name="charting.seriesColors">[0x0000FF,0x00FFFF,0xC0C0C0]</param>
+                        <param name="charting.legend.masterLegend"></param>
+                        <module name="FlashChart">
+                          <param name="width">100%</param>
+                          <module name="ConvertToDrilldownSearch">
+                            <module name="ViewRedirector">
+                              <param name="viewTarget">flashtimeline</param>
+                            </module>
+                          </module>
+                          </module>
+                          </module>
+                          </module>
+                        </module>
+                        <module name="ViewRedirectorLink">
+                          <param name="viewTarget">flashtimeline</param>
+                        </module>
+                      </module>
+                    </module>
+                  </module>
+                </module>
+
+            <module name="HiddenPostProcess" layoutPanel="panel_row6_col1" group="Advanced Ping" autoRun="False">
+              <param name="search">timechart span=5m avg(pl) as "Packet Loss (%)", avg(rta) as "Latency (ms)"</param>
+              <param name="groupLabel">Advanced Ping</param>
+              <module name="ViewstateAdapter">
+                <module name="HiddenFieldPicker">
+                  <param name="strictMode">True</param>
+                  <module name="JobProgressIndicator">
+                    <module name="EnablePreview">
+                      <param name="enable">True</param>
+                      <param name="display">False</param>
+                      <module name="HiddenChartFormatter">
+                        <param name="charting.chart">line</param>
+                        <param name="charting.chart.nullValueMode">connect</param>
+                        <param name="charting.seriesColors">[0x000000,0x00CF00]</param>
+                        <param name="charting.legend.masterLegend"></param>
+                        <module name="FlashChart">
+                          <param name="width">100%</param>
+                          <module name="ConvertToDrilldownSearch">
+                            <module name="ViewRedirector">
+                              <param name="viewTarget">flashtimeline</param>
+                            </module>
+                          </module>
+                          <module name="ViewRedirectorLink">
+                          <param name="viewTarget">flashtimeline</param>
+                        </module>
+                      </module>
+                    </module>
+                  </module>
+                </module>
+
+   </module>
+  </module>
+ </module>
+</module>
+</module>
+</module>
+</module>
+</module>
+
+</view>

@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<view onunloadCancelJobs="False" autoCancelInterval="100">
+  <!--  autoCancelInterval is set here to 100  -->
+  <label>Nagios Cisco Hardware Temperature Graphs</label>
+  <module name="AccountBar" layoutPanel="appHeader"/>
+  <module name="AppBar" layoutPanel="navigationHeader"/>
+  <module name="Message" layoutPanel="messaging">
+    <param name="filter">*</param>
+    <param name="clearOnJobDispatch">False</param>
+    <param name="maxSize">1</param>
+  </module>
+  <module name="TitleBar" layoutPanel="viewHeader">
+    <param name="actionsMenuFilter">dashboard</param>
+  </module>
+
+  <module name="SearchSelectLister" layoutPanel="mainSearchControls" autoRun="True">
+    <param name="search">index="nagios" nagiosevent="CURRENT HOST STATE" src_host=adl1rtr0* | rex ".+CURRENT HOST STATE\: (?P&lt;device&gt;[^;]*)(?=;)"| stats count by device</param>
+    <param name="earliest">-24h</param>
+    <param name="selected">adl1rtr01</param>
+    <param name="label">Select a Hostname:</param>
+    <param name="settingToCreate">device_setting</param>
+    <param name="searchFieldsToDisplay">
+      <list>
+        <param name="value">device</param>
+        <param name="label">device</param>
+      </list>
+    </param>
+    <module name="ConvertToIntention">
+      <param name="settingToConvert">device_setting</param>
+      <param name="intention">
+        <param name="name">stringreplace</param>
+        <param name="arg">
+          <param name="nagiosdevice">
+            <param name="value">$target$</param>
+          </param>
+        </param>
+      </param>
+      <module name="SearchSelectLister">
+        <param name="searchWhenChanged">True</param>
+         <param name="settingToCreate">temp_setting</param>
+        <param name="label">Select a Gauge:</param>
+        <param name="applyOuterIntentionsToInternalSearch">True</param>
+        <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="Environmentals" src_host=$nagiosdevice$ | rex max_match=1000 field=_raw "(?&lt;type&gt;\w+)Temp\w+=" | stats count by type</param>
+        <param name="earliest">-24h</param>
+        <param name="searchFieldsToDisplay">
+          <list>
+            <param name="label">type</param>
+            <param name="value">type</param>
+          </list>
+        </param>
+        <module name="ConvertToIntention">
+          <param name="settingToConvert">temp_setting</param>
+          <param name="intention">
+            <param name="name">stringreplace</param>
+            <param name="arg">
+              <param name="temptype">
+                <param name="value">$target$</param>
+              </param>
+            </param>
+          </param>
+          <module name="TimeRangePicker">
+            <param name="selected">Last 4 hours</param>
+            <param name="searchWhenChanged">True</param>
+            <module name="SubmitButton">
+              <param name="allowSoftSubmit">True</param>
+              <param name="label">Search</param>
+              <module name="Message" layoutPanel="graphArea">
+                <param name="filter">splunk.search.job</param>
+                <param name="clearOnJobDispatch">True</param>
+                <param name="maxSize">2</param>
+                <module name="GenericHeader" layoutPanel="resultsAreaLeft">
+                  <param name="label">Temperature over time</param>
+                </module>
+                <module name="HiddenSearch" layoutPanel="resultsAreaLeft">
+                  <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="Environmentals" src_host=$nagiosdevice$ | rex max_match=1000 field=_raw "$temptype$TempVal=(?&lt;temp&gt;\d+) $temptype$TempMax=(?&lt;max&gt;\d+)" | timechart span=5m max(max) as Max, avg(temp) as Temp</param>
+                  <module name="HiddenChartFormatter">
+                    <param name="chart">area</param>
+                    <param name="charting.chart.nullValueMode">connect</param>
+                    <param name="primaryAxisTitle.text">Time</param>
+                    <param name="secondaryAxisTitle.text">Degrees</param>
+                    <param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
+                    <param name="charting.legend.masterLegend"></param>
+                    <module name="JobProgressIndicator"/>
+                    <module name="FlashChart">
+                      <param name="width">100%</param>
+                      <param name="height">200px</param>
+                    </module>
+                  </module>
+                </module>
+              </module>
+            </module>
+          </module>
+        </module>
+      </module>
+    </module>
+  </module>
+
+</view>
+

@@ -1,0 +1,117 @@
+<view autoCancelInterval="90" isVisible="true" objectMode="SimpleForm" onunloadCancelJobs="true" template="dashboard.html">
+  <label>System P CPU Performance Graphs</label>
+  <module name="AccountBar" layoutPanel="appHeader"/>
+  <module name="AppBar" layoutPanel="navigationHeader"/>
+  <module name="Message" layoutPanel="messaging">
+    <param name="filter">*</param>
+    <param name="clearOnJobDispatch">False</param>
+    <param name="maxSize">1</param>
+  </module>
+  <module name="Message" layoutPanel="messaging">
+    <param name="filter">splunk.search.job</param>
+    <param name="clearOnJobDispatch">True</param>
+    <param name="maxSize">1</param>
+  </module>
+  <module name="TitleBar" layoutPanel="viewHeader">
+    <param name="actionsMenuFilter">dashboard</param>
+  </module>
+  <module name="HiddenSearch" layoutPanel="viewHeader">
+    <param name="search">(index=nagios OR index=nagiosdev) sourcetype="nagiosserviceperf" name=CPU systemphost="$nagiosdevice$" | bin span=5m _time | table *</param>
+    <module name="SearchSelectLister">
+      <param name="staticFieldsToDisplay">
+        <list>
+          <param name="value">*</param>
+          <param name="label">All</param>
+        </list>
+      </param>
+      <param name="search">earliest=-1h (index=nagios OR index=nagiosdev) sourcetype="nagiosserviceperf" name=CPU | stats count by systemphost</param>
+      <param name="selected">SYD157002-9117-570-SN067778F</param>
+      <param name="label">Select a System P Host</param>
+      <param name="settingToCreate">nagiosdevice_setting</param>
+      <param name="searchFieldsToDisplay">
+        <list>
+          <param name="value">systemphost</param>
+          <param name="label">systemphost</param>
+        </list>
+      </param>
+      <param name="searchWhenChanged">True</param>
+      <module name="ConvertToIntention">
+        <param name="settingToConvert">nagiosdevice_setting</param>
+        <param name="intention">
+          <param name="name">stringreplace</param>
+          <param name="arg">
+            <param name="nagiosdevice">
+              <param name="default">SYD157002-9117-570-SN067778F</param>
+              <param name="fillOnEmpty">True</param>
+              <param name="value">$target$</param>
+            </param>
+          </param>
+        </param>
+        <module name="SubmitButton">
+          <param name="allowSoftSubmit">True</param>
+          <param name="label">Search</param>
+    <module name="TimeRangePicker">
+      <param name="searchWhenChanged">True</param>
+      <param name="selected">Last 24 hours</param>
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="JobStatus">
+
+      <module name="ConvertToIntention">
+        <param name="settingToConvert">nagiosdevice_setting</param>
+        <param name="intention">
+          <param name="name">stringreplace</param>
+          <param name="arg">
+            <param name="nagiosdevice">
+              <param name="default">SYD157002-9117-570-SN067778F</param>
+              <param name="fillOnEmpty">True</param>
+              <param name="value">$target$</param>
+            </param>
+          </param>
+        </param>
+
+            <module name="HiddenPostProcess" layoutPanel="panel_row1_col1" group="CPU Usage" autoRun="False">
+              <param name="search">timechart span=5m avg(CpuPhysc) AS CpuPhysc by src_host limit=100</param>
+              <param name="groupLabel">CPU Usage</param>
+              <module name="ViewstateAdapter">
+                <module name="HiddenFieldPicker">
+                  <param name="strictMode">True</param>
+                  <module name="JobProgressIndicator">
+                    <module name="EnablePreview">
+                      <param name="enable">True</param>
+                      <param name="display">False</param>
+                      <module name="HiddenChartFormatter">
+                        <param name="charting.chart">area</param>
+                        <param name="charting.chart.stackMode">stacked</param>
+                        <param name="charting.chart.nullValueMode">connect</param>
+                        <module name="FlashChart">
+                          <param name="width">100%</param>
+                          <module name="ConvertToDrilldownSearch">
+                            <module name="ViewRedirector">
+                              <param name="viewTarget">flashtimeline</param>
+                            </module>
+                          </module>
+                          </module>
+                          </module>
+                          </module>
+                        </module>
+                        <module name="ViewRedirectorLink">
+                          <param name="viewTarget">flashtimeline</param>
+                        </module>
+                      </module>
+                    </module>
+                  </module>
+                </module>
+              </module>
+            </module>
+
+          </module>
+        </module>
+      </module>
+    </module>
+  </module>
+  </module>
+
+</view>
+
