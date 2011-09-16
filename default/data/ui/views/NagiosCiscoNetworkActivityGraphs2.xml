@@ -14,7 +14,7 @@
   </module>
 
   <module name="SearchSelectLister" layoutPanel="mainSearchControls" autoRun="True">
-    <param name="search">index="nagios" nagiosevent="CURRENT HOST STATE" src_host="*rtr*" | rex ".+CURRENT HOST STATE\: (?P&lt;device&gt;[^;]*)(?=;)"| stats count by device</param>
+    <param name="search">index="nagios" nagiosevent="CURRENT HOST STATE" src_host="*rtr01" | rex ".+CURRENT HOST STATE\: (?P&lt;device&gt;[^;]*)(?=;)"| stats count by device</param>
     <param name="earliest">-24h</param>
     <param name="selected">adl1rtr01</param>
     <param name="label">Select a Hostname:</param>
@@ -40,7 +40,7 @@
          <param name="settingToCreate">interface_setting</param>
         <param name="label">Select an Interface:</param>
         <param name="applyOuterIntentionsToInternalSearch">True</param>
-        <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="Network Traffic*" src_host=$nagiosdevice$ | rex max_match=1000 field=_raw "name=\"Network Traffic\s(?&lt;interface&gt;[^\"])\"" | stats count by interface</param>
+        <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="Network Traffic*" src_host=$nagiosdevice$ | rex max_match=1000 field=_raw "name=\"Network Traffic\s(?&lt;interface&gt;[^\"]+)\"" | stats count by interface</param>
         <param name="earliest">-24h</param>
         <param name="searchFieldsToDisplay">
           <list>

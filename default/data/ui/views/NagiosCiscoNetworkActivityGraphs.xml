@@ -24,7 +24,7 @@
           <param name="label">All</param>
         </list>
       </param>
-      <param name="search">earliest=-24h index="nagios" nagiosevent="CURRENT HOST STATE" src_host="*rtr*" | rex ".+CURRENT HOST STATE\: (?P&lt;device&gt;[^;]*)(?=;)"| stats count by device</param>
+      <param name="search">earliest=-24h index="nagios" nagiosevent="CURRENT HOST STATE" src_host="*rtr01" | rex ".+CURRENT HOST STATE\: (?P&lt;device&gt;[^;]*)(?=;)"| stats count by device</param>
       <param name="selected">adl1rtr01</param>
       <param name="label">Select a Hostname</param>
       <param name="settingToCreate">nagiosdevice_setting</param>
