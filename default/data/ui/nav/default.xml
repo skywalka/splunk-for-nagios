@@ -3,19 +3,30 @@
     <view name="flashtimeline" />
     <view name="Nagios" />
     <view name="alert_formsearch" />
+    <view name="alert_formsearch_livestatus" />
     <collection label="Performance Dashboards">
         <view name="NagiosAIXPerformanceGraphs"/>
         <view name="NagiosAIXFilesystemUsageGraphs"/>
+        <view name="systemp-cpu"/>
+        <view name="systemp-memory"/>
         <view name="NagiosBSDPerformanceGraphs"/>
         <view name="NagiosLinuxPerformanceGraphs"/>
         <view name="NagiosLinuxPerformanceGraphs2"/>
         <view name="NagiosNixFilesystemUsageGraphs"/>
         <view name="NagiosWinPerformanceGraphs"/>
-        <view name="NagiosVMwareLUNUsageGraphs"/>
-        <view name="NagiosVMwareLUNTotalUsageGraphs"/>
         <divider />
         <view name="NagiosIsilonPerformanceGraphs"/>
         <view name="NagiosCelerraPerformanceGraphs"/>
+        <divider />
+        <view name="NagiosVMwareLUNUsageGraphs"/>
+        <view name="NagiosVMwareLUNTotalUsageGraphs"/>
+        <divider />
+        <view name="NagiosCiscoHardwarePerformanceGraphs"/>
+        <view name="NagiosCiscoHardwareTemperatureGraphs"/>
+        <view name="NagiosCiscoWAASHardwarePerformanceGraphs"/>
+        <view name="NagiosCiscoGatewayActivityGraphs"/>
+        <view name="NagiosCiscoNetworkActivityGraphs"/>
+        <view name="NagiosCiscoNetworkMultiInterfaceActivityGraphs"/>
     </collection>
     <collection label="Searches &amp; Reports">
         <collection label="Reports">
