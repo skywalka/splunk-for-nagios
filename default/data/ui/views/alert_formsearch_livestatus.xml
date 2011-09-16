@@ -16,7 +16,7 @@
     <param name="actionsMenuFilter">dashboard</param>
   </module>
   <module name="HiddenSearch" layoutPanel="viewHeader">
-    <param name="search">index=nagios sourcetype=nagios name="*" src_host="$nagiosdevice$" | dedup src_host,name | servicestate | sort name | fields src_host, name, livestate, reason</param>
+    <param name="search">earliest=-24h index=nagios sourcetype=nagios name="*" src_host="$nagiosdevice$" | dedup src_host,name | servicestate | sort name | table src_host, name, livestate, reason</param>
     <module name="SearchSelectLister">
       <param name="staticFieldsToDisplay">
         <list>
@@ -50,9 +50,6 @@
         <module name="SubmitButton">
           <param name="allowSoftSubmit">True</param>
           <param name="label">Search</param>
-    <module name="TimeRangePicker">
-      <param name="searchWhenChanged">True</param>
-      <param name="selected">Last 24 hours</param>
       <module name="HiddenFieldPicker">
         <param name="strictMode">True</param>
         <module name="JobProgressIndicator">
@@ -69,6 +66,5 @@
         </module>
       </module>
     </module>
-  </module>
 </view>
 
