@@ -1,0 +1,3 @@
+GET servicegroups
+Columns: name members_with_state
+Separators: 10 10 44 124

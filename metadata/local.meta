@@ -323,6 +323,10 @@ access = read : [ * ], write : [ admin ]
 owner = admin
 export = none
 
+[views/.svn]
+owner = admin
+version = 4.2.1
+
 [views/NagiosPerf]
 owner = admin
 export = none
@@ -437,6 +441,12 @@ owner = nobody
 version = 4.2
 export = system
 
+[viewstates/%2A%3Agn8tgvpw]
+access = read : [ * ]
+owner = nobody
+version = 4.2.1
+export = system
+
 [viewstates/flashtimeline%3Aga99f3yx]
 access = read : [ * ]
 owner = admin
@@ -521,14 +531,4 @@ export = system
 access = read : [ * ]
 owner = admin
 export = system
-
-[viewstates/%2A%3Agn8tgvpw]
-access = read : [ * ]
-export = system
-owner = nobody
-version = 4.2.1
-
-[views/.svn]
-owner = admin
-version = 4.2.1
 
