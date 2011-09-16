@@ -2,8 +2,9 @@
     <view name="about" default='true' />
     <view name="flashtimeline" />
     <view name="Nagios" />
+    <view name="NagiosRT" />
     <view name="alert_formsearch" />
-    <view name="alert_formsearch_livestatus" />
+    <view name="NagiosAlertsRT" />
     <collection label="Performance Dashboards">
         <view name="NagiosAIXPerformanceGraphs"/>
         <view name="NagiosAIXFilesystemUsageGraphs"/>
@@ -17,9 +18,6 @@
         <divider />
         <view name="NagiosIsilonPerformanceGraphs"/>
         <view name="NagiosCelerraPerformanceGraphs"/>
-        <divider />
-        <view name="NagiosVMwareLUNUsageGraphs"/>
-        <view name="NagiosVMwareLUNTotalUsageGraphs"/>
         <divider />
         <view name="NagiosCiscoHardwarePerformanceGraphs"/>
         <view name="NagiosCiscoHardwareTemperatureGraphs"/>

@@ -1,4 +1,4 @@
-# Script to request a hosts' service state by accessing the nagios livestatus
+# Script to request a hosts' service state by accessing MK Livestatus
 import socket
 import sys,splunk.Intersplunk
 import string
@@ -23,11 +23,11 @@ try:
 		        s.send(query)
 		        s.shutdown(socket.SHUT_WR)
 		        data = s.recv(100000000)
-		        livestate = string.split(data)
+		        liveservicestate = string.split(data)
 		        s.close()
-                        r["livestate"] = livestate[0]
+                        r["liveservicestate"] = liveservicestate[0]
                     except:
-                        r["livestate"] = "0"
+                        r["liveservicestate"] = "0"
 
 except:
     import traceback

@@ -532,3 +532,7 @@ access = read : [ * ]
 owner = admin
 export = system
 
+[indexes/storage]
+owner = admin
+version = 4.2.3
+
