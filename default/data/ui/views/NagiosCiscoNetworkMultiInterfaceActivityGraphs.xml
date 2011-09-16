@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <view onunloadCancelJobs="False" autoCancelInterval="100">
   <!--  autoCancelInterval is set here to 100  -->
-  <label>Nagios Cisco Network Multiple Interface Performance Graphs</label>
+  <label>Nagios Cisco Network Multiple Interface Activity Graphs</label>
   <module name="AccountBar" layoutPanel="appHeader"/>
   <module name="AppBar" layoutPanel="navigationHeader"/>
   <module name="Message" layoutPanel="messaging">

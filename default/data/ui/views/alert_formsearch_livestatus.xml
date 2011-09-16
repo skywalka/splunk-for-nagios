@@ -1,5 +1,5 @@
 <view autoCancelInterval="90" isVisible="true" objectMode="SimpleForm" onunloadCancelJobs="true" template="dashboard.html">
-  <label>Alerts Dashboard</label>
+  <label>Real-Time Alerts Dashboard</label>
   <module name="AccountBar" layoutPanel="appHeader"/>
   <module name="AppBar" layoutPanel="navigationHeader"/>
   <module name="Message" layoutPanel="messaging">
