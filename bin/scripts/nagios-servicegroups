@@ -1,4 +1,0 @@
-GET servicegroups
-Columns: name num_services_hard_ok num_services_hard_warn num_services_hard_crit num_services_hard_unknown
-Separators: 10 44 44 124
-ColumnHeaders: on

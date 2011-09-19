@@ -1,4 +1,0 @@
-GET hosts
-Columns: name address alias hard_state
-Separators: 10 44 44 124
-ColumnHeaders: on
