@@ -26,6 +26,8 @@
           <module name="SingleValue">
 	    <param name="field">livehostsupstatus</param>
             <param name="classField">range</param>
+            <param name="linkView">flashtimeline</param>
+            <param name="linkSearch">earliest=-24h index="nagios" nagiosevent="HOST ALERT" hoststatus="DOWN" hoststate="HARD" | table _time, src_host, hoststatus, reason</param>
           </module>
         </module>
       </module>
