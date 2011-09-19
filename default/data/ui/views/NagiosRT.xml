@@ -15,28 +15,30 @@
   <module name="TitleBar" layoutPanel="viewHeader">
     <param name="actionsMenuFilter">dashboard</param>
   </module>
-  <module name="HiddenSearch" layoutPanel="panel_row1_col1" group="Warning Alerts - Last 60 Minutes" autoRun="True">
-    <param name="search">index="nagios" nagiosevent="SERVICE ALERT" state="HARD" status="WARNING" minutesago=60 | stats count | rangemap field=count low=0-0 elevated=1-1 default=elevated</param>
+  <module name="HiddenSearch" layoutPanel="panel_row1_col1" group="Warning Alerts" autoRun="True">
+    <param name="search">earliest=-24h index=nagios sourcetype=nagios nagiosevent="CURRENT HOST STATE" src_host=syd1rtr01 | liveservicewarningstatus | stats max(liveservicewarningstatus) AS liveservicewarningstatus | rangemap field=liveservicewarningstatus low=0-0 elevated=1-1 default=elevated</param>
     <param name="groupLabel">Warning Alerts</param>
     <module name="ViewstateAdapter">
       <module name="HiddenFieldPicker">
         <param name="strictMode">True</param>
         <module name="JobProgressIndicator">
           <module name="SingleValue">
+	    <param name="field">liveservicewarningstatus</param>
             <param name="classField">range</param>
           </module>
         </module>
       </module>
     </module>
   </module>
-  <module name="HiddenSearch" layoutPanel="panel_row1_col2" group="Critical Alerts - Last 60 Minutes" autoRun="True">
-    <param name="search">index="nagios" (nagiosevent="SERVICE ALERT" state="HARD" status="CRITICAL") OR (nagiosevent="HOST ALERT" hoststatus="DOWN" hoststate="HARD") minutesago=60 | stats count | rangemap field=count low=0-0 severe=1-1 default=severe</param>
+  <module name="HiddenSearch" layoutPanel="panel_row1_col2" group="Critical Alerts" autoRun="True">
+    <param name="search">earliest=-24h index=nagios sourcetype=nagios nagiosevent="CURRENT HOST STATE" src_host=syd1rtr01 | liveservicecriticalstatus | stats max(liveservicecriticalstatus) AS liveservicecriticalstatus | fields - range | rangemap field=liveservicecriticalstatus low=0-0 severe=1-1 default=severe</param>
     <param name="groupLabel">Critical Alerts</param>
     <module name="ViewstateAdapter">
       <module name="HiddenFieldPicker">
         <param name="strictMode">True</param>
         <module name="JobProgressIndicator">
           <module name="SingleValue">
+	    <param name="field">liveservicecriticalstatus</param>
             <param name="classField">range</param>
           </module>
         </module>
