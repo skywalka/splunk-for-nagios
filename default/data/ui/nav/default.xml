@@ -2,18 +2,15 @@
     <view name="about" default='true' />
     <view name="flashtimeline" />
     <view name="Nagios" />
-    <view name="NagiosRT" />
+    <view name="NagiosLivestatus" />
     <view name="alert_formsearch" />
-    <view name="NagiosAlertsRT" />
+    <view name="NagiosAlertsLivestatus" />
     <collection label="Performance Dashboards">
+        <view name="NagiosLinuxPerformanceGraphs"/>
+        <view name="NagiosNixFilesystemUsageGraphs"/>
         <view name="NagiosAIXPerformanceGraphs"/>
         <view name="NagiosAIXFilesystemUsageGraphs"/>
-        <view name="systemp-cpu"/>
-        <view name="systemp-memory"/>
         <view name="NagiosBSDPerformanceGraphs"/>
-        <view name="NagiosLinuxPerformanceGraphs"/>
-        <view name="NagiosLinuxPerformanceGraphs2"/>
-        <view name="NagiosNixFilesystemUsageGraphs"/>
         <view name="NagiosWinPerformanceGraphs"/>
         <divider />
         <view name="NagiosIsilonPerformanceGraphs"/>
@@ -21,7 +18,6 @@
         <divider />
         <view name="NagiosCiscoHardwarePerformanceGraphs"/>
         <view name="NagiosCiscoHardwareTemperatureGraphs"/>
-        <view name="NagiosCiscoWAASHardwarePerformanceGraphs"/>
         <view name="NagiosCiscoGatewayActivityGraphs"/>
         <view name="NagiosCiscoNetworkActivityGraphs"/>
         <view name="NagiosCiscoNetworkMultiInterfaceActivityGraphs"/>
