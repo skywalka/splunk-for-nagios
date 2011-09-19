@@ -8,12 +8,15 @@ Overview
      * Schedule Saved Searches in Splunk to send alerts to Nagios
      * Status Dashboard featuring recent Warning and Critical Alerts and Notifications
      * Alerts Dashboard with an auto-populating drop-down list of device names to easily display relevant alert history
-     * Host Dashboards with Graphs of metal level metrics (CPU, Memory, Swap, Load, Disk Usage, Network Interface Utilization, Processes, etc) sourced from Nagios Plugin Performance Data (Linux, AIX and Windows hosts supported)
+     * Host Dashboards with Graphs of metal level metrics (CPU, Memory, Swap, Load, Disk Usage, Network Interface Utilization, Processes, etc) sourced from Nagios Plugin Performance Data (Linux, AIX, BSD and Windows hosts supported)
      * NAS Dashboards with Graphs of Storage Usage, Quota Usage, SAVVOL Usage, Connections by Protocol, etc (EMC Isilon and Celerra supported)
+     * Cisco Network Dashboards with Graphs of Network Interface Utilization, CPU, Memory, Temperature and Gateway Usage sourced from Nagios Plugin Performance Data
+     * External lookup scripts for integration with MK Livestatus - featuring 2 new dashboards updated with live status data from Nagios
      * Search Nagios alerts and notifications and trend problems over time
      * Over 40 field extractions, compliant with the Common Information Model
-     * 6 Saved Searches
-   * This is version 1.1.1 of SplunkForNagios so any feedback, including requests for enhancement are most welcome. Email: luke@verypowerful.info
+     * 8 Saved Searches - featuring a CMDB Report and Service Alerts by Service Group
+
+   * This is version 2.0 of Splunk for Nagios - any feedback, including requests for enhancement are most welcome. Email: luke@verypowerful.info
    * This app has been created for the specifics of our Nagios environment, so it may or may not suit your specific purposes
    * Copyright (c) 2011 Luke Harris. All Rights Reserved.
 
@@ -25,7 +28,7 @@ Add an Index to Splunk:
       * Note: all of the dashboards use searches based on index = nagios
 
 Add new Data Inputs:
-   * Note: Users who have upgraded from Splunk for Nagios v. 1.0 to v. 1.1.1 are required to add two additional data inputs (host-perfdata & service-perfdata)
+   * Note: Users who have upgraded from Splunk for Nagios v. 1.0 to v. 1.1.1+ are required to add two additional data inputs (host-perfdata & service-perfdata)
 
 Here are two methods to ingest the nagios log files from your Nagios server to your Splunk indexer (chose only one method):
 
@@ -156,6 +159,11 @@ Note: replace /opt/nagios with your $NAGIOS_HOME
 */5 * * * * rsync -q -az --timeout=60 --bwlimit=500 hostname.abc.com.au:/opt/nagios/var/host-perfdata /log/nagios/host-perfdata
 */5 * * * * rsync -q -az --timeout=60 --bwlimit=500 hostname.abc.com.au:/opt/nagios/var/service-perfdata /log/nagios/service-perfdata
 
+MK Livestatus Integration
+-------------------------
+External lookup scripts:
+   * edit the IP address & Port number in $SPLUNK_HOME/etc/apps/SplunkForNagios/bin/*py (replace with the IP address and Port number for your Nagios server with MK Livestatus)
+   * Reference: http://mathias-kettner.de/checkmk_livestatus.html
 
 Nagios Plugins supported by Splunk for Nagios
 ---------------------------------------------
@@ -171,7 +179,11 @@ Nagios Plugins supported by Splunk for Nagios
             # dos2unix check_iftraffic_nrpe.pl
          3/ Apply the patch which is located at $SPLUNK_HOME/etc/apps/SplunkForNagios/appserver/static/check_iftraffic_nrpe.pl.patch
             # patch < check_iftraffic_nrpe.pl.patch
-
+   * check_snmp_load.pl: http://exchange.nagios.org/directory/Plugins/Network-Protocols/SNMP/check-SNMP-CPU-Load/details
+   * check_snmp_environment.pl: http://exchange.nagios.org/directory/Plugins/Hardware/Network-Gear/Cisco/Check-various-hardware-environmental-sensors/details
+   * check_cisco_b-channels.pl: http://exchange.nagios.org/directory/Plugins/Network-Protocols/*-Network-and-Data-Link-Layer/ISDN/Check-Cisco-MGCP-2FH323-ISDN-Gateway-Usage/details
+   * icheck_iftraffic42.pl: http://exchange.nagios.org/directory/Plugins/Network-Connections%2C-Stats-and-Bandwidth/check_iftraffic42-2Epl/details
+   * check_snmp_cisco_memutil.pl: https://secure.opsera.com/svn/opsview/trunk/opsview-core/nagios-plugins/nagiosexchange/check_snmp_cisco_memutil
 
 How To Send Alerts From Splunk to Nagios
 ----------------------------------------
@@ -197,7 +209,6 @@ Configure a Scheduled Saved Search in Splunk to send alerts to Nagios:
       * tick Trigger shell script
    * Filename of shell script to execute = splunk-nagios.sh
 
-
 Edit the script located at $SPLUNK_HOME/etc/apps/SplunkForNagios/bin/scripts/splunk-nagios.sh 
 and change the following variables so that they are relevant to your environment:
       * SPLUNKSERVER=splunk01 (ie. hostname of the splunk server)
@@ -216,14 +227,16 @@ reason = Nagios Alert Message (tranforms existing fields: statusinfoexternal sta
 name = Nagios Plugin Name (tranforms existing fields: servicealertname servicepassivename serviceexternal servicenamenotification servicestatename downtimeservicename hoststatus)
 user_id = User id of Nagios User receiving a host or service notification (tranforms existing field: username)
 
-Saved Searches
---------------
+Saved Searches & Reports
+------------------------
    * nagios - Host or Service Notifications - Last 60 minutes
    * nagios - Service Notifications with state Critical - Last 60 minutes
    * nagios - Host Down Notifications - Last 60 minutes
    * nagios - Number of Alerts - Last 60 minutes
    * nagios - Host or Service Alerts - Last 60 minutes
    * nagios - Scheduled Downtime by host and service - Last 24 Hours
+   * nagios - Lookup All Devices - CMDB
+   * nagios - Service Alerts by Service Group - Last 24 Hours
 
 Status Dashboard
 ------------------
@@ -247,18 +260,27 @@ Performance Dashboards
 ----------------------
 Note: these graphs have been optimized for a 24 hour time span. If you require a longer time window, please update the span value accordingly.
 
-Host specific dashboards:
+Host dashboards:
    * Featuring an auto-populating drop-down list of device names to easily display relevant alerts, notifications and performance graphs:
    * Note: the drop-down list is auto-populated by a hidden search that extracts the src_host field from the nagios log that contains nagiosevent="CURRENT HOST STATE" - generated by default for all devices in Nagios at midnight every day.
       * Nagios AIX Performance Graphs
+      * Nagios BSD Performance Graphs
       * Nagios Linux Performance Graphs
       * Nagios *nix Filesystem Usage Graphs
       * Nagios Windows Performance Graphs
 
-NAS specific dashboards:
+NAS dashboards:
    * Featuring a search box to enter the relevant hostname of your NAS device to easily display relevant alerts, notifications and performance graphs:
       * Nagios Isilon Performance Graphs
       * Nagios Celerra Performance Graphs
+
+Cisco Network dashboards:
+   * Featuring 5 dashboards with Graphs of Network Interface Utilization, CPU, Memory, Temperature and Gateway Usage (Special thanks to Mike Pagano for providing these awesome dashboards)
+      * Nagios Cisco Hardware Performance Graphs
+      * Nagios Cisco Hardware Temperature Graphs
+      * Nagios Cisco Gateway Activity Graphs
+      * Nagios Cisco Network Activity Graphs
+      * Nagios Cisco Network Multiple Interface Activity Graphs
 
 Disclaimer
 ----------
@@ -267,6 +289,15 @@ Disclaimer
 License
 -------
    * GNU GENERAL PUBLIC LICENSE Version 3
+
+v2.0
+------
+ - added external lookup scripts for integration with MK Livestatus
+ - added 2 dashboards updated with live status data from Nagios
+ - added a CMDB Report and Service Alerts by Service Group
+ - added 5 Cisco Network Dashboards with Graphs of Network Interface Utilization, CPU, Memory, Temperature and Gateway Usage sourced from Nagios Plugin Performance Data
+ - added AIX Filesystem Usage Graphs
+ - added BSD specific Host Dashboard
 
 v1.1.1
 ------
