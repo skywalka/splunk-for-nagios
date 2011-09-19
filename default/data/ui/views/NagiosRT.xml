@@ -15,7 +15,24 @@
   <module name="TitleBar" layoutPanel="viewHeader">
     <param name="actionsMenuFilter">dashboard</param>
   </module>
-  <module name="HiddenSearch" layoutPanel="panel_row1_col1" group="Warning Alerts" autoRun="True">
+
+  <module name="HiddenSearch" layoutPanel="panel_row1_col1_grp1" group="Services (OK - Warning - Critical - Unknown)" autoRun="True">
+    <param name="search">earliest=-24h index=nagios sourcetype=nagios nagiosevent="CURRENT HOST STATE" src_host=syd1rtr01 | liveserviceokstatus | stats max(liveserviceokstatus) AS liveserviceokstatus | rangemap field=liveserviceokstatus low=0-0 low=1-1 default=low</param>
+    <param name="groupLabel">Services (OK - Warning - Critical - Unknown)</param>
+    <module name="ViewstateAdapter">
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="SingleValue">
+	    <param name="field">liveserviceokstatus</param>
+            <param name="classField">range</param>
+          </module>
+        </module>
+      </module>
+    </module>
+  </module>
+
+  <module name="HiddenSearch" layoutPanel="panel_row1_col1_grp2" group="Warning Alerts" autoRun="True">
     <param name="search">earliest=-24h index=nagios sourcetype=nagios nagiosevent="CURRENT HOST STATE" src_host=syd1rtr01 | liveservicewarningstatus | stats max(liveservicewarningstatus) AS liveservicewarningstatus | rangemap field=liveservicewarningstatus low=0-0 elevated=1-1 default=elevated</param>
     <param name="groupLabel">Warning Alerts</param>
     <module name="ViewstateAdapter">
@@ -30,8 +47,9 @@
       </module>
     </module>
   </module>
-  <module name="HiddenSearch" layoutPanel="panel_row1_col2" group="Critical Alerts" autoRun="True">
-    <param name="search">earliest=-24h index=nagios sourcetype=nagios nagiosevent="CURRENT HOST STATE" src_host=syd1rtr01 | liveservicecriticalstatus | stats max(liveservicecriticalstatus) AS liveservicecriticalstatus | fields - range | rangemap field=liveservicecriticalstatus low=0-0 severe=1-1 default=severe</param>
+
+  <module name="HiddenSearch" layoutPanel="panel_row1_col1_grp3" group="Critical Alerts" autoRun="True">
+    <param name="search">earliest=-24h index=nagios sourcetype=nagios nagiosevent="CURRENT HOST STATE" src_host=syd1rtr01 | liveservicecriticalstatus | stats max(liveservicecriticalstatus) AS liveservicecriticalstatus | rangemap field=liveservicecriticalstatus low=0-0 severe=1-1 default=severe</param>
     <param name="groupLabel">Critical Alerts</param>
     <module name="ViewstateAdapter">
       <module name="HiddenFieldPicker">
@@ -39,6 +57,22 @@
         <module name="JobProgressIndicator">
           <module name="SingleValue">
 	    <param name="field">liveservicecriticalstatus</param>
+            <param name="classField">range</param>
+          </module>
+        </module>
+      </module>
+    </module>
+  </module>
+
+  <module name="HiddenSearch" layoutPanel="panel_row1_col1_grp4" group="Unknown Alerts" autoRun="True">
+    <param name="search">earliest=-24h index=nagios sourcetype=nagios nagiosevent="CURRENT HOST STATE" src_host=syd1rtr01 | liveserviceunknownstatus | stats max(liveserviceunknownstatus) AS liveserviceunknownstatus | rangemap field=liveserviceunknownstatus low=0-0 high=1-1 default=high</param>
+    <param name="groupLabel">Unknown Alerts</param>
+    <module name="ViewstateAdapter">
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="SingleValue">
+	    <param name="field">liveserviceunknownstatus</param>
             <param name="classField">range</param>
           </module>
         </module>
