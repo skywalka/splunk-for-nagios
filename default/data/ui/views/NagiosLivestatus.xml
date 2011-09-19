@@ -1,5 +1,5 @@
 <view autoCancelInterval="90" isVisible="true" objectMode="SimpleDashboard" onunloadCancelJobs="true" refresh="-1" template="dashboard.html">
-  <label>Real-Time Status Dashboard</label>
+  <label>Livestatus Dashboard</label>
   <module name="AccountBar" layoutPanel="appHeader"/>
   <module name="AppBar" layoutPanel="navigationHeader"/>
   <module name="Message" layoutPanel="messaging">
@@ -26,8 +26,6 @@
           <module name="SingleValue">
 	    <param name="field">livehostsupstatus</param>
             <param name="classField">range</param>
-            <param name="linkView">flashtimeline</param>
-            <param name="linkSearch">earliest=-24h index="nagios" nagiosevent="HOST ALERT" hoststatus="DOWN" hoststate="HARD" | table _time, src_host, hoststatus, reason</param>
           </module>
         </module>
       </module>
@@ -44,6 +42,8 @@
           <module name="SingleValue">
 	    <param name="field">livehostsdownstatus</param>
             <param name="classField">range</param>
+            <param name="linkView">flashtimeline</param>
+            <param name="linkSearch">earliest=-24h index="nagios" nagiosevent="HOST ALERT" hoststatus="DOWN" hoststate="HARD" | table _time, src_host, hoststatus, reason</param>
           </module>
         </module>
       </module>
@@ -60,6 +60,8 @@
           <module name="SingleValue">
 	    <param name="field">livehostsunreachablestatus</param>
             <param name="classField">range</param>
+            <param name="linkView">flashtimeline</param>
+            <param name="linkSearch">earliest=-24h index="nagios" nagiosevent="HOST ALERT" hoststatus="UNREACHABLE" hoststate="HARD" | table _time, src_host, hoststatus, reason</param>
           </module>
         </module>
       </module>
