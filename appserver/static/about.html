@@ -9,12 +9,14 @@
 <ul>
     <li>Schedule Saved Searches in Splunk to <strong>send alerts to Nagios</strong></li>
     <li>Status Dashboard featuring recent Warning and Critical Alerts and Notifications</li>
-    <li>Host Dashboards with Graphs of metal level metrics (CPU, Memory, Swap, Load, Disk Usage, Network Interface Utilization, Processes, etc) sourced from Nagios Plugin Performance Data (Linux, AIX and Windows hosts supported)</li>
+    <li>Host Dashboards with Graphs of metal level metrics (CPU, Memory, Swap, Load, Disk Usage, Network Interface Utilization, Processes, etc) sourced from Nagios Plugin Performance Data (Linux, AIX, BSD and Windows hosts supported)</li>
     <li>NAS Dashboards with Graphs of Storage Usage, Quota Usage, SAVVOL Usage, Connections by Protocol (EMC Isilon and Celerra supported)</li>
+    <li>Cisco Network Dashboards with Graphs of Network Interface Utilization, CPU, Memory, Temperature and Gateway Usage sourced from Nagios Plugin Performance Data</li>
+    <li>External lookup scripts for integration with <a href="http://mathias-kettner.de/checkmk_livestatus.html">MK Livestatus</a> - featuring 2 new dashboards updated with <strong>live</strong> status data from Nagios</li>
     <li>Nagios Alerts Form Search with an auto-populating drop-down list of all device names to easily display relevant alert history</li>
     <li>Search Nagios alerts and notifications and trend problems over time</li>
     <li>Over 40 field extractions, compliant with the <a href="http://www.splunk.com/base/Documentation/latest/Knowledge/UnderstandandusetheCommonInformationModel">Common Information Model</a></li>
-    <li>6 Saved Searches</li>
+    <li>8 Saved Searches - featuring a CMDB Report and Service Alerts by Service Group</li>
 </ul>
 </p>
 <p>
@@ -33,10 +35,7 @@
 <p>
     <h2>Donations Accepted</h2>
 <ul>
-    <li>If you like Splunk for Nagios, please make a donation to keep the project going. Thank you.<br>
-        If you live outside the United States, you can still contribute to Splunk for Nagios since the Donation System accepts donations through PayPal.<br>
-        We are able to accept contributions from many different countries (including the United States, Canada, Australia, New Zealand, Italy, Spain,<br>
-        Germany, Japan, China, United Kingdom, Denmark, and others). PayPal will handle the currency conversion on your behalf.</li>
+    <li>If you like Splunk for Nagios, please make a donation to keep the project going. Thank you.</li>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 <input type="hidden" name="cmd" value="_s-xclick">
 <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
