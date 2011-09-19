@@ -15,7 +15,7 @@ try:
                     try:
 		        HOST = '10.20.14.114'    # The remote nagios server
 		        PORT = 6557              # The remote port on the nagios server
-		        content = [ "GET services\nFilter: scheduled_downtime_depth > 0\nFilter: host_scheduled_downtime_depth > 0\nOr: 2\nNegate:\nStats: last_hard_state = 1\n" ]
+		        content = [ "GET services\nStats: last_hard_state = 1\n" ]
     		        query = "".join(content)
 		        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		        s.connect((HOST, PORT))
