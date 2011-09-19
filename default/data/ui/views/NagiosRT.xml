@@ -128,5 +128,24 @@
     </module>
   </module>
 
+  <module name="HiddenSearch" layoutPanel="panel_row3_col1" group="Service Alerts" autoRun="True">
+    <module name="TimeRangePicker">
+      <param name="searchWhenChanged">True</param>
+      <param name="selected">Last 24 hours</param>
+      <module name="HiddenSearch" autoRun="True">
+        <param name="search">index="nagios" ((nagiosevent="CURRENT SERVICE STATE" servicestate="HARD") NOT servicestatus="OK") OR ((nagiosevent="SERVICE ALERT" state="HARD") NOT status="OK") | liveservicestate | search NOT liveservicestate=0 | dedup src_host,name | table src_host, name, liveservicestate, severity, reason</param>
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="SimpleResultsTable">
+	    <param name="dataOverlayMode">heatmap</param>
+            <param name="count">500</param>
+            </module>
+           </module>
+          </module>
+        </module>
+      </module>
+    </module>
+
 
 </view>
