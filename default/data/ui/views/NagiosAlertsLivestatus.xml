@@ -16,7 +16,7 @@
     <param name="actionsMenuFilter">dashboard</param>
   </module>
   <module name="HiddenSearch" layoutPanel="viewHeader">
-    <param name="search">earliest=-24h index=nagios sourcetype=nagios nagiosevent="CURRENT SERVICE STATE" name="*" src_host="$nagiosdevice$" | dedup src_host,name | liveservicestate | sort name | table src_host, name, liveservicestate, reason</param>
+    <param name="search">earliest=-24h index=nagios sourcetype=nagios (nagiosevent="CURRENT SERVICE STATE" OR nagiosevent="SERVICE ALERT") name="*" src_host="$nagiosdevice$" | dedup src_host,name | liveservicestate | sort name | table src_host, name, liveservicestate, reason</param>
     <module name="SearchSelectLister">
       <param name="staticFieldsToDisplay">
         <list>
