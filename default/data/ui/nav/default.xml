@@ -21,6 +21,8 @@
         <view name="NagiosCiscoGatewayActivityGraphs"/>
         <view name="NagiosCiscoNetworkActivityGraphs"/>
         <view name="NagiosCiscoNetworkMultiInterfaceActivityGraphs"/>
+        <divider />
+        <view name="NagiosSplunkLicenseUsageGraph"/>
     </collection>
     <collection label="Searches &amp; Reports">
         <collection label="Reports">
