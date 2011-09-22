@@ -1,0 +1,224 @@
+#!/usr/bin/env python
+
+from xml.dom import minidom
+
+import urllib
+import urllib2
+import sys
+
+SPLUNK_SERVER = sys.argv[1]
+SPLUNK_USERNAME = sys.argv[2]
+SPLUNK_PASSWORD = sys.argv[3]
+try:
+	SPLUNK_POOL = sys.argv[4]
+except:
+	SPLUNK_POOL = 'auto_generated_pool_enterprise'
+
+WARN_PERCENT = 90
+CRIT_PERCENT = 95
+
+class SplunkServer(object):
+	urls = {
+		'LOGIN': '/services/auth/login',
+		'LICENSE_LIST': '/services/licenser/licenses',
+		'LICENSE_POOL': '/servicesNS/nobody/system/licenser/pools/%s' % SPLUNK_POOL,
+		'SERVER_INFO': '/servicesNS/nobody/system/server/info',
+	}
+
+	def __init__(self, server, username, password, license_pool='auto_generated_pool_enterprise', port=8089):
+		self.server = server
+		self.username = username
+		self.password = password
+		self.license_pool = license_pool
+		self.port = int(port)
+		self._authtoken = self.login()
+
+	def _build_url(self, urlkey):
+		return 'https://%s:%d%s' % (self.server, self.port, self.urls[urlkey])
+
+	def _url_get(self, urlkey, data=None, login=False, raw=False):
+		k = urlkey.upper()
+
+		if not login:
+			headers = {
+				'Authorization': 'Splunk %s' % self.authtoken
+			}
+		else:
+			headers = dict()
+
+		if data is not None:
+			_data = urllib.urlencode(data)
+		else:
+			_data = None
+
+		req = urllib2.Request(self._build_url(k), _data, headers)
+		response = urllib2.urlopen(req)
+		if raw:
+			return response
+		else:
+			return minidom.parseString(response.read())
+
+	def login(self):
+		data = { 'username': self.username, 'password': self.password }
+		response = self._url_get('LOGIN', data, login=True)
+
+		self._server_info = None
+		self._licenses = None
+		self._pool_info = None
+
+		return response.getElementsByTagName('sessionKey')[0].childNodes[0].nodeValue
+
+	@property
+	def authtoken(self):
+		if self._authtoken is None:
+			self._authtoken = self.login()
+		return self._authtoken
+
+	@property
+	def isTrial(self):
+		if self._server_info == None:
+			self._server_info = self._url_get('SERVER_INFO')
+		key_nodes = self._server_info.getElementsByTagName('s:key')
+		nodes = filter(lambda node: node.attributes['name'].value == 'isTrial', key_nodes)
+		if nodes[0].firstChild.nodeValue == '0':
+			return False
+		else:
+			return True
+
+	@property
+	def isFree(self):
+		if self._server_info == None:
+			self._server_info = self._url_get('SERVER_INFO')
+		key_nodes = self._server_info.getElementsByTagName('s:key')
+		nodes = filter(lambda node: node.attributes['name'].value == 'isFree', key_nodes)
+		if nodes[0].firstChild.nodeValue == '0':
+			return False
+		else:
+			return True
+
+	def _get_license_data(self, entry):
+		hash = entry.getElementsByTagName('title')[0].childNodes[0].nodeValue
+		if hash[:-1] == 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF':
+			return None
+		dobj = entry.getElementsByTagName('s:dict')[0]
+		l = dict()
+		for data in dobj.getElementsByTagName('s:key'):
+			if data.parentNode != dobj:
+				continue
+			key = data.attributes['name'].value
+			if data.firstChild is None:
+				value = ""
+			elif data.firstChild.nodeType == 1:
+				# Not a text node
+				container = data.firstChild
+				if container.tagName == "s:dict":
+					value = dict()
+					for node in container.childNodes:
+						k = node.attributes['name'].value
+						if node.firstChild is None:
+							value[k] = ""
+						else:
+							value[k] = node.firstChild.nodeValue
+				elif container.tagName == "s:list":
+					value = list()
+					for node in container.childNodes:
+						if node.firstChild is None:
+							value.append("")
+						else:
+							value.append(node.firstChild.nodeValue)
+			else:
+				value = data.firstChild.nodeValue
+			l[key] = value
+		return (hash, l)
+
+	@property
+	def licenses(self):
+		if self._licenses is None:
+			self._licenses = self._url_get('LICENSE_LIST')
+		
+		lic_data = map(self._get_license_data, self._licenses.getElementsByTagName('entry'))
+		lic_data = filter(lambda x: x is not None, lic_data)
+		return dict(lic_data)
+
+	def _get_pool_data(self, entry):
+		dobj = entry.getElementsByTagName('s:dict')[0]
+		p = dict()
+		for data in dobj.getElementsByTagName('s:key'):
+			if data.parentNode != dobj:
+				continue
+			key = data.attributes['name'].value
+			if data.firstChild is None:
+				value = ""
+			elif data.firstChild.nodeType == 1:
+				# Not a text node
+				container = data.firstChild
+				if container.tagName == "s:dict":
+					value = dict()
+					for node in container.childNodes:
+						k = node.attributes['name'].value
+						if node.firstChild is None:
+							value[k] = ""
+						else:
+							value[k] = node.firstChild.nodeValue
+				elif container.tagName == "s:list":
+					value = list()
+					for node in container.childNodes:
+						if node.firstChild is None:
+							value.append("")
+						else:
+							value.append(node.firstChild.nodeValue)
+			else:
+				value = data.firstChild.nodeValue
+			p[key] = value
+		return p
+
+	@property
+	def pools(self):
+		if self._pool_info is None:
+			self._pool_info = self._url_get('LICENSE_POOL')
+
+		pool_data = map(self._get_pool_data, self._pool_info.getElementsByTagName('entry'))
+		return pool_data
+
+splunk = SplunkServer(SPLUNK_SERVER, SPLUNK_USERNAME, SPLUNK_PASSWORD, license_pool=SPLUNK_POOL)
+
+if splunk.isFree:
+	print "LICENSE OK: Splunk Community Edition"
+	sys.exit(0)
+
+if splunk.isTrial:
+	print "LICENSE OK: Splunk Download Trial"
+	sys.exit(0)
+
+# Request list of licenses
+licenses = splunk.licenses
+
+valid_licenses = filter(lambda l: licenses[l]['status'] == 'VALID', licenses.keys())
+valid_licenses = filter(lambda l: licenses[l]['type'] == 'enterprise', valid_licenses)
+
+try:
+	quota = sum(map(lambda l: int(licenses[l]['quota']), valid_licenses))
+except:
+	quota = 0
+
+if quota == 0:
+	print "LICENSE CRITICAL: No valid licenses available"
+	sys.exit(2)
+
+# Get the pool's current usedBytes value
+used_bytes = sum(map(lambda p: int(p['used_bytes']), splunk.pools))
+
+WARN_QUOTA = WARN_PERCENT * quota / 100
+CRIT_QUOTA = CRIT_PERCENT * quota / 100
+
+USED_PERCENT = int(used_bytes * 100 / quota)
+
+if used_bytes > CRIT_QUOTA:
+	ret = (2, 'CRITICAL')
+elif used_bytes > WARN_QUOTA:
+	ret = (1, 'WARNING')
+else:
+	ret = (0, 'OK')
+
+print "LICENSE %s: %d%% of license capacity is used|used=%d quota=%d" % (ret[1], USED_PERCENT, used_bytes, quota)
+sys.exit(ret[0])
