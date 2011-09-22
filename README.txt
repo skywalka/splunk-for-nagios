@@ -11,12 +11,13 @@ Overview
      * Host Dashboards with Graphs of metal level metrics (CPU, Memory, Swap, Load, Disk Usage, Network Interface Utilization, Processes, etc) sourced from Nagios Plugin Performance Data (Linux, AIX, BSD and Windows hosts supported)
      * NAS Dashboards with Graphs of Storage Usage, Quota Usage, SAVVOL Usage, Connections by Protocol, etc (EMC Isilon and Celerra supported)
      * Cisco Network Dashboards with Graphs of Network Interface Utilization, CPU, Memory, Temperature and Gateway Usage sourced from Nagios Plugin Performance Data
+     * Splunk License Usage Graph - featuring the new nagios plugin: check_splunk_license
      * External lookup scripts for integration with MK Livestatus - featuring 2 new dashboards updated with live status data from Nagios
      * Search Nagios alerts and notifications and trend problems over time
      * Over 40 field extractions, compliant with the Common Information Model
      * 8 Saved Searches - featuring a CMDB Report and Service Alerts by Service Group
 
-   * This is version 2.0 of Splunk for Nagios - any feedback, including requests for enhancement are most welcome. Email: luke@verypowerful.info
+   * This is version 2.0.1 of Splunk for Nagios - any feedback, including requests for enhancement are most welcome. Email: luke@verypowerful.info
    * This app has been created for the specifics of our Nagios environment, so it may or may not suit your specific purposes
    * Copyright (c) 2011 Luke Harris. All Rights Reserved.
 
@@ -161,9 +162,37 @@ Note: replace /opt/nagios with your $NAGIOS_HOME
 
 MK Livestatus Integration
 -------------------------
-External lookup scripts:
-   * edit the IP address & Port number in $SPLUNK_HOME/etc/apps/SplunkForNagios/bin/*py (replace with the IP address and Port number for your Nagios server with MK Livestatus)
-   * Reference: http://mathias-kettner.de/checkmk_livestatus.html
+Livestatus makes use of the Nagios Event Broker API for accessing status and
+object data. It opens a socket by which data can be retrieved on demand. The
+socket allows you to send a request for hosts, services or other pieces of
+data and get an immediate answer. The data is directly read from Nagios'
+internal data structures.
+
+Version 2.0.1 of Splunk for Nagios includes external scripts for livestatus
+integration that must be updated for your nagios environment:
+        
+Edit the following python scripts using your favourite text editor and replace
+the IP address and Port number with your Nagios server with MK Livestatus. The
+following scripts are located in $SPLUNK_HOME/etc/apps/SplunkForNagios/bin/
+   * livehostsupstatus.py - displays number of Hosts that are currently Up
+   * livehostsdownstatus.py - displays number of Hosts that are currently Down
+   * livehostsunreachablestatus.py - displays number of Hosts that are currently Unreachable
+   * liveserviceokstatus.py - displays number of Services that are currently OK
+   * liveservicewarningstatus.py - displays number of Services that are currently Warning
+   * liveservicecriticalstatus.py - displays number of Services that are currently Critical
+   * liveserviceunknownstatus.py - displays number of Services that are currently Unknown
+   * liveservicestate.py - displays the current status of a given service
+   * splunk-nagios-hosts.py - lookup script to display all devices in nagios, including ip address, description and current state
+   * splunk-nagios-servicegroupmembers.py - wrapper script for splunk-nagios-servicegroupmembers.sh
+   * splunk-nagios-servicegroupmembers.sh - lookup script to display all service groups and their members with current state
+
+Note:
+   * The Livestatus dashboards and the new reports will NOT work if you do not edit the scripts as instructed above.
+   * netcat must be installed on your splunk server for the lookup scripts to work (usually included by default in most Linux Distributions)
+
+Reference:
+   * http://mathias-kettner.de/checkmk_livestatus.html
+
 
 Nagios Plugins supported by Splunk for Nagios
 ---------------------------------------------
@@ -179,11 +208,38 @@ Nagios Plugins supported by Splunk for Nagios
             # dos2unix check_iftraffic_nrpe.pl
          3/ Apply the patch which is located at $SPLUNK_HOME/etc/apps/SplunkForNagios/appserver/static/check_iftraffic_nrpe.pl.patch
             # patch < check_iftraffic_nrpe.pl.patch
+
+Cisco Network Compliant Plugins:
    * check_snmp_load.pl: http://exchange.nagios.org/directory/Plugins/Network-Protocols/SNMP/check-SNMP-CPU-Load/details
    * check_snmp_environment.pl: http://exchange.nagios.org/directory/Plugins/Hardware/Network-Gear/Cisco/Check-various-hardware-environmental-sensors/details
    * check_cisco_b-channels.pl: http://exchange.nagios.org/directory/Plugins/Network-Protocols/*-Network-and-Data-Link-Layer/ISDN/Check-Cisco-MGCP-2FH323-ISDN-Gateway-Usage/details
    * icheck_iftraffic42.pl: http://exchange.nagios.org/directory/Plugins/Network-Connections%2C-Stats-and-Bandwidth/check_iftraffic42-2Epl/details
    * check_snmp_cisco_memutil.pl: https://secure.opsera.com/svn/opsview/trunk/opsview-core/nagios-plugins/nagiosexchange/check_snmp_cisco_memutil
+Note: the 5 updated Cisco network scripts (above) are located at
+$SPLUNK_HOME/etc/apps/SplunkForNagios/appserver/static/
+
+Splunk License Usage Plugin:
+   * check_splunk_license: https://www.hurricanelabs.com/monitoring-splunk-license-usage/
+Note: the updated script (above) is located at
+$SPLUNK_HOME/etc/apps/SplunkForNagios/appserver/static/check_splunk_license
+Requires access to splunk:8089, and a user with license_edit and license_tab
+capabilities. Current version is limited to pool usage monitoring only.
+Copy the script to your Splunk Indexer and update the nrpe config file, eg.
+/etc/nagios/nrpe.cfg :-
+command[check_splunk_license]=/usr/lib/nagios/plugins/ce/check_splunk_license $ARG1$ $ARG2$ $ARG3$
+Update your nagios server configuration to add the new nagios check for your Splunk Index server, eg.
+define command {
+command_name                  check_splunk_license
+command_line                  $USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$ -t 30 -a $ARG2$ $ARG3$ $ARG4$
+}
+
+define service {
+service_description           Splunk License Usage
+use                           master-service-template
+host_name                     splunki
+check_command                 check_splunk_license!check_splunk_license!splunki.abc.com.au!admin!password
+}
+
 
 How To Send Alerts From Splunk to Nagios
 ----------------------------------------
@@ -251,25 +307,55 @@ Status Dashboard
    * Top 10 Service Notifications with a severity of Critical
       * Displays a chart of recent service notifications
 
+Livestatus Dashboard
+----------------------
+There are 3 panels in the dashboard populated by external scripts that query MK Livestatus for live status data from Nagios:
+   * Hosts - featuring the number of current Up, Down, & Unreachable hosts
+      * note: click on the number of Down or Unreachable hosts to drill-down
+   * Services - featuring the number of current OK, Warning, Critical, & Unknown alerts
+   * Service Alerts - featuring a table view of all current service alerts
+Note:
+   * Edit the dashboard xml using your favourite text editor and change the "src_host" name to a relevant device name in nagios :)
+
 Alerts Dashboard
 ----------------------
    * Featuring an auto-populating drop-down list of device names to easily display relevant alert history
       * Note: the drop-down list is auto-populated by a hidden search that extracts the src_host field from the nagios log that contains nagiosevent="CURRENT HOST STATE" - generated by default by Nagios at midnight every day.
 
+
+Livestatus Alerts Dashboard
+----------------------
+Featuring an auto-populating drop-down list of device names to easily display
+relevant alert history, populated by an external script that queries MK
+Livestatus for live service status data from Nagios
+Note:
+the drop-down list is auto-populated by a hidden search that
+extracts the src_host field from the nagios log that contains
+nagiosevent="CURRENT HOST STATE" - generated by default by Nagios at midnight
+every day.
+
 Performance Dashboards
 ----------------------
-Note: these graphs have been optimized for a 24 hour time span. If you require a longer time window, please update the span value accordingly.
+Each of the following dashboards use one base search to feed all downstream
+panels to save search resources.
+Note:
+these graphs have been optimized for a 24 hour time span. If you require a longer time window, please update the span value accordingly.
+REQUIRED:
+   * Using your favourite xml editor, change the "name" values in all of
+these dashboards to the relevant service/plugin names that are in use in your
+nagios environment:-
 
-Host dashboards:
+Host specific dashboards:
    * Featuring an auto-populating drop-down list of device names to easily display relevant alerts, notifications and performance graphs:
    * Note: the drop-down list is auto-populated by a hidden search that extracts the src_host field from the nagios log that contains nagiosevent="CURRENT HOST STATE" - generated by default for all devices in Nagios at midnight every day.
-      * Nagios AIX Performance Graphs
-      * Nagios BSD Performance Graphs
       * Nagios Linux Performance Graphs
       * Nagios *nix Filesystem Usage Graphs
+      * Nagios AIX Performance Graphs
+      * Nagios AIX Filesystem Usage Graphs
+      * Nagios BSD Performance Graphs
       * Nagios Windows Performance Graphs
 
-NAS dashboards:
+NAS specific dashboards:
    * Featuring a search box to enter the relevant hostname of your NAS device to easily display relevant alerts, notifications and performance graphs:
       * Nagios Isilon Performance Graphs
       * Nagios Celerra Performance Graphs
@@ -281,6 +367,9 @@ Cisco Network dashboards:
       * Nagios Cisco Gateway Activity Graphs
       * Nagios Cisco Network Activity Graphs
       * Nagios Cisco Network Multiple Interface Activity Graphs
+REQUIRED:
+   * Using your favourite xml editor, change the "src_host" name to your relevant device names in nagios :)
+
 
 Disclaimer
 ----------
@@ -289,6 +378,11 @@ Disclaimer
 License
 -------
    * GNU GENERAL PUBLIC LICENSE Version 3
+
+v2.0.1
+------
+ - fixed bug in Livestatus Alerts Dashboard
+ - added check_splunk_license script and new dashboard: Nagios Splunk License Usage Graph
 
 v2.0
 ------
