@@ -20,7 +20,7 @@
       <param name="searchWhenChanged">True</param>
       <param name="selected">Last 60 minutes</param>
       <module name="HiddenSearch" autoRun="True">
-        <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="B-Channel Usage" | fields + _time,src_host,used | eval used=round(used) | timechart limit=50 span=5m avg(used) as "Used" by src_host</param>
+        <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="B-Channel Usage" | fields + _time,src_host,used | eval used=round(used) | timechart limit=50 bins=500 avg(used) as "Used" by src_host</param>
               <param name="groupLabel">Total Gateway Usage</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -110,7 +110,7 @@
           </param>
         </param>
             <module name="HiddenPostProcess" autoRun="False">
-              <param name="search">eval used=round(used) | timechart span=5m max(total) as "Available", avg(used) as "Used"</param>
+              <param name="search">eval used=round(used) | timechart bins=500 max(total) as "Available", avg(used) as "Used"</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
                   <param name="strictMode">True</param>

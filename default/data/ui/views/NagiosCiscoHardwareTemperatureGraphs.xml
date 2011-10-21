@@ -72,7 +72,7 @@
                   <param name="label">Temperature over time</param>
                 </module>
                 <module name="HiddenSearch" layoutPanel="resultsAreaLeft">
-                  <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="Environmentals" src_host=$nagiosdevice$ | rex max_match=1000 field=_raw "$temptype$TempVal=(?&lt;temp&gt;\d+) $temptype$TempMax=(?&lt;max&gt;\d+)" | timechart span=5m max(max) as Max, avg(temp) as Temp</param>
+                  <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="Environmentals" src_host=$nagiosdevice$ | rex max_match=1000 field=_raw "$temptype$TempVal=(?&lt;temp&gt;\d+) $temptype$TempMax=(?&lt;max&gt;\d+)" | timechart bins=500 max(max) as Max, avg(temp) as Temp</param>
                   <module name="HiddenChartFormatter">
                     <param name="chart">area</param>
                     <param name="charting.chart.nullValueMode">connect</param>

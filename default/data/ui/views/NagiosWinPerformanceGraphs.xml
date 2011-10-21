@@ -111,7 +111,7 @@
       </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row2_col1" group="CPU Load" autoRun="False">
-              <param name="search">timechart span=5m avg(Load) as "CPU Load (%)"</param>
+              <param name="search">timechart bins=500 avg(Load) as "CPU Load (%)"</param>
               <param name="groupLabel">CPU Load</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -147,7 +147,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row2_col2" group="Memory Usage" autoRun="False">
-              <param name="search">timechart span=5m avg(mem_total) as "Total (MB)",avg(mem_used) as "Used (MB)"</param>
+              <param name="search">timechart bins=500 avg(mem_total) as "Total (MB)",avg(mem_used) as "Used (MB)"</param>
               <param name="groupLabel">Memory Usage</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -180,7 +180,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row3_col1" group="Pagefile Usage" autoRun="False">
-              <param name="search">timechart span=5m avg(pf_used) as "Used (%)"</param>
+              <param name="search">timechart bins=500 avg(pf_used) as "Used (%)"</param>
               <param name="groupLabel">Pagefile Usage</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -213,7 +213,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row3_col2" group="C Drive Usage" autoRun="False">
-              <param name="search">search name="NT-DriveC" | timechart span=5m avg(drive_total) as "Total (GB)", avg(drive_used) as "Used (GB)"</param>
+              <param name="search">search name="NT-DriveC" | timechart bins=500 avg(drive_total) as "Total (GB)", avg(drive_used) as "Used (GB)"</param>
               <param name="groupLabel">C Drive Usage</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -246,7 +246,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row4_col1" group="D Drive Usage" autoRun="False">
-              <param name="search">search name="NT-DriveD" | timechart span=5m avg(drive_total) as "Total (GB)", avg(drive_used) as "Used (GB)"</param>
+              <param name="search">search name="NT-DriveD" | timechart bins=500 avg(drive_total) as "Total (GB)", avg(drive_used) as "Used (GB)"</param>
               <param name="groupLabel">D Drive Usage</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -279,7 +279,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row4_col2" group="E Drive Usage" autoRun="False">
-              <param name="search">search name="NT-DriveE" | timechart span=5m avg(drive_total) as "Total (GB)", avg(drive_used) as "Used (GB)"</param>
+              <param name="search">search name="NT-DriveE" | timechart bins=500 avg(drive_total) as "Total (GB)", avg(drive_used) as "Used (GB)"</param>
               <param name="groupLabel">E Drive Usage</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -312,7 +312,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row5_col1" group="Advanced Ping" autoRun="False">
-              <param name="search">timechart span=5m avg(pl) as "Packet Loss (%)", avg(rta) as "Latency (ms)"</param>
+              <param name="search">timechart bins=500 avg(pl) as "Packet Loss (%)", avg(rta) as "Latency (ms)"</param>
               <param name="groupLabel">Advanced Ping</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">

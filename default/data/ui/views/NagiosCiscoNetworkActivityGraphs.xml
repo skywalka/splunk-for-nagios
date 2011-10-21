@@ -71,7 +71,7 @@
           </param>
         </param>
             <module name="HiddenPostProcess" layoutPanel="panel_row1_col1" group="Network Usage" autoRun="False">
-              <param name="search">eval Max = 100 | timechart span=5m max(Max) as "Maximum (%)", avg(outUsage) as "TX (%)", avg(inUsage) as "RX (%)"</param>
+              <param name="search">eval Max = 100 | timechart bins=500 max(Max) as "Maximum (%)", avg(outUsage) as "TX (%)", avg(inUsage) as "RX (%)"</param>
               <param name="groupLabel">Network Usage</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -104,7 +104,7 @@
             </module>
 		
             <module name="HiddenPostProcess" layoutPanel="panel_row2_col1" group="Bandwidth Usage" autoRun="False">
-              <param name="search">timechart span=5m max(Bandwidth) as "Bandwidth" avg(outBandwidth) as "TX bps" avg(inBandwidth) as "RX bps"</param>
+              <param name="search">timechart bins=500 max(Bandwidth) as "Bandwidth" avg(outBandwidth) as "TX bps" avg(inBandwidth) as "RX bps"</param>
               <param name="groupLabel">Bandwidth Usage</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">

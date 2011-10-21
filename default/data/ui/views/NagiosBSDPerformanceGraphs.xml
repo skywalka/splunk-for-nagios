@@ -111,7 +111,7 @@
       </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row2_col1" group="CPU Usage" autoRun="False">
-              <param name="search">timechart span=5m avg(CpuSystem) as System,avg(CpuUser) as User,avg(CpuNice) as Nice,avg(CpuIntrpt) as Intrpt</param>
+              <param name="search">timechart bins=500 avg(CpuSystem) as System,avg(CpuUser) as User,avg(CpuNice) as Nice,avg(CpuIntrpt) as Intrpt</param>
               <param name="groupLabel">CPU Usage</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -148,7 +148,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row2_col2" group="Load Average" autoRun="False">
-              <param name="search">timechart span=5m avg(load15) as "Load 15m",avg(load5) as "Load 5m",avg(load1) as "Load 1m"</param>
+              <param name="search">timechart bins=500 avg(load15) as "Load 15m",avg(load5) as "Load 5m",avg(load1) as "Load 1m"</param>
               <param name="groupLabel">Load Average</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -181,7 +181,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row3_col1" group="NTP Offset" autoRun="False">
-              <param name="search">timechart span=5m avg(offset) as "Offset (secs)"</param>
+              <param name="search">timechart bins=500 avg(offset) as "Offset (secs)"</param>
               <param name="groupLabel">NTP Offset</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -213,7 +213,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row3_col2" group="Swap Usage" autoRun="False">
-              <param name="search">eval swap_used=(swap_total-swap_free) | timechart span=5m avg(swap_total) as "Total (MB)",avg(swap_used) as "Used (MB)"</param>
+              <param name="search">eval swap_used=(swap_total-swap_free) | timechart bins=500 avg(swap_total) as "Total (MB)",avg(swap_used) as "Used (MB)"</param>
               <param name="groupLabel">Swap Usage</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -246,7 +246,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row4_col1" group="Total Processes" autoRun="False">
-              <param name="search">timechart span=5m avg(Processes) as Processes</param>
+              <param name="search">timechart bins=500 avg(Processes) as Processes</param>
               <param name="groupLabel">Total Processes</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -279,7 +279,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row4_col2" group="Zombie Processes" autoRun="False">
-              <param name="search">timechart span=5m last(Zombies) as Zombies</param>
+              <param name="search">timechart bins=500 last(Zombies) as Zombies</param>
               <param name="groupLabel">Zombie Processes</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -311,7 +311,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row5_col1" group="Advanced Ping" autoRun="False">
-              <param name="search">timechart span=5m avg(pl) as "Packet Loss (%)", avg(rta) as "Latency (ms)"</param>
+              <param name="search">timechart bins=500 avg(pl) as "Packet Loss (%)", avg(rta) as "Latency (ms)"</param>
               <param name="groupLabel">Advanced Ping</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">

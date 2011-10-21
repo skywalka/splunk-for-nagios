@@ -72,7 +72,7 @@
                   <param name="label">Filesystem Usage over time</param>
                 </module>
                 <module name="HiddenSearch" layoutPanel="resultsAreaLeft">
-                  <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="Disk: $filesystemToken$" src_host=$deviceToken$ | timechart span=5m avg(fs_total) as "Total $filesystemToken$",avg(fs_used) as "Used $filesystemToken$"</param>
+                  <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="Disk: $filesystemToken$" src_host=$deviceToken$ | timechart bins=500 avg(fs_total) as "Total $filesystemToken$",avg(fs_used) as "Used $filesystemToken$"</param>
                   <module name="HiddenChartFormatter">
                     <param name="chart">area</param>
                     <param name="charting.chart.nullValueMode">connect</param>

@@ -49,7 +49,7 @@
           <module name="JobStatus">
 
             <module name="HiddenPostProcess" layoutPanel="panel_row1_col1" group="Splunk License Usage" autoRun="False">
-              <param name="search">eval used=used/1024/1024/1024 | eval quota=quota/1024/1024/1024 | timechart span=1h avg(quota) AS "Quota (GB)", avg(used) AS "Used (GB)"</param>
+              <param name="search">eval used=used/1024/1024/1024 | eval quota=quota/1024/1024/1024 | timechart bins=500 avg(quota) AS "Quota (GB)", avg(used) AS "Used (GB)"</param>
               <param name="groupLabel">Splunk License Usage</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">

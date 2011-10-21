@@ -111,7 +111,7 @@
       </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row2_col1" group="CPU Load %" autoRun="False">
-              <param name="search">timechart span=5m avg(load_5_min) as "5 Min" avg(load_1_min) as "1 Min" avg(load_5_sec) as "5 Sec"</param>
+              <param name="search">timechart bins=500 avg(load_5_min) as "5 Min" avg(load_1_min) as "1 Min" avg(load_5_sec) as "5 Sec"</param>
               <param name="groupLabel">CPU Load</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -145,7 +145,7 @@
                 </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row3_col1" group="Memory Usage" autoRun="False">
-              <param name="search">timechart span=5m max(MemTotal) as "Total", avg(MemUsed) as "Used"</param>
+              <param name="search">timechart bins=500 max(MemTotal) as "Total", avg(MemUsed) as "Used"</param>
               <param name="groupLabel">Memory Usage</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -179,7 +179,7 @@
                 </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row4_col1" group="Temperature" autoRun="False">
-              <param name="search">timechart span=5m avg(*TempVal)</param>
+              <param name="search">timechart bins=500 avg(*TempVal)</param>
               <param name="groupLabel">Temperature</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -210,7 +210,7 @@
                 </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row5_col1" group="Advanced Ping" autoRun="False">
-              <param name="search">timechart span=5m avg(pl) as "Packet Loss (%)", avg(rta) as "Latency (ms)"</param>
+              <param name="search">timechart bins=500 avg(pl) as "Packet Loss (%)", avg(rta) as "Latency (ms)"</param>
               <param name="groupLabel">Advanced Ping</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">

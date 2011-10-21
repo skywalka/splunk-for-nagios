@@ -88,7 +88,7 @@
       </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row2_col1" group="File System Usage data1" autoRun="False">
-              <param name="search">search name="File System data1" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart span=5m avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
+              <param name="search">search name="File System data1" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart bins=500 avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
               <param name="groupLabel">File System Usage data1</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -124,7 +124,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row2_col2" group="File System Usage data2" autoRun="False">
-              <param name="search">search name="File System data2" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart span=5m avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
+              <param name="search">search name="File System data2" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart bins=500 avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
               <param name="groupLabel">File System Usage data2</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -157,7 +157,7 @@
                   </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row3_col1" group="File System Usage data3" autoRun="False">
-              <param name="search">search name="File System data3" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart span=5m avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
+              <param name="search">search name="File System data3" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart bins=500 avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
               <param name="groupLabel">File System Usage data3</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -190,7 +190,7 @@
                   </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row3_col2" group="File System Usage home" autoRun="False">
-              <param name="search">search name="File System home" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart span=5m avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
+              <param name="search">search name="File System home" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart bins=500 avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
               <param name="groupLabel">File System Usage home</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -223,7 +223,7 @@
                   </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row4_col1" group="File System Usage file_archive" autoRun="False">
-              <param name="search">search name="File System file_archive" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart span=5m avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
+              <param name="search">search name="File System file_archive" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart bins=500 avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
               <param name="groupLabel">File System Usage file_archive</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -256,7 +256,7 @@
                   </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row4_col2" group="Load Average" autoRun="False">
-              <param name="search">timechart span=5m avg(load15) as "Load 15m",avg(load5) as "Load 5m",avg(load1) as "Load 1m"</param>
+              <param name="search">timechart bins=500 avg(load15) as "Load 15m",avg(load5) as "Load 5m",avg(load1) as "Load 1m"</param>
               <param name="groupLabel">Load Average</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -289,7 +289,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row5_col1" group="Total Processes" autoRun="False">
-              <param name="search">timechart span=5m avg(Processes) as Processes</param>
+              <param name="search">timechart bins=500 avg(Processes) as Processes</param>
               <param name="groupLabel">Total Processes</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -322,7 +322,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row5_col2" group="Zombie Processes" autoRun="False">
-              <param name="search">timechart span=5m last(Zombies) as Zombies</param>
+              <param name="search">timechart bins=500 last(Zombies) as Zombies</param>
               <param name="groupLabel">Zombie Processes</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -354,7 +354,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row6_col1" group="NTP Offset" autoRun="False">
-              <param name="search">timechart span=5m avg(offset) as "Offset (secs)"</param>
+              <param name="search">timechart bins=500 avg(offset) as "Offset (secs)"</param>
               <param name="groupLabel">NTP Offset</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -394,7 +394,7 @@
 
 
             <module name="HiddenPostProcess" layoutPanel="panel_row6_col2" group="Advanced Ping" autoRun="False">
-              <param name="search">timechart span=5m avg(pl) as "Packet Loss (%)", avg(rta) as "Latency (ms)"</param>
+              <param name="search">timechart bins=500 avg(pl) as "Packet Loss (%)", avg(rta) as "Latency (ms)"</param>
               <param name="groupLabel">Advanced Ping</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -428,7 +428,7 @@
 
 
             <module name="HiddenPostProcess" layoutPanel="panel_row7_col1" group="Quota Usage akl1" autoRun="False">
-              <param name="search">search name="Quota akl1" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart span=5m avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
+              <param name="search">search name="Quota akl1" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart bins=500 avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
               <param name="groupLabel">Quota Usage akl1</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -461,7 +461,7 @@
                   </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row7_col2" group="Quota Usage bne1" autoRun="False">
-              <param name="search">search name="Quota bne1" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart span=5m avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
+              <param name="search">search name="Quota bne1" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart bins=500 avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
               <param name="groupLabel">Quota Usage bne1</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -494,7 +494,7 @@
                   </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row8_col1" group="Quota Usage mel1" autoRun="False">
-              <param name="search">search name="Quota mel1" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart span=5m avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
+              <param name="search">search name="Quota mel1" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart bins=500 avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
               <param name="groupLabel">Quota Usage mel1</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -527,7 +527,7 @@
                   </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row8_col2" group="Quota Usage temp" autoRun="False">
-              <param name="search">search name="Quota temp" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart span=5m avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
+              <param name="search">search name="Quota temp" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart bins=500 avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
               <param name="groupLabel">Quota Usage temp</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -560,7 +560,7 @@
                   </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row9_col1" group="Quota Usage video" autoRun="False">
-              <param name="search">search name="Quota video" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart span=5m avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
+              <param name="search">search name="Quota video" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart bins=500 avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
               <param name="groupLabel">Quota Usage video</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -593,7 +593,7 @@
                   </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row9_col2" group="SAVVOL Usage data1" autoRun="False">
-              <param name="search">search name="SAVVOL data1" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart span=5m avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
+              <param name="search">search name="SAVVOL data1" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart bins=500 avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
               <param name="groupLabel">SAVVOL Usage data1</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -626,7 +626,7 @@
                   </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row10_col1" group="SAVVOL Usage data2" autoRun="False">
-              <param name="search">search name="SAVVOL data2" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart span=5m avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
+              <param name="search">search name="SAVVOL data2" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart bins=500 avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
               <param name="groupLabel">SAVVOL Usage data2</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -659,7 +659,7 @@
                   </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row10_col2" group="SAVVOL Usage data3" autoRun="False">
-              <param name="search">search name="SAVVOL data3" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart span=5m avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
+              <param name="search">search name="SAVVOL data3" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart bins=500 avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
               <param name="groupLabel">SAVVOL Usage data3</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -692,7 +692,7 @@
                   </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row11_col1" group="SAVVOL Usage home" autoRun="False">
-              <param name="search">search name="SAVVOL home" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart span=5m avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
+              <param name="search">search name="SAVVOL home" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart bins=500 avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
               <param name="groupLabel">SAVVOL Usage home</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -725,7 +725,7 @@
                   </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row11_col2" group="SAVVOL Usage file_archive" autoRun="False">
-              <param name="search">search name="SAVVOL file_archive" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart span=5m avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
+              <param name="search">search name="SAVVOL file_archive" | eval SIZE2 = "0".SIZE | eval USED2 = "0".USED | timechart bins=500 avg(SIZE2) as "Total (GB)", avg(USED2) as "Used (GB)"</param>
               <param name="groupLabel">SAVVOL Usage file_archive</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">

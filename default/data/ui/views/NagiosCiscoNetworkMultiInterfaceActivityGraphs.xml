@@ -73,7 +73,7 @@
                 </module>
 
                 <module name="HiddenSearch" layoutPanel="resultsAreaLeft">
-                  <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="Network Traffic $interfacename$" src_host=$nagiosdevice$ | timechart span=5m max(Bandwidth) as "Bandwidth" avg(outBandwidth) as "TX bps" avg(inBandwidth) as "RX bps"</param>
+                  <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="Network Traffic $interfacename$" src_host=$nagiosdevice$ | timechart bins=500 max(Bandwidth) as "Bandwidth" avg(outBandwidth) as "TX bps" avg(inBandwidth) as "RX bps"</param>
                   <module name="HiddenChartFormatter">
                     <param name="chart">line</param>
                     <param name="charting.chart.nullValueMode">connect</param>
@@ -91,7 +91,7 @@
               </module>
 
                 <module name="HiddenSearch" layoutPanel="resultsAreaLeft">
-                  <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="Network Traffic $interfacename$" src_host=$nagiosdevice$ | eval Max = 100 | timechart span=5m max(Max) as "Maximum (%)", avg(outUsage) as "TX (%)", avg(inUsage) as "RX (%)"</param>
+                  <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="Network Traffic $interfacename$" src_host=$nagiosdevice$ | eval Max = 100 | timechart bins=500 max(Max) as "Maximum (%)", avg(outUsage) as "TX (%)", avg(inUsage) as "RX (%)"</param>
                   <module name="HiddenChartFormatter">
                     <param name="chart">line</param>
                     <param name="charting.chart.nullValueMode">connect</param>
