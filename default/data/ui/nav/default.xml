@@ -22,6 +22,9 @@
         <view name="NagiosCiscoNetworkActivityGraphs"/>
         <view name="NagiosCiscoNetworkMultiInterfaceActivityGraphs"/>
         <divider />
+        <view name="OMDLinuxPerformanceGraphs"/>
+        <view name="OMDNixFilesystemUsageGraphs"/>
+        <divider />
         <view name="NagiosSplunkLicenseUsageGraph"/>
     </collection>
     <collection label="Searches &amp; Reports">
