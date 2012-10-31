@@ -1,7 +1,9 @@
+#### THIS FILE MANAGED BY PUPPET ####
 # Script to request a hosts' service state by accessing MK Livestatus
 import socket
 import sys,splunk.Intersplunk
 import string
+import splunk4nagios
 
 results = []
 
@@ -13,7 +15,7 @@ try:
         if "_raw" in r:
             if "src_host" in r:
                     try:
-		        HOST = '127.0.0.1'    # The remote nagios server
+		        HOST = splunk4nagios.server    # The remote nagios server
 		        PORT = 6557              # The remote port on the nagios server
 		        content = [ "GET services\nStats: last_hard_state = 2\n" ]
     		        query = "".join(content)
@@ -35,3 +37,4 @@ except:
 
 splunk.Intersplunk.outputResults( results )
 
+#### THIS FILE MANAGED BY PUPPET ####
