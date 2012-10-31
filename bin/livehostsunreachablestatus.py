@@ -13,7 +13,7 @@ try:
         if "_raw" in r:
             if "src_host" in r:
                     try:
-		        HOST = '10.20.14.114'    # The remote nagios server
+		        HOST = '127.0.0.1'    # The remote nagios server
 		        PORT = 6557              # The remote port on the nagios server
 		        content = [ "GET hosts\nStats: last_hard_state = 2\n" ]
     		        query = "".join(content)
