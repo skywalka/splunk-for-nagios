@@ -18,6 +18,7 @@
 
   <module name="HiddenSearch" layoutPanel="viewHeader">
     <param name="search">index=nagios src_host="$nagiosdevice$" name="*" | eval daysago=$daysago$ | dedup src_host,name | liveservicesla | eval SLA=liveservicesla*100 | table _time src_host name SLA | sort src_host,name</param>
+    <param name="earliest">-24h</param>
 
     <module name="SearchSelectLister">
       <param name="staticFieldsToDisplay">
@@ -69,8 +70,6 @@
         </param>
       </param>
 
-      <module name="TimeRangePicker">
-        <param name="searchWhenChanged">False</param>
         <module name="SubmitButton">
           <param name="allowSoftSubmit">True</param>
           <param name="label">Search</param>
@@ -100,8 +99,6 @@
         </module>
         </module>
         </module>
-        </module>
-
         </module>
         </module>
 
