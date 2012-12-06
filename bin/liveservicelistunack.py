@@ -16,7 +16,7 @@ try:
                     try:
 		        HOST = 'nagios1'    # The remote nagios server
 		        PORT = 6557              # The remote port on the nagios server
-		        content = [ "GET services\nFilter: acknowledged = 0\nFilter: state != 0\nAnd: 2\nColumns: host_name service_description acknowledged\n" ]
+		        content = [ "GET services\nFilter: host_name = ", (r["src_host"]), "\nFilter: service_description = ", (r["name"]), "\nFilter: acknowledged = 0\nFilter: state != 0\nAnd: 2\nColumns: host_name service_description acknowledged\n" ]
     		        query = "".join(content)
 		        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		        s.connect((HOST, PORT))
@@ -30,9 +30,9 @@ try:
                         r["name"] = liveservicelistunack[1]
                         r["liveservicelistunack"] = liveservicelistunack[2]
                     except:
-                        r["src_host"] = "None"
-                        r["name"] = "None"
-                        r["liveservicelistunack"] = "None"
+                        r["src_host"] = "n/a"
+                        r["name"] = "n/a"
+                        r["liveservicelistunack"] = "n/a"
 
 except:
     import traceback
