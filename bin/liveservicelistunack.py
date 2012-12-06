@@ -1,4 +1,4 @@
-# Script to acknowledge a hosts' service problem by accessing MK Livestatus
+# Script to list unacknowledged service problems by accessing MK Livestatus
 import socket
 import sys,splunk.Intersplunk
 import string
@@ -16,7 +16,6 @@ try:
                     try:
 		        HOST = 'nagios1'    # The remote nagios server
 		        PORT = 6557              # The remote port on the nagios server
-		        #content = [ "GET services\nFilter: acknowledged = 0\nFilter: state != 0\nAnd: 2\nStats: acknowledged = 0\n" ]
 		        content = [ "GET services\nFilter: acknowledged = 0\nFilter: state != 0\nAnd: 2\nColumns: host_name service_description acknowledged\n" ]
     		        query = "".join(content)
 		        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -24,14 +23,16 @@ try:
 		        s.send(query)
 		        s.shutdown(socket.SHUT_WR)
 		        data = s.recv(100000000)
-			liveservicelistack2 = data.strip()
-			liveservicelistack = liveservicelistack2.split(";")
+			liveservicelistunack2 = data.strip()
+			liveservicelistunack = liveservicelistunack2.split(";")
 			s.close()
-                        r["src_host"] = liveservicelistack[0]
-                        r["name"] = liveservicelistack[1]
-                        r["liveservicelistack"] = liveservicelistack[2]
+                        r["src_host"] = liveservicelistunack[0]
+                        r["name"] = liveservicelistunack[1]
+                        r["liveservicelistunack"] = liveservicelistunack[2]
                     except:
-                        r["liveservicelistack"] = "Unknown Error"
+                        r["src_host"] = "None"
+                        r["name"] = "None"
+                        r["liveservicelistunack"] = "None"
 
 except:
     import traceback
