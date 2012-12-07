@@ -1,4 +1,4 @@
-# Script to list unacknowledged service problems by accessing MK Livestatus
+# Script to list acknowledged service problems by accessing MK Livestatus
 import socket
 import sys,splunk.Intersplunk
 import string
@@ -16,23 +16,23 @@ try:
                     try:
 		        HOST = 'nagios1'    # The remote nagios server
 		        PORT = 6557              # The remote port on the nagios server
-		        content = [ "GET services\nFilter: host_name = ", (r["src_host"]), "\nFilter: service_description = ", (r["name"]), "\nFilter: acknowledged = 0\nFilter: state != 0\nAnd: 2\nColumns: host_name service_description acknowledged\n" ]
+		        content = [ "GET services\nFilter: host_name = ", (r["src_host"]), "\nFilter: service_description = ", (r["name"]), "\nFilter: acknowledged = ", (r["acktype"]), "\nFilter: state != 0\nAnd: 2\nColumns: host_name service_description acknowledged\n" ]
     		        query = "".join(content)
 		        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		        s.connect((HOST, PORT))
 		        s.send(query)
 		        s.shutdown(socket.SHUT_WR)
 		        data = s.recv(100000000)
-			liveservicelistunack2 = data.strip()
-			liveservicelistunack = liveservicelistunack2.split(";")
+			liveservicelistack2 = data.strip()
+			liveservicelistack = liveservicelistack2.split(";")
 			s.close()
-                        r["src_host"] = liveservicelistunack[0]
-                        r["name"] = liveservicelistunack[1]
-                        r["liveservicelistunack"] = liveservicelistunack[2]
+                        r["src_host"] = liveservicelistack[0]
+                        r["name"] = liveservicelistack[1]
+                        r["liveservicelistack"] = liveservicelistack[2]
                     except:
                         r["src_host"] = "n/a"
                         r["name"] = "n/a"
-                        r["liveservicelistunack"] = "n/a"
+                        r["liveservicelistack"] = "n/a"
 
 except:
     import traceback
