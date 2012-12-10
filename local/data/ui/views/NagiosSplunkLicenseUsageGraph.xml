@@ -23,7 +23,7 @@
         <param name="name">stringreplace</param>
         <param name="arg">
             <param name="hostname">
-                <param name="default">localhost</param>
+                <param name="default">splunk</param>
             </param>
         </param>
       </param>
@@ -35,7 +35,7 @@
         </param>
       </param>
       <param name="field">Enter the hostname:</param>
-      <param name="q">localhost</param>
+      <param name="q">splunk</param>
 
         <module name="SubmitButton">
           <param name="allowSoftSubmit">True</param>
@@ -85,7 +85,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row2_col1" group="Splunk Index nagios" autoRun="False">
-              <param name="search">search name="Splunk Index nagios" | eval used=currentDBSizeMB/1024 | eval quota=maxTotalDataSizeMB/1024 | timechart avg(quota) AS "Total (MB)", avg(used) AS "Used (MB)"</param>
+              <param name="search">search name="Splunk Index nagios" | eval used=currentDBSizeMB/1024 | eval quota=maxTotalDataSizeMB/1024 | timechart avg(quota) AS "Total (GB)", avg(used) AS "Used (GB)"</param>
               <param name="groupLabel">Splunk Index nagios</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -118,7 +118,7 @@
                   </module>
 
                     <module name="HiddenPostProcess" layoutPanel="panel_row2_col2" group="Splunk Index main" autoRun="False">
-              <param name="search">search name="Splunk Index main" | eval used=currentDBSizeMB/1024 | eval quota=maxTotalDataSizeMB/1024 | timechart avg(quota) AS "Total (MB)", avg(used) AS "Used (MB)"</param>
+              <param name="search">search name="Splunk Index main" | eval used=currentDBSizeMB/1024 | eval quota=maxTotalDataSizeMB/1024 | timechart avg(quota) AS "Total (GB)", avg(used) AS "Used (GB)"</param>
               <param name="groupLabel">Splunk Index main</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
