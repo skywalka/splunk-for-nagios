@@ -42,6 +42,9 @@
           <module name="SimpleResultsTable">
             <param name="count">50000</param>
             <param name="drilldown">all</param>
+		<module name="SimpleDrilldown">
+         	<param name="links">{"name": "/app/SplunkForNagios/NagiosLivestatusServiceACKform?form.name=$row.name$&#38;form.src_host=$row.src_host$"}</param>
+        	</module>
            </module>
           </module>
         </module>
