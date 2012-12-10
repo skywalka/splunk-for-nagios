@@ -3,15 +3,13 @@
   
   <!-- define master search template, with replacement tokens delimited with $ -->
   <searchTemplate>index=nagios nagiosevent="CURRENT SERVICE STATE" src_host="$src_host$" name="$name$" | head 1 | dedup src_host,name | eval comment="Acknowledged via Splunk" | dedup src_host,name | liveserviceack | dedup src_host,name | table _time src_host name liveserviceack</searchTemplate>
-  <earliestTime>-1d</earliestTime>
-  <latestTime>-0d</latestTime>
+  <earliestTime>@d</earliestTime>
+  <latestTime>now</latestTime>
 
   <html>
-    Enter a sourcetype in the field below and this view will pull back the most recent 1000 events from the metrics log concerning that sourcetype.
+    Enter a hostname and service name in the fields below and an acknowledgement will be sent to Nagios via MK Livestatus.
   </html>
   <fieldset>
-      <!-- the default is a text box, with no seed value; if user does not input
-          a value, then the $sourcetype$ token in searchTemplate will be removed -->
       <input token="src_host" />
       <input token="name" />
   </fieldset>
