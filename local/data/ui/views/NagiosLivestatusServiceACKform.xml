@@ -2,7 +2,7 @@
   <label>Livestatus Service Acknowledgement Form search drilldown destination</label>
   
   <!-- define master search template, with replacement tokens delimited with $ -->
-  <searchTemplate>index=nagios nagiosevent="CURRENT SERVICE STATE" src_host="$src_host$" name="$name$" | head 1 | dedup src_host,name | eval comment="ackma" | dedup src_host,name | liveserviceack | dedup src_host,name | table _time src_host name liveserviceack</searchTemplate>
+  <searchTemplate>index=nagios nagiosevent="CURRENT SERVICE STATE" src_host="$src_host$" name="$name$" | head 1 | dedup src_host,name | eval comment="Acknowledged via Splunk" | dedup src_host,name | liveserviceack | dedup src_host,name | table _time src_host name liveserviceack</searchTemplate>
   <earliestTime>-1d</earliestTime>
   <latestTime>-0d</latestTime>
 
