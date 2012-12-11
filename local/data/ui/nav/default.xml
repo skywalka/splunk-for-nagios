@@ -2,9 +2,15 @@
     <view name="about" default='true' />
     <view name="flashtimeline" />
     <view name="Nagios" />
-    <view name="NagiosLivestatus" />
     <view name="alert_formsearch" />
+    <collection label="Livestatus Dashboards">
+    <view name="NagiosLivestatus" />
     <view name="NagiosAlertsLivestatus" />
+    <view name="NagiosLivestatusHostSLA" />
+    <view name="NagiosLivestatusServiceSLA" />
+    <view name="NagiosLivestatusServiceACK" />
+    <view name="NagiosDowntimeLivestatus" />
+    </collection>
     <collection label="Performance Dashboards">
         <view name="NagiosLinuxPerformanceGraphs"/>
         <view name="NagiosLinuxPuppetPerformanceGraphs"/>
