@@ -6,10 +6,10 @@
   <earliestTime>-2d@d</earliestTime>
   <latestTime>now</latestTime>
 
+  <fieldset autoRun="false">
   <html>
-    Enter a hostname and service name with start_time, end_time, and comment in the fields below and downtime will be scheduled in Nagios via MK Livestatus.
+    Enter a hostname and service name with start time, end time, and a comment in the fields below to schedule downtime in Nagios via MK Livestatus:
   </html>
-  <fieldset>
       <input type="text" token="src_host">
         <default>eping.big-data.com.au</default>
         <seed>eping.big-data.com.au</seed>
@@ -19,12 +19,12 @@
         <seed>Puppet Agent</seed>
       </input>
       <input type="text" token="starttime">
-        <default>2012-12-11 15:20:00</default>
-        <seed>2012-12-11 15:20:00</seed>
+        <default>2012-12-11 HH:MM:SS</default>
+        <seed>2012-12-11 HH:MM:SS</seed>
       </input>
       <input type="text" token="endtime">
-        <default>2012-12-11 15:30:00</default>
-        <seed>2012-12-11 15:30:00</seed>
+        <default>2012-12-11 HH:MM:SS</default>
+        <seed>2012-12-11 HH:MM:SS</seed>
       </input>
       <input type="text" token="comment">
         <default>Downtime Scheduled via Splunk</default>
