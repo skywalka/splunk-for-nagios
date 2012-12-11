@@ -1,22 +1,18 @@
 <form>
-  <label>Livestatus Downtime Form search drilldown destination</label>
+  <label>Livestatus Host Downtime Form search drilldown destination</label>
   
   <!-- define master search template, with replacement tokens delimited with $ -->
-  <searchTemplate>index=nagios nagiosevent="CURRENT SERVICE STATE" src_host="$src_host$" name="$name$" | head 1 | dedup src_host,name | eval starttime="$starttime$" | eval endtime="$endtime$" | eval comment="$comment$" | liveservicedowntime | table src_host name liveservicedowntime</searchTemplate>
+  <searchTemplate>index=nagios nagiosevent="CURRENT SERVICE STATE" src_host="$src_host$" | head 1 | dedup src_host | eval starttime="$starttime$" | eval endtime="$endtime$" | eval comment="$comment$" | livehostdowntime | table src_host livehostdowntime</searchTemplate>
   <earliestTime>-3d@d</earliestTime>
   <latestTime>now</latestTime>
 
   <fieldset autoRun="false">
   <html>
-    Enter a hostname and service name with start time, end time, and a comment in the fields below to schedule downtime in Nagios via MK Livestatus:
+    Enter a hostname with start time, end time, and a comment in the fields below to schedule downtime in Nagios via MK Livestatus:
   </html>
       <input type="text" token="src_host">
         <default>eping.big-data.com.au</default>
         <seed>eping.big-data.com.au</seed>
-      </input>
-      <input type="text" token="name">
-        <default>Puppet Agent</default>
-        <seed>Puppet Agent</seed>
       </input>
       <input type="text" token="starttime">
         <default>2012-12-12 HH:MM:SS</default>
