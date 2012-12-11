@@ -32,7 +32,7 @@
       </module>
     </module>
 
-  <module name="HiddenSearch" layoutPanel="panel_row1_col2" group="Unacknowledged Alerts" autoRun="True">
+  <module name="HiddenSearch" layoutPanel="panel_row1_col2" group="Unacknowledged Alerts - Click on the service name to Acknowledge" autoRun="True">
       <module name="HiddenSearch" autoRun="True">
         <param name="search">index=nagios nagiosevent="CURRENT SERVICE STATE" | dedup src_host,name | eval acktype=0 | liveservicelistack | table src_host name liveservicelistack | search liveservicelistack=0 | sort src_host,name</param>
         <param name="earliest">-72h</param>
