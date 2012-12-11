@@ -16,23 +16,28 @@ try:
                     try:
 		        HOST = 'nagios1'    # The remote nagios server
 		        PORT = 6557         # The remote port on the nagios server
-			N = int(r["daysago"])
-			nowepoch = datetime.now()
+			nowepoch = datetime.datetime.now()
 			nowepoch2 = nowepoch.strftime("%s")
-			date_N_days_ago = datetime.now() - timedelta(days=N)
-			date_N_days_ago2 = date_N_days_ago.strftime("%s")
-		        content = [ "COMMAND [", nowepoch2, "] SCHEDULE_HOST_DOWNTIME;", (r["src_host"]), ";", start_time, ";", end_time, ";1;0;", duration, ";nagiosadmin;", (r["comment"]), "\n" ]
-    		        query = "".join(content)
+			start = (r["starttime"])
+			end = (r["endtime"])
+			timeformat = "%Y-%m-%d %H:%M:%S"
+			st = datetime.datetime.strptime(start, timeformat)
+			st2 = int(st.strftime("%s"))
+			et = datetime.datetime.strptime(end, timeformat)
+			et2 = int(et.strftime("%s"))
+			duration = et2 - st2
+		        content = [ "COMMAND [", nowepoch2, "] SCHEDULE_HOST_DOWNTIME;", (r["src_host"]), ";", st2, ";", et2, ";1;0;", duration, ";nagiosadmin;", (r["comment"]), "\n" ]
+    		        query = "".join(map(str,content))
 		        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		        s.connect((HOST, PORT))
 		        s.send(query)
 		        s.shutdown(socket.SHUT_WR)
 		        data = s.recv(100000000)
-		        livehostsla = string.split(data)
+		        livehostdowntime = string.split(data)
 		        s.close()
-                        r["livehostsla"] = livehostsla[0]
+                        r["livehostdowntime"] = "Downtime Scheduled"
                     except:
-                        r["livehostsla"] = "0"
+                        r["livehostdowntime"] = "Unknown"
 
 except:
     import traceback
