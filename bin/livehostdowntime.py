@@ -1,4 +1,5 @@
-# Script to request a hosts' SLA by accessing MK Livestatus
+# Script to set downtime for a host by accessing MK Livestatus
+# Required fields to be passed to this script from Splunk: src_host, starttime, endtime, comment
 import socket
 import sys,splunk.Intersplunk
 import string
