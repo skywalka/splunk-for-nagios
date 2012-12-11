@@ -1,0 +1,44 @@
+<form>
+  <label>Livestatus Downtime Form search drilldown destination</label>
+  
+  <!-- define master search template, with replacement tokens delimited with $ -->
+  <searchTemplate>index=nagios nagiosevent="CURRENT SERVICE STATE" src_host="$src_host$" name="$name$" | head 1 | dedup src_host,name | eval starttime="$starttime$" | eval endtime="$endtime$" | eval comment="$comment$" | liveservicedowntime | table src_host name liveservicedowntime</searchTemplate>
+  <earliestTime>-2d@d</earliestTime>
+  <latestTime>now</latestTime>
+
+  <html>
+    Enter a hostname and service name with start_time, end_time, and comment in the fields below and downtime will be scheduled in Nagios via MK Livestatus.
+  </html>
+  <fieldset>
+      <input type="text" token="src_host">
+        <default>eping.big-data.com.au</default>
+        <seed>eping.big-data.com.au</seed>
+      </input>
+      <input type="text" token="name">
+        <default>Puppet Agent</default>
+        <seed>Puppet Agent</seed>
+      </input>
+      <input type="text" token="starttime">
+        <default>2012-12-11 15:20:00</default>
+        <seed>2012-12-11 15:20:00</seed>
+      </input>
+      <input type="text" token="endtime">
+        <default>2012-12-11 15:30:00</default>
+        <seed>2012-12-11 15:30:00</seed>
+      </input>
+      <input type="text" token="comment">
+        <default>Downtime Scheduled via Splunk</default>
+        <seed>Downtime Scheduled via Splunk</seed>
+      </input>
+  </fieldset>
+
+  <row>
+      <!-- output the results as a 50000 row events table -->
+      <table>
+        <title>Matching events</title>
+        <option name="count">50000</option>
+      </table>
+  </row>
+  
+</form>
+
