@@ -1,0 +1,272 @@
+<view autoCancelInterval="90" isVisible="true" objectMode="SimpleDashboard" onunloadCancelJobs="true" refresh="-1" template="dashboard.html">
+  <label>Livestatus Dashboard</label>
+  <module name="AccountBar" layoutPanel="appHeader"/>
+  <module name="AppBar" layoutPanel="navigationHeader"/>
+  <module name="Message" layoutPanel="messaging">
+    <param name="filter">*</param>
+    <param name="clearOnJobDispatch">False</param>
+    <param name="maxSize">1</param>
+  </module>
+  <module name="Message" layoutPanel="messaging">
+    <param name="filter">splunk.search.job</param>
+    <param name="clearOnJobDispatch">True</param>
+    <param name="maxSize">1</param>
+  </module>
+  <module name="TitleBar" layoutPanel="viewHeader">
+    <param name="actionsMenuFilter">dashboard</param>
+  </module>
+
+
+  <module name="HiddenSearch" layoutPanel="panel_row1_col1_grp1" group="Network Health (Host - Service)" autoRun="True">
+    <param name="search">`HostAlert` | head 1 | livehostsupstatus | stats max(livehostsupstatus) AS livehostsupstatus  | gauge livehostsupstatus [|inputlookup alldevices.csv | fields device | stats count(device) as max | eval zed=0 |eval first=max*.20 | eval second=max*.40 | eval third=max*.60 | eval fourth=max  | eval range=zed+" "+first+" "+second+" "+third+" "+fourth | return $range ]</param>
+    <param name="earliest">rt-60m</param>
+    <param name="latest">rt</param>
+    <param name="groupLabel">Network Health (Host - Service)</param>
+    <module name="ViewstateAdapter">
+      <param name="suppressionList">
+        <item>charting.chart</item>
+      </param>
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="EnablePreview">
+            <param name="display">False</param>
+            <param name="enable">True</param>
+            <module name="HiddenChartFormatter">
+              <param name="charting.chart">fillerGauge</param>
+              <param name="charting.chart.orientation">x</param>
+              <param name="charting.chart.style">shiny</param>
+              <param name="charting.chart.usePercentageValue">true</param>
+              <param name="charting.gaugeColors">[0xBF3030,0xFFE800,0x84E900]</param>
+              <module name="JSChart">
+                <param name="width">100%</param>
+                <module name="Gimp"/>
+                <module name="ConvertToDrilldownSearch">
+                  <module name="ViewRedirector">
+                    <param name="viewTarget">flashtimeline</param>
+                  </module>
+                </module>
+              </module>
+              <module name="ViewRedirectorLink">
+                <param name="viewTarget">flashtimeline</param>
+              </module>
+            </module>
+          </module>
+        </module>
+      </module>
+    </module>
+  </module>
+
+
+  <module name="HiddenSearch" layoutPanel="panel_row1_col2_grp1" group="Network Health (Service Health)" autoRun="True">
+    <param name="search">`HostAlert` | head 1 | liveserviceokstatus | stats max(liveserviceokstatus) AS liveserviceokstatus | rangemap field=liveserviceokstatus   | gauge liveserviceokstatus [search earliest=-72h index="nagios" nagiosevent="CURRENT SERVICE STATE" src_host=* | stats dc(servicestatename) as services, dc(src_host) as numberofhosts by src_host | stats sum(services) as max | eval zed=0 |eval first=max*.25 | eval second=max*.50 | eval third=max*.75 | eval fourth=max  | eval range=zed+" "+first+" "+second+" "+third+" "+fourth | return $range ]</param>
+    <param name="earliest">rt-60m</param>
+    <param name="latest">rt</param>
+    <param name="groupLabel">Network Health (Service Health)</param>
+    <module name="ViewstateAdapter">
+      <param name="suppressionList">
+        <item>charting.chart</item>
+      </param>
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="EnablePreview">
+            <param name="display">False</param>
+            <param name="enable">True</param>
+            <module name="HiddenChartFormatter">
+              <param name="charting.chart">fillerGauge</param>
+              <param name="charting.chart.orientation">x</param>
+              <param name="charting.chart.style">shiny</param>
+              <param name="charting.chart.usePercentageValue">true</param>
+              <param name="charting.gaugeColors">[0xBF3030,0xFFE800,0x84E900]</param>
+              <module name="JSChart">
+                <param name="width">100%</param>
+                <module name="Gimp"/>
+                <module name="ConvertToDrilldownSearch">
+                  <module name="ViewRedirector">
+                    <param name="viewTarget">flashtimeline</param>
+                  </module>
+                </module>
+              </module>
+              <module name="ViewRedirectorLink">
+                <param name="viewTarget">flashtimeline</param>
+              </module>
+            </module>
+          </module>
+        </module>
+      </module>
+    </module>
+  </module>
+
+  <module name="HiddenSearch" layoutPanel="panel_row2_col1_grp1" group="Hosts (Up - Down - Unreachable)" autoRun="True">
+    <param name="search">`HostAlert`| head 1 | livehostsupstatus | stats max(livehostsupstatus) AS livehostsupstatus | rangemap field=livehostsupstatus low=0-0 low=1-1 default=low</param>
+    <param name="earliest">rt-60m</param>
+    <param name="latest">rt</param>
+    <param name="groupLabel">Services (Up - Down - Unreachable)</param>
+    <module name="ViewstateAdapter">
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="SingleValue">
+	    <param name="field">livehostsupstatus</param>
+            <param name="classField">range</param>
+          </module>
+        </module>
+      </module>
+    </module>
+  </module>
+
+  <module name="HiddenSearch" layoutPanel="panel_row2_col1_grp2" group="Hosts Down" autoRun="True">
+    <param name="search">`HostAlert`| head 1 | livehostsdownstatus | stats max(livehostsdownstatus) AS livehostsdownstatus  |rangemap field=livehostsdownstatus severe=0-0 severe=1-1 default=severe</param>
+    <param name="earliest">rt-60m</param>
+    <param name="latest">rt</param>
+    <param name="groupLabel">Services Down)</param>
+      <module name="EnablePreview">
+      <param name="enable">true</param>
+      <param name="display">false</param>
+        <module name="ViewstateAdapter">
+          <module name="HiddenFieldPicker">
+            <param name="strictMode">True</param>
+            <module name="JobProgressIndicator">
+              <module name="SingleValue">
+	        <param name="field">livehostsdownstatus</param>
+                <param name="classField">range</param>
+                 <param name="linkView">flashtimeline</param>
+                 <param name="linkSearch">earliest=-72h index="nagios" nagiosevent="HOST ALERT" hoststatus="DOWN" hoststate="HARD" | table _time, src_host, hoststatus, reason</param>
+               </module>
+            </module>
+          </module>
+        </module>
+      </module>
+    </module>
+
+  <module name="HiddenSearch" layoutPanel="panel_row2_col1_grp3" group="Hosts Unreachable" autoRun="True">
+    <param name="search">`HostAlert` | head 1 | livehostsunreachablestatus | stats max(livehostsunreachablestatus) AS livehostsunreachablestatus | rangemap field=livehostsunreachablestatus high=0-0 high=1-1 default=high</param>
+    <param name="earliest">rt-60m</param>
+    <param name="latest">rt</param>
+    <param name="groupLabel">Services Unreachable</param>
+    <module name="ViewstateAdapter">
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="SingleValue">
+	    <param name="field">livehostsunreachablestatus</param>
+            <param name="classField">range</param>
+            <param name="linkView">flashtimeline</param>
+            <param name="linkSearch">earliest=-72h index="nagios" nagiosevent="HOST ALERT" hoststatus="UNREACHABLE" hoststate="HARD" | table _time, src_host, hoststatus, reason</param>
+          </module>
+        </module>
+      </module>
+    </module>
+  </module>
+
+  <module name="HiddenSearch" layoutPanel="panel_row3_col1_grp1" group="Services (OK - Warning - Critical - Unknown)" autoRun="True">
+    <param name="search">`HostAlert` | head 1 | liveserviceokstatus | stats max(liveserviceokstatus) AS liveserviceokstatus | rangemap field=liveserviceokstatus low=0-0 low=1-1 default=low</param>
+    <param name="earliest">rt-60m</param>
+    <param name="latest">rt</param>
+    <param name="groupLabel">Services (OK - Warning - Critical - Unknown)</param>
+    <module name="ViewstateAdapter">
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="SingleValue">
+	    <param name="field">liveserviceokstatus</param>
+            <param name="classField">range</param>
+          </module>
+        </module>
+      </module>
+    </module>
+  </module>
+
+  <module name="HiddenSearch" layoutPanel="panel_row3_col1_grp2" group="Warning Alerts" autoRun="True">
+    <param name="search">`HostAlert` | head 1 | liveservicewarningstatus | stats max(liveservicewarningstatus) AS liveservicewarningstatus | rangemap field=liveservicewarningstatus elevated=0-0 elevated=1-1 default=elevated</param>
+    <param name="earliest">rt-60m</param>
+    <param name="latest">rt</param>
+    <param name="groupLabel">Warning Alerts</param>
+    <module name="ViewstateAdapter">
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="SingleValue">
+	    <param name="field">liveservicewarningstatus</param>
+            <param name="classField">range</param>
+          </module>
+        </module>
+      </module>
+    </module>
+  </module>
+
+  <module name="HiddenSearch" layoutPanel="panel_row3_col1_grp3" group="Critical Alerts" autoRun="True">
+    <param name="search">`HostAlert` | head 1 | liveservicecriticalstatus | stats max(liveservicecriticalstatus) AS liveservicecriticalstatus | rangemap field=liveservicecriticalstatus severe=0-0 severe=1-1 default=severe</param>
+    <param name="earliest">rt-60m</param>
+    <param name="latest">rt</param>
+    <param name="groupLabel">Critical Alerts</param>
+    <module name="ViewstateAdapter">
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="SingleValue">
+	    <param name="field">liveservicecriticalstatus</param>
+            <param name="classField">range</param>
+          </module>
+        </module>
+      </module>
+    </module>
+  </module>
+
+  <module name="HiddenSearch" layoutPanel="panel_row3_col1_grp4" group="Unknown Alerts" autoRun="True">
+    <param name="search">`HostAlert` | head 1 | liveserviceunknownstatus | stats max(liveserviceunknownstatus) AS liveserviceunknownstatus | rangemap field=liveserviceunknownstatus high=0-0 high=1-1 default=high</param>
+    <param name="earliest">rt-60m</param>
+    <param name="latest">rt</param>
+    <param name="groupLabel">Unknown Alerts</param>
+    <module name="ViewstateAdapter">
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="SingleValue">
+	    <param name="field">liveserviceunknownstatus</param>
+            <param name="classField">range</param>
+          </module>
+        </module>
+      </module>
+    </module>
+  </module>
+
+  <module name="HiddenSearch" layoutPanel="panel_row4_col1" group="Host Alerts" autoRun="True">
+        <param name="search">`HostAlert` | dedup src_host | livehoststatus | search NOT livehoststatus=0 | table _time src_host src_ip description livehoststatus | sort src_host</param>
+    <param name="earliest">rt-24h</param>
+    <param name="latest">rt</param>
+    <param name="groupLabel">Host Alerts</param>
+    <module name="ViewstateAdapter">
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="SimpleResultsTable">
+	    <param name="dataOverlayMode">heatmap</param>
+            <param name="count">500</param>
+            </module>
+           </module>
+          </module>
+        </module>
+      </module>
+
+  <module name="HiddenSearch" layoutPanel="panel_row4_col2" group="Service Alerts" autoRun="True">
+        <param name="search">index="nagios" ((nagiosevent="CURRENT SERVICE STATE" servicestate="HARD") NOT servicestatus="OK") OR ((nagiosevent="SERVICE ALERT" state="HARD") NOT status="OK") | liveservicestate | search NOT liveservicestate=0 | dedup src_host,name | table src_host, name, liveservicestate, severity, reason | sort src_host,name</param>
+    <param name="earliest">rt-24h</param>
+    <param name="latest">rt</param>
+    <param name="groupLabel">Service Alerts</param>
+    <module name="ViewstateAdapter">
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="SimpleResultsTable">
+	    <param name="dataOverlayMode">heatmap</param>
+            <param name="count">500</param>
+            </module>
+           </module>
+          </module>
+        </module>
+      </module>
+
+
+</view>
