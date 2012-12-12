@@ -54,10 +54,10 @@
         <param name="strictMode">True</param>
         <module name="JobProgressIndicator">
           <module name="JobStatus">
-          <module name="SimpleResultsTable" layoutPanel="panel_row1_col1" group="Results">
+          <module name="SimpleResultsTable" layoutPanel="panel_row1_col1" group="Click on the src_host or service name to Schedule Downtime">
 	    <param name="dataOverlayMode">heatmap</param>
             <param name="count">500</param>
-            <param name="groupLabel">Results</param>
+            <param name="groupLabel">Click on the src_host or service name to Schedule Downtime</param>
             <param name="drilldown">all</param>
 		<module name="SimpleDrilldown">
          	<param name="links">{"name": "/app/SplunkForNagios/NagiosDowntimeLivestatusform?form.name=$row.name$&#38;form.src_host=$row.src_host$", "src_host": "/app/SplunkForNagios/NagiosDowntimeLivestatushostform?form.src_host=$row.src_host$"}</param>
