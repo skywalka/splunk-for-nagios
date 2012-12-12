@@ -1,4 +1,3 @@
-#### THIS FILE MANAGED BY PUPPET ####
 # Script to request all hosts with UP status by accessing MK Livestatus
 import socket
 import sys,splunk.Intersplunk
@@ -17,7 +16,7 @@ try:
                     try:
 		        HOST = splunk4nagios.server    # The remote nagios server
 		        PORT = 6557              # The remote port on the nagios server
-		        content = [ "GET hosts\nStats: last_hard_state = 1\n" ]
+		        content = [ "GET hosts\nStats: hard_state = 1\n" ]
     		        query = "".join(content)
 		        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		        s.connect((HOST, PORT))
@@ -37,4 +36,3 @@ except:
 
 splunk.Intersplunk.outputResults( results )
 
-#### THIS FILE MANAGED BY PUPPET ####
