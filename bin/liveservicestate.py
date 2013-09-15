@@ -1,9 +1,6 @@
-#### THIS FILE MANAGED BY PUPPET ####
-# Script to request a hosts' service state by accessing MK Livestatus
-import socket
-import sys,splunk.Intersplunk
-import string
-import splunk4nagios
+# Script to list remote hosts' service state in Nagios by accessing MK Livestatus
+# Required field to be passed to this script from Splunk: host (mk-livestatus/nagios server)
+import socket,string,sys,splunk.Intersplunk,mklivestatus
 
 results = []
 
@@ -13,23 +10,21 @@ try:
 
     for r in results:
         if "_raw" in r:
-            if "src_host" in r:
-                if "name" in r:
-                    try:
-		        HOST = splunk4nagios.server    # The remote nagios server
-		        PORT = 6557              # The remote port on the nagios server
-		        content = [ "GET services\nColumns: state\nFilter: host_name = ", (r["src_host"]), "\nFilter: description = ", (r["name"]), "\n" ]
-    		        query = "".join(content)
-		        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		        s.connect((HOST, PORT))
-		        s.send(query)
-		        s.shutdown(socket.SHUT_WR)
-		        data = s.recv(100000000)
-		        liveservicestate = string.split(data)
-		        s.close()
-                        r["liveservicestate"] = liveservicestate[0]
-                    except:
-                        r["liveservicestate"] = "0"
+            if "host" in r:
+                try:
+		    PORT = mklivestatus.PORT
+		    content = [ "GET services\nColumns: host_name description plugin_output state\n" ]
+    		    query = "".join(map(str,content))
+		    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		    s.connect(((r["host"]), PORT))
+		    s.send(query)
+		    s.shutdown(socket.SHUT_WR)
+		    data = s.recv(100000000)
+		    table = data.split('\n')
+		    s.close()
+    		    r["liveservicestatus_results"] = table
+                except:
+                    r["liveservicestatus_results"] = "Unknown"
 
 except:
     import traceback
@@ -38,4 +33,3 @@ except:
 
 splunk.Intersplunk.outputResults( results )
 
-#### THIS FILE MANAGED BY PUPPET ####
