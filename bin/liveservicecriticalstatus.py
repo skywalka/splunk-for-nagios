@@ -1,9 +1,6 @@
-#### THIS FILE MANAGED BY PUPPET ####
-# Script to request a hosts' service state by accessing MK Livestatus
-import socket
-import sys,splunk.Intersplunk
-import string
-import splunk4nagios
+# Script to request services with CRITICAL status and total services by accessing MK Livestatus
+# Required field to be passed to this script from Splunk: host (mk-livestatus/nagios server)
+import socket,string,sys,splunk.Intersplunk,mklivestatus
 
 results = []
 
@@ -13,22 +10,32 @@ try:
 
     for r in results:
         if "_raw" in r:
-            if "src_host" in r:
+            if "host" in r:
                     try:
-		        HOST = splunk4nagios.server    # The remote nagios server
-		        PORT = 6557              # The remote port on the nagios server
-		        content = [ "GET services\nStats: last_hard_state = 2\n" ]
-    		        query = "".join(content)
-		        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		        s.connect((HOST, PORT))
-		        s.send(query)
-		        s.shutdown(socket.SHUT_WR)
-		        data = s.recv(100000000)
-		        liveservicecriticalstatus = string.split(data)
-		        s.close()
-                        r["liveservicecriticalstatus"] = liveservicecriticalstatus[0]
+			HOST = mklivestatus.HOST
+		        PORT = mklivestatus.PORT
+		        liveservicescritical = 0
+		        liveservicestotal = 0
+    			for h in HOST:
+			    content = [ "GET services\nStats: state = 2\nStats: state != 9999\n" ]
+			    query = "".join(content)
+			    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+			    s.connect((h, PORT))
+			    s.send(query)
+			    s.shutdown(socket.SHUT_WR)
+			    data = s.recv(100000000)
+			    liveservices2 = data.strip()
+			    liveservices = liveservices2.split(";")
+			    s.close()
+			    liveservicescriticalind = int(liveservices[0])
+			    liveservicestotalind = int(liveservices[1])
+			    liveservicescritical = liveservicescritical + liveservicescriticalind
+			    liveservicestotal = liveservicestotal + liveservicestotalind
+                        r["liveservicecriticalstatus"] = liveservicescritical
+                        r["liveservicetotalstatus"] = liveservicestotal
                     except:
                         r["liveservicecriticalstatus"] = "0"
+                        r["liveservicetotalstatus"] = "0"
 
 except:
     import traceback
@@ -37,4 +44,3 @@ except:
 
 splunk.Intersplunk.outputResults( results )
 
-#### THIS FILE MANAGED BY PUPPET ####
