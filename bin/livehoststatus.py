@@ -1,4 +1,4 @@
-# Script to set downtime for a host by accessing MK Livestatus
+# Script to list remote hosts in Nagios by accessing MK Livestatus
 # Required field to be passed to this script from Splunk: host (mk-livestatus/nagios server)
 import socket,string,sys,splunk.Intersplunk,mklivestatus
 
@@ -12,7 +12,6 @@ try:
         if "_raw" in r:
             if "host" in r:
                 try:
-                    HOST = mklivestatus.HOST
                     PORT = mklivestatus.PORT
 		    content = [ "GET hosts\nColumns: name address alias state\n" ]
     		    query = "".join(map(str,content))
