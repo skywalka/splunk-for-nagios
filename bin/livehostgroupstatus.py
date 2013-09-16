@@ -21,14 +21,17 @@ try:
 		    s.shutdown(socket.SHUT_WR)
 		    data = s.recv(100000000)
 		    table = data.split('\n')
-		    livehoststatus_results = table
+		    livehostgroupstatus_results = table
 		    s.close()
-		    for hg in livehoststatus_results:
-		        for mo in re.finditer(r'([^;]*);(.*)', hg):
-		            hostgroupname = "|%s," % mo.group(1)
-		            hostgroupmembers = mo.group(2)
-		            table = re.sub( r'(,|$)' , hostgroupname, hostgroupmembers)
-    		            r["livehoststatus_results"] = table
+		    hosthgs_results = []
+		    for hg in livehostgroupstatus_results:
+			for hgmembers in re.finditer(r'([^;]*);(.*)', hg):
+			    hostgroupname = "|%s," % hgmembers.group(1)
+			    hostgroupmembers = hgmembers.group(2)
+			    hosthg = (re.sub( r'(,|$)' , hostgroupname, hostgroupmembers))
+			    hosthg2 = (re.findall(r'([^,$]+)', hosthg))
+			    hosthgs_results = hosthgs_results + hosthg2
+		    r["livehoststatus_results"] = hosthgs_results
                 except:
                     r["livehoststatus_results"] = "Unknown"
 
