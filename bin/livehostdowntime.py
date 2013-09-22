@@ -1,9 +1,7 @@
 # Script to set downtime for a host by accessing MK Livestatus
 # Required fields to be passed to this script from Splunk: src_host, starttime, endtime, comment
-import socket
+import socket,string,datetime,mklivestatus
 import sys,splunk.Intersplunk
-import string
-import datetime
 
 results = []
 
@@ -15,8 +13,7 @@ try:
         if "_raw" in r:
             if "src_host" in r:
                     try:
-		        HOST = 'nagios1'    # The remote nagios server
-		        PORT = 6557         # The remote port on the nagios server
+		        PORT = mklivestatus.PORT
 			nowepoch = datetime.datetime.now()
 			nowepoch2 = nowepoch.strftime("%s")
 			start = (r["starttime"])
@@ -30,7 +27,7 @@ try:
 		        content = [ "COMMAND [", nowepoch2, "] SCHEDULE_HOST_DOWNTIME;", (r["src_host"]), ";", st2, ";", et2, ";1;0;", duration, ";nagiosadmin;", (r["comment"]), "\n" ]
     		        query = "".join(map(str,content))
 		        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		        s.connect((HOST, PORT))
+		        s.connect(((r["host"]), PORT))
 		        s.send(query)
 		        s.shutdown(socket.SHUT_WR)
 		        data = s.recv(100000000)
