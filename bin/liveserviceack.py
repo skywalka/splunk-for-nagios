@@ -1,7 +1,6 @@
-# Script to acknowledge a hosts' service problem by accessing MK Livestatus
-import socket
+# Script to acknowledge a hosts' service alert by accessing MK Livestatus
+import socket,string,mklivestatus
 import sys,splunk.Intersplunk
-import string
 from datetime import datetime, timedelta
 
 results = []
@@ -15,14 +14,13 @@ try:
             if "src_host" in r:
                 if "name" in r:
                     try:
-		        HOST = 'nagios1'    # The remote nagios server
-		        PORT = 6557              # The remote port on the nagios server
+		        PORT = mklivestatus.PORT
 			nowepoch = datetime.now()
 			nowepoch2 = nowepoch.strftime("%s")
 		        content = [ "COMMAND [", nowepoch2, "] ACKNOWLEDGE_SVC_PROBLEM;", (r["src_host"]), ";", (r["name"]), ";1;1;0;nagiosadmin;", (r["comment"]), "\n" ]
     		        query = "".join(content)
 		        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		        s.connect((HOST, PORT))
+		        s.connect(((r["host"]), PORT))
 		        s.send(query)
 		        s.shutdown(socket.SHUT_WR)
 		        data = s.recv(100000000)
