@@ -1,8 +1,7 @@
-# Script to request a hosts' service sla by accessing MK Livestatus
-import socket
-import sys,splunk.Intersplunk
-import string
+# Script to request service SLA by accessing MK Livestatus
+import socket,string,mklivestatus
 from datetime import datetime, timedelta
+import sys,splunk.Intersplunk
 
 results = []
 
@@ -13,27 +12,26 @@ try:
     for r in results:
         if "_raw" in r:
             if "src_host" in r:
-                if "name" in r:
-                    try:
-		        HOST = 'nagios1'    # The remote nagios server
-		        PORT = 6557              # The remote port on the nagios server
-			N = int(r["daysago"])
-			nowepoch = datetime.now()
-			nowepoch2 = nowepoch.strftime("%s")
-			date_N_days_ago = datetime.now() - timedelta(days=N)
-			date_N_days_ago2 = date_N_days_ago.strftime("%s")
-		        content = [ "GET statehist\nFilter: host_name = ", (r["src_host"]), "\nFilter: service_description = ", (r["name"]), "\nFilter: time >= ", date_N_days_ago2, "\nFilter: time < ", nowepoch2, "\nStats: sum duration_part_ok", "\n" ]
-    		        query = "".join(content)
-		        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		        s.connect((HOST, PORT))
-		        s.send(query)
-		        s.shutdown(socket.SHUT_WR)
-		        data = s.recv(100000000)
-		        liveservicesla = string.split(data)
-		        s.close()
-                        r["liveservicesla"] = liveservicesla[0]
-                    except:
-                        r["liveservicesla"] = "0"
+                try:
+		    PORT = mklivestatus.PORT
+		    N = int(r["daysago"])
+		    nowepoch = datetime.now()
+		    nowepoch2 = nowepoch.strftime("%s")
+		    date_N_days_ago = datetime.now() - timedelta(days=N)
+		    date_N_days_ago2 = date_N_days_ago.strftime("%s")
+		    content = [ "GET statehist\nColumns: host_name service_description\nFilter: time >= ", date_N_days_ago2, "\nFilter: time < ", nowepoch2, "\nStats: sum duration_part_ok", "\n" ]
+    		    query = "".join(content)
+		    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		    s.connect(((r["host"]), PORT))
+		    s.send(query)
+		    s.shutdown(socket.SHUT_WR)
+		    data = s.recv(100000000)
+		    liveservicesla2 = data.strip()
+		    liveservicesla = liveservicesla2.split('\n')
+		    s.close()
+                    r["liveservicesla"] = liveservicesla
+                except:
+                    r["liveservicesla"] = "UNKNOWN"
 
 except:
     import traceback
