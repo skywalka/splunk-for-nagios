@@ -19,7 +19,7 @@ try:
 			nowepoch2 = nowepoch.strftime("%s")
 			date_N_days_ago = datetime.now() - timedelta(days=N)
 			date_N_days_ago2 = date_N_days_ago.strftime("%s")
-			content = [ "GET statehist\nColumns: host_name\nFilter: service_description =\nFilter: time >= ", date_N_days_ago2, "\nFilter: time < ", nowepoch2, "\nStats: sum duration_part_ok", "\n" ]
+			content = [ "GET statehist\nColumns: host_name\nFilter: host_name = ", (r["src_host"]), "\nFilter: service_description =\nFilter: time >= ", date_N_days_ago2, "\nFilter: time < ", nowepoch2, "\nStats: sum duration_part_ok", "\n" ]
 			query = "".join(content)
 			s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 			s.connect(((r["host"]), PORT))
