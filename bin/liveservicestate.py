@@ -1,5 +1,5 @@
 # Script to list remote hosts' service state in Nagios by accessing MK Livestatus
-# Required field to be passed to this script from Splunk: host (mk-livestatus/nagios server)
+# Required fields to be passed to this script from Splunk: host (mk-livestatus/nagios server) & src_host
 import socket,string,sys,splunk.Intersplunk,mklivestatus
 
 results = []
@@ -13,7 +13,7 @@ try:
             if "host" in r:
                 try:
 		    PORT = mklivestatus.PORT
-		    content = [ "GET services\nColumns: host_name description plugin_output state\n" ]
+		    content = [ "GET services\nFilter: host_name = ", (r["src_host"]), "\nColumns: host_name description plugin_output state\n" ]
     		    query = "".join(map(str,content))
 		    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		    s.connect(((r["host"]), PORT))
