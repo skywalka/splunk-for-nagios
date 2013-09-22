@@ -1,8 +1,7 @@
 # Script to list service problems in downtime by accessing MK Livestatus
 # Required fields to be passed to this script from Splunk: src_host, name
-import socket
+import socket,string,mklivestatus
 import sys,splunk.Intersplunk
-import string
 
 results = []
 
@@ -15,12 +14,11 @@ try:
             if "src_host" in r:
                 if "name" in r:
                     try:
-		        HOST = 'nagios1'    # The remote nagios server
-		        PORT = 6557              # The remote port on the nagios server
+		        PORT = mklivestatus.PORT
 		        content = [ "GET services\nFilter: host_name = ", (r["src_host"]), "\nFilter: service_description = ", (r["name"]), "\nAnd: 2\nColumns: host_name service_description state scheduled_downtime_depth host_scheduled_downtime_depth\n" ]
     		        query = "".join(content)
 		        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		        s.connect((HOST, PORT))
+		        s.connect(((r["host"]), PORT))
 		        s.send(query)
 		        s.shutdown(socket.SHUT_WR)
 		        data = s.recv(100000000)
