@@ -1,4 +1,4 @@
-# Script to list Service Groups in Nagios by accessing MK Livestatus
+# Script to list Service Group members in Nagios by accessing MK Livestatus
 # Required field to be passed to this script from Splunk: host (mk-livestatus/nagios server)
 import socket,string,sys,re,splunk.Intersplunk,mklivestatus
 
