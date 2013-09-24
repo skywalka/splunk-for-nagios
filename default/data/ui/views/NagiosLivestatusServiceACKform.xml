@@ -1,0 +1,90 @@
+<view autoCancelInterval="90" isVisible="false" objectMode="SimpleForm" onunloadCancelJobs="true" template="dashboard.html">
+  <label>Livestatus Service Acknowledgement Form search drilldown destination</label>
+  <module name="AccountBar" layoutPanel="appHeader"/>
+  <module name="AppBar" layoutPanel="navigationHeader"/>
+  <module name="Message" layoutPanel="messaging">
+    <param name="filter">*</param>
+    <param name="maxSize">1</param>
+    <param name="clearOnJobDispatch">False</param>
+  </module>
+  <module name="Message" layoutPanel="messaging">
+    <param name="filter">splunk.search.job</param>
+    <param name="maxSize">1</param>
+    <param name="clearOnJobDispatch">True</param>
+  </module>
+  <module name="TitleBar" layoutPanel="viewHeader">
+    <param name="actionsMenuFilter">dashboard</param>
+  </module>
+  <module name="HiddenSearch" layoutPanel="viewHeader">
+    <param name="search">
+      index=nagios nagiosevent="CURRENT SERVICE STATE" src_host="$src_host$" name="$name$" 
+      | head 1 
+      | eval comment="Acknowledged via Splunk" 
+      | liveserviceack 
+      | table src_host name liveserviceack
+  </param>
+    <param name="earliest">-24h</param>
+    <param name="latest">now</param>
+    <module name="ExtendedFieldSearch">
+      <param name="intention">
+        <param name="name">stringreplace</param>
+        <param name="arg">
+          <param name="src_host">
+            <param name="fillOnEmpty">True</param>
+          </param>
+        </param>
+      </param>
+      <param name="replacementMap">
+        <param name="arg">
+          <param name="src_host">
+            <param name="value"></param>
+          </param>
+        </param>
+      </param>
+      <param name="field">src_host</param>
+      <module name="ExtendedFieldSearch">
+        <param name="intention">
+          <param name="name">stringreplace</param>
+          <param name="arg">
+            <param name="name">
+              <param name="fillOnEmpty">True</param>
+            </param>
+          </param>
+        </param>
+        <param name="replacementMap">
+          <param name="arg">
+            <param name="name">
+              <param name="value"></param>
+            </param>
+          </param>
+        </param>
+        <param name="field">name</param>
+        <module name="SubmitButton">
+          <param name="updatePermalink">True</param>
+          <param name="visible">True</param>
+          <param name="allowSoftSubmit">True</param>
+          <param name="label">Search</param>
+          <module name="Paginator" layoutPanel="panel_row1_col1" group="Acknowledged Alerts - Click on the service name to go return to the Livestatus Service Acknowledgement Dashboard">
+            <param name="count">50000</param>
+            <param name="entityName">results</param>
+            <param name="groupLabel">Matching events</param>
+            <module name="EnablePreview">
+              <param name="display">False</param>
+              <param name="enable">True</param>
+          <module name="SimpleResultsTable">
+            <param name="count">50000</param>
+            <param name="drilldown">all</param>
+                  
+		<module name="SimpleDrilldown">
+         	<param name="links">{"name": "/app/SplunkForNagios/NagiosLivestatusServiceACK"}</param>
+        	</module>
+                  
+              </module>
+
+            </module>
+          </module>
+        </module>
+      </module>
+    </module>
+  </module>
+</view>

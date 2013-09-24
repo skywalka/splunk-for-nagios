@@ -16,7 +16,7 @@
   <module name="SearchSelectLister" layoutPanel="mainSearchControls" autoRun="True">
     <param name="search">index="nagios" nagiosevent="CURRENT HOST STATE" src_host="*rtr01" | rex ".+CURRENT HOST STATE\: (?P&lt;device&gt;[^;]*)(?=;)"| stats count by device</param>
     <param name="earliest">-24h</param>
-    <param name="selected">adl1rtr01</param>
+    <param name="selected">changeme</param>
     <param name="label">Select a Hostname:</param>
     <param name="settingToCreate">device_setting</param>
     <param name="searchFieldsToDisplay">
@@ -73,7 +73,7 @@
                 </module>
 
                 <module name="HiddenSearch" layoutPanel="resultsAreaLeft">
-                  <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="Network Traffic $interfacename$" src_host=$nagiosdevice$ | timechart bins=500 max(Bandwidth) as "Bandwidth" avg(outBandwidth) as "TX bps" avg(inBandwidth) as "RX bps"</param>
+                  <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="Network Traffic $interfacename$" src_host=$nagiosdevice$ | timechart span=5m max(Bandwidth) as "Bandwidth" avg(outBandwidth) as "TX bps" avg(inBandwidth) as "RX bps"</param>
                   <module name="HiddenChartFormatter">
                     <param name="chart">line</param>
                     <param name="charting.chart.nullValueMode">connect</param>
@@ -91,7 +91,7 @@
               </module>
 
                 <module name="HiddenSearch" layoutPanel="resultsAreaLeft">
-                  <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="Network Traffic $interfacename$" src_host=$nagiosdevice$ | eval Max = 100 | timechart bins=500 max(Max) as "Maximum (%)", avg(outUsage) as "TX (%)", avg(inUsage) as "RX (%)"</param>
+                  <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="Network Traffic $interfacename$" src_host=$nagiosdevice$ | eval Max = 100 | timechart span=5m max(Max) as "Maximum (%)", avg(outUsage) as "TX (%)", avg(inUsage) as "RX (%)"</param>
                   <module name="HiddenChartFormatter">
                     <param name="chart">line</param>
                     <param name="charting.chart.nullValueMode">connect</param>

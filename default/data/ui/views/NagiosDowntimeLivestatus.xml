@@ -1,5 +1,5 @@
 <view autoCancelInterval="90" isVisible="true" objectMode="SimpleForm" onunloadCancelJobs="true" template="dashboard.html">
-  <label>Host and Service Alerts</label>
+  <label>Livestatus Host and Service Downtime</label>
   <module name="AccountBar" layoutPanel="appHeader"/>
   <module name="AppBar" layoutPanel="navigationHeader"/>
   <module name="Message" layoutPanel="messaging">
@@ -16,7 +16,7 @@
     <param name="actionsMenuFilter">dashboard</param>
   </module>
   <module name="HiddenSearch" layoutPanel="viewHeader">
-    <param name="search">index="nagios" (nagiosevent="SERVICE ALERT" status="WARNING" OR status="CRITICAL") OR (nagiosevent="HOST ALERT" hoststatus="DOWN") src_host="$nagiosdevice$" | table _time src_host, name, severity, reason</param>
+    <param name="search">earliest=-24h index=nagios nagiosevent="CURRENT SERVICE STATE" src_host="$nagiosdevice$" | dedup src_host,name | liveservicelistdowntime | table src_host name liveservicestate liveserviceindowntime liveserviceinhostdowntime | sort src_host,name</param>
     <module name="SearchSelectLister">
       <param name="search">earliest=-24h index="nagios" nagiosevent="CURRENT HOST STATE" | rex ".+CURRENT HOST STATE\: (?P&lt;device&gt;[^;]*)(?=;)"| stats count by device</param>
       <param name="selected">changeme</param>
@@ -28,7 +28,7 @@
           <param name="label">device</param>
         </list>
       </param>
-      <param name="searchWhenChanged">False</param>
+      <param name="searchWhenChanged">True</param>
       <module name="ConvertToIntention">
         <param name="settingToConvert">nagiosdevice_setting</param>
         <param name="intention">
@@ -44,17 +44,19 @@
         <module name="SubmitButton">
           <param name="allowSoftSubmit">True</param>
           <param name="label">Submit</param>
-          <param name="updatePermalink">True</param> 
-    <module name="TimeRangePicker">
-      <param name="searchWhenChanged">True</param>
-      <param name="selected">Last 60 minutes</param>
+          <param name="updatePermalink">True</param>            
       <module name="HiddenFieldPicker">
         <param name="strictMode">True</param>
         <module name="JobProgressIndicator">
           <module name="JobStatus">
-          <module name="SimpleResultsTable" layoutPanel="panel_row1_col1" group="Results">
-            <param name="count">100</param>
-            <param name="groupLabel">Results</param>
+          <module name="SimpleResultsTable" layoutPanel="panel_row1_col1" group="Click on the src_host or service name to Schedule Downtime">
+	    <param name="dataOverlayMode">heatmap</param>
+            <param name="count">500</param>
+            <param name="groupLabel">Click on the src_host or service name to Schedule Downtime</param>
+            <param name="drilldown">all</param>
+		<module name="SimpleDrilldown">
+         	<param name="links">{"name": "/app/SplunkForNagios/NagiosDowntimeLivestatusform?form.name=$row.name$&#38;form.src_host=$row.src_host$", "src_host": "/app/SplunkForNagios/NagiosDowntimeLivestatushostform?form.src_host=$row.src_host$"}</param>
+        	</module>
             </module>
            </module>
           </module>
@@ -63,5 +65,4 @@
         </module>
       </module>
     </module>
-  </module>
 </view>

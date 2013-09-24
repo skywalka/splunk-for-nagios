@@ -1,0 +1,133 @@
+<view autoCancelInterval="90" isVisible="false" objectMode="SimpleForm" onunloadCancelJobs="true" template="dashboard.html">
+  <label>Livestatus Host Downtime Form search drilldown destination</label>
+  <module name="AccountBar" layoutPanel="appHeader"/>
+  <module name="AppBar" layoutPanel="navigationHeader"/>
+  <module name="Message" layoutPanel="messaging">
+    <param name="filter">*</param>
+    <param name="maxSize">1</param>
+    <param name="clearOnJobDispatch">False</param>
+  </module>
+  <module name="Message" layoutPanel="messaging">
+    <param name="filter">splunk.search.job</param>
+    <param name="maxSize">1</param>
+    <param name="clearOnJobDispatch">True</param>
+  </module>
+  <module name="TitleBar" layoutPanel="viewHeader">
+    <param name="actionsMenuFilter">dashboard</param>
+  </module>
+  <module name="HiddenSearch" layoutPanel="viewHeader">
+    <param name="search">index=nagios nagiosevent="CURRENT SERVICE STATE" src_host="$src_host$" | head 1 | dedup src_host | eval starttime="$starttime$" | eval endtime="$endtime$" | eval comment="$comment$" | livehostdowntime | table src_host livehostdowntime</param>
+    <param name="earliest">-3d@d</param>
+    <param name="latest">now</param>
+    <module name="StaticContentSample">
+      <param name="text">Enter a hostname with start time, end time, and a comment in the fields below to schedule downtime in Nagios via MK Livestatus:</param>
+      <module name="Gimp"/>
+      <module name="ExtendedFieldSearch">
+        <param name="q">changeme</param>
+        <param name="intention">
+          <param name="name">stringreplace</param>
+          <param name="arg">
+            <param name="src_host">
+              <param name="default">changeme</param>
+              <param name="fillOnEmpty">True</param>
+            </param>
+          </param>
+        </param>
+        <param name="default">changeme</param>
+        <param name="replacementMap">
+          <param name="arg">
+            <param name="src_host">
+              <param name="value"></param>
+            </param>
+          </param>
+        </param>
+        <param name="field">src_host</param>
+        <module name="ExtendedFieldSearch">
+          <param name="q">2013-09-22 HH:MM:SS</param>
+          <param name="intention">
+            <param name="name">stringreplace</param>
+            <param name="arg">
+              <param name="starttime">
+                <param name="default">2013-09-22 HH:MM:SS</param>
+                <param name="fillOnEmpty">True</param>
+              </param>
+            </param>
+          </param>
+          <param name="default">2013-09-22 HH:MM:SS</param>
+          <param name="replacementMap">
+            <param name="arg">
+              <param name="starttime">
+                <param name="value"></param>
+              </param>
+            </param>
+          </param>
+          <param name="field">starttime</param>
+          <module name="ExtendedFieldSearch">
+            <param name="q">2013-09-22 HH:MM:SS</param>
+            <param name="intention">
+              <param name="name">stringreplace</param>
+              <param name="arg">
+                <param name="endtime">
+                  <param name="default">2013-09-22 HH:MM:SS</param>
+                  <param name="fillOnEmpty">True</param>
+                </param>
+              </param>
+            </param>
+            <param name="default">2013-09-22 HH:MM:SS</param>
+            <param name="replacementMap">
+              <param name="arg">
+                <param name="endtime">
+                  <param name="value"></param>
+                </param>
+              </param>
+            </param>
+            <param name="field">endtime</param>
+            <module name="ExtendedFieldSearch">
+              <param name="q">Downtime Scheduled via Splunk</param>
+              <param name="intention">
+                <param name="name">stringreplace</param>
+                <param name="arg">
+                  <param name="comment">
+                    <param name="default">Downtime Scheduled via Splunk</param>
+                    <param name="fillOnEmpty">True</param>
+                  </param>
+                </param>
+              </param>
+              <param name="default">Downtime Scheduled via Splunk</param>
+              <param name="replacementMap">
+                <param name="arg">
+                  <param name="comment">
+                    <param name="value"></param>
+                  </param>
+                </param>
+              </param>
+              <param name="field">comment</param>
+              <module name="SubmitButton">
+                <param name="visible">True</param>
+                <param name="allowSoftSubmit">True</param>
+                <param name="label">Submit</param>
+                <param name="updatePermalink">True</param> 
+                <module name="Paginator" layoutPanel="panel_row1_col1" group="Host Downtime - Click on 'Downtime Scheduled' to return to the Livestatus Host and Service Downtime Dashboard">
+                  <param name="count">50000</param>
+                  <param name="entityName">results</param>
+                  <param name="groupLabel">Matching events</param>
+                  <module name="EnablePreview">
+                    <param name="display">False</param>
+                    <param name="enable">True</param>
+                    <module name="SimpleResultsTable">
+                      <param name="drilldown">all</param>
+                      <param name="count">50000</param>
+		               <module name="SimpleDrilldown">
+         	            <param name="links">{"livehostdowntime": "/app/SplunkForNagios/NagiosDowntimeLivestatus?form.nagiosdevice=$row.src_host$"}</param>
+        	           </module>
+                      </module>
+                    </module>
+                </module>
+              </module>
+            </module>
+          </module>
+        </module>
+      </module>
+    </module>
+  </module>
+</view>

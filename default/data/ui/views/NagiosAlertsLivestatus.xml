@@ -1,5 +1,5 @@
 <view autoCancelInterval="90" isVisible="true" objectMode="SimpleForm" onunloadCancelJobs="true" template="dashboard.html">
-  <label>Livestatus Alerts Dashboard</label>
+  <label>Livestatus Service Alerts</label>
   <module name="AccountBar" layoutPanel="appHeader"/>
   <module name="AppBar" layoutPanel="navigationHeader"/>
   <module name="Message" layoutPanel="messaging">
@@ -16,16 +16,20 @@
     <param name="actionsMenuFilter">dashboard</param>
   </module>
   <module name="HiddenSearch" layoutPanel="viewHeader">
-    <param name="search">earliest=-24h index=nagios sourcetype=nagios (nagiosevent="CURRENT SERVICE STATE" OR nagiosevent="SERVICE ALERT") name="*" src_host="$nagiosdevice$" | dedup src_host,name | liveservicestate | sort name | table src_host, name, liveservicestate, reason</param>
+    <param name="search">
+      earliest=-24h `ServiceAlert` src_host="$nagiosdevice$"
+      | head 1
+      | liveservicestate
+      | mvexpand liveservicestatus_results 
+      | rex field=liveservicestatus_results "(?&lt;Host&gt;.*);(?&lt;Service&gt;.*);(?&lt;Reason&gt;.*);(?&lt;liveservicestate&gt;.*)" 
+      | search Service="*"
+      | table Host Service liveservicestate Reason  
+      | sort Host,Service
+    </param>
+
     <module name="SearchSelectLister">
-      <param name="staticFieldsToDisplay">
-        <list>
-          <param name="value">*</param>
-          <param name="label">All</param>
-        </list>
-      </param>
       <param name="search">earliest=-24h index="nagios" nagiosevent="CURRENT HOST STATE" | rex ".+CURRENT HOST STATE\: (?P&lt;device&gt;[^;]*)(?=;)"| stats count by device</param>
-      <param name="selected">syd1exc04</param>
+      <param name="selected">changeme</param>
       <param name="label">Select a Hostname</param>
       <param name="settingToCreate">nagiosdevice_setting</param>
       <param name="searchFieldsToDisplay">
@@ -41,7 +45,7 @@
           <param name="name">stringreplace</param>
           <param name="arg">
             <param name="nagiosdevice">
-              <param name="default">syd1exc04</param>
+              <param name="default">changeme</param>
               <param name="fillOnEmpty">True</param>
               <param name="value">$target$</param>
             </param>
@@ -49,7 +53,8 @@
         </param>
         <module name="SubmitButton">
           <param name="allowSoftSubmit">True</param>
-          <param name="label">Search</param>
+          <param name="label">Submit</param>
+          <param name="updatePermalink">True</param>
       <module name="HiddenFieldPicker">
         <param name="strictMode">True</param>
         <module name="JobProgressIndicator">
@@ -67,4 +72,3 @@
       </module>
     </module>
 </view>
-

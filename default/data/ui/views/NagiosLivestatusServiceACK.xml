@@ -1,0 +1,79 @@
+<view autoCancelInterval="90" isVisible="true" objectMode="SimpleDashboard" onunloadCancelJobs="true" refresh="-1" template="dashboard.html">
+  <label>Livestatus Service Acknowledgement</label>
+  <module name="AccountBar" layoutPanel="appHeader"/>
+  <module name="AppBar" layoutPanel="navigationHeader"/>
+  <module name="Message" layoutPanel="messaging">
+    <param name="filter">*</param>
+    <param name="clearOnJobDispatch">False</param>
+    <param name="maxSize">1</param>
+  </module>
+  <module name="Message" layoutPanel="messaging">
+    <param name="filter">splunk.search.job</param>
+    <param name="clearOnJobDispatch">True</param>
+    <param name="maxSize">1</param>
+  </module>
+  <module name="TitleBar" layoutPanel="viewHeader">
+    <param name="actionsMenuFilter">dashboard</param>
+  </module>
+
+  <module name="HiddenSearch" layoutPanel="panel_row1_col1" group="Acknowledged Alerts" autoRun="True">
+      <module name="HiddenSearch" autoRun="True">
+        <param name="search">
+              `HostAlert`
+              | dedup host 
+              | eval acktype=1
+              | liveservicelistack 
+              | mvexpand liveservicelistack
+              | rex field=liveservicelistack "(?&lt;src_host&gt;.*);(?&lt;name&gt;.*);(?&lt;liveservicelistack&gt;.*)"
+              | search name="*"
+              | table src_host name liveservicelistack
+              | sort src_host,name
+        </param>
+        <param name="earliest">rt-24h</param>
+        <param name="latest">rt</param>
+
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="SimpleResultsTable">
+            <param name="count">50000</param>
+            <param name="drilldown">all</param>
+           </module>
+          </module>
+        </module>
+      </module>
+    </module>
+
+  <module name="HiddenSearch" layoutPanel="panel_row1_col2" group="Unacknowledged Alerts - Click on the service name to Acknowledge" autoRun="True">
+      <module name="HiddenSearch" autoRun="True">
+        <param name="search">
+              `HostAlert`
+              | dedup host 
+              | eval acktype=0
+              | liveservicelistack 
+              | mvexpand liveservicelistack
+              | rex field=liveservicelistack "(?&lt;src_host&gt;.*);(?&lt;name&gt;.*);(?&lt;liveservicelistack&gt;.*)"
+              | search name="*"
+              | table src_host name liveservicelistack
+              | sort src_host,name
+        </param>        
+        <param name="earliest">rt-24h</param>
+        <param name="latest">rt</param>
+          
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="SimpleResultsTable">
+            <param name="count">50000</param>
+            <param name="drilldown">all</param>
+		<module name="SimpleDrilldown">
+         	<param name="links">{"name": "/app/SplunkForNagios/NagiosLivestatusServiceACKform?form.name=$row.name$&#38;form.src_host=$row.src_host$"}</param>
+        	</module>
+           </module>
+          </module>
+        </module>
+      </module>
+    </module>
+
+
+</view>

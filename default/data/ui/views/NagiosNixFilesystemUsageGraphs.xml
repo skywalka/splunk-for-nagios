@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <view onunloadCancelJobs="False" autoCancelInterval="100">
-  <!--  autoCancelInterval is set here to 100  -->
   <label>Nagios *nix Filesystem Usage Graphs</label>
   <module name="AccountBar" layoutPanel="appHeader"/>
   <module name="AppBar" layoutPanel="navigationHeader"/>
@@ -16,7 +15,7 @@
   <module name="SearchSelectLister" layoutPanel="mainSearchControls" autoRun="True">
     <param name="search">index="nagios" nagiosevent="CURRENT HOST STATE" | rex ".+CURRENT HOST STATE\: (?P&lt;device&gt;[^;]*)(?=;)"| stats count by device</param>
     <param name="earliest">-24h</param>
-    <param name="selected">syd1inf09</param>
+    <param name="selected">changeme</param>
     <param name="label">Select a Hostname:</param>
     <param name="settingToCreate">device_setting</param>
     <param name="searchFieldsToDisplay">
@@ -40,7 +39,7 @@
          <param name="settingToCreate">filesystem_setting</param>
         <param name="label">Select a Filesystem:</param>
         <param name="applyOuterIntentionsToInternalSearch">True</param>
-        <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="Disk" src_host=$deviceToken$ | rex max_match=1000 field=_raw "(?&lt;filesystem&gt;\/[^= ]*)=" | stats count by filesystem</param>
+        <param name="search">index="nagios" sourcetype="nagiosserviceperf" src_host=$deviceToken$ | rex max_match=1000 field=_raw "(?&lt;filesystem&gt;\/[^= ]*)=" | stats count by filesystem</param>
         <param name="earliest">-24h</param>
         <param name="searchFieldsToDisplay">
           <list>
@@ -59,11 +58,12 @@
             </param>
           </param>
           <module name="TimeRangePicker">
-            <param name="selected">Last 4 hours</param>
+            <param name="selected">Last 24 hours</param>
             <param name="searchWhenChanged">True</param>
             <module name="SubmitButton">
               <param name="allowSoftSubmit">True</param>
-              <param name="label">Search</param>
+              <param name="label">Submit</param>
+              <param name="updatePermalink">True</param> 
               <module name="Message" layoutPanel="graphArea">
                 <param name="filter">splunk.search.job</param>
                 <param name="clearOnJobDispatch">True</param>
@@ -72,7 +72,7 @@
                   <param name="label">Filesystem Usage over time</param>
                 </module>
                 <module name="HiddenSearch" layoutPanel="resultsAreaLeft">
-                  <param name="search">index="nagios" sourcetype="nagiosserviceperf" name="Disk" src_host=$deviceToken$ | rex max_match=1 field=_raw "\Q$filesystemToken$=\E(?&lt;fs_used&gt;[^M]*)MB;[0-9]+;[0-9]+;[0-9]+;(?&lt;fs_total&gt;[0-9]+)" | timechart bins=500 avg(fs_total) as "Total $filesystemToken$",avg(fs_used) as "Used $filesystemToken$"</param>
+                  <param name="search">index="nagios" sourcetype="nagiosserviceperf" src_host=$deviceToken$ | rex max_match=1 field=_raw "\Q$filesystemToken$=\E(?&lt;fs_used&gt;[^M]*)MB;[0-9]+;[0-9]+;[0-9]+;(?&lt;fs_total&gt;[0-9]+)" | timechart span=5m avg(fs_total) as "Total $filesystemToken$",avg(fs_used) as "Used $filesystemToken$"</param>
                   <module name="HiddenChartFormatter">
                     <param name="chart">area</param>
                     <param name="charting.chart.nullValueMode">connect</param>
@@ -96,4 +96,3 @@
   </module>
 
 </view>
-
