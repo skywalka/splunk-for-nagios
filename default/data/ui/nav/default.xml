@@ -1,12 +1,25 @@
 <nav>
     <view name="about" default='true' />
     <view name="flashtimeline" />
-    <view name="Nagios" />
-    <view name="NagiosLivestatus" />
-    <view name="alert_formsearch" />
-    <view name="NagiosAlertsLivestatus" />
+    <collection label="Native Dashboards">
+     <view name="Nagios" />
+     <view name="alert_formsearch" />
+     <view name="NagiosHostAvailability" />
+     <view name="NagiosTop100Alerts" />
+    </collection>        
+    <collection label="Livestatus Dashboards">
+     <view name="NagiosLivestatus" />
+     <view name="NagiosAlertsLivestatus" />
+     <view name="NagiosLivestatusHostSLA" />
+     <view name="NagiosLivestatusServiceSLA" />
+     <view name="NagiosLivestatusHostGroups" />        
+     <view name="NagiosLivestatusServiceGroups" />                
+     <view name="NagiosLivestatusServiceACK" />
+     <view name="NagiosDowntimeLivestatus" />
+    </collection>
     <collection label="Performance Dashboards">
         <view name="NagiosLinuxPerformanceGraphs"/>
+        <view name="NagiosLinuxPuppetPerformanceGraphs"/>
         <view name="NagiosNixFilesystemUsageGraphs"/>
         <view name="NagiosAIXPerformanceGraphs"/>
         <view name="NagiosAIXFilesystemUsageGraphs"/>
@@ -22,11 +35,11 @@
         <view name="NagiosCiscoNetworkActivityGraphs"/>
         <view name="NagiosCiscoNetworkMultiInterfaceActivityGraphs"/>
         <divider />
-        <view name="OMDLinuxPerformanceGraphs"/>
-        <view name="OMDNixFilesystemUsageGraphs"/>
-        <divider />
         <view name="NagiosSplunkLicenseUsageGraph"/>
     </collection>
+  <collection label="Other Dashboards">
+    <view source="unclassified" />
+  </collection>    
     <collection label="Searches &amp; Reports">
         <collection label="Reports">
             <saved source="unclassified" match="report" />
