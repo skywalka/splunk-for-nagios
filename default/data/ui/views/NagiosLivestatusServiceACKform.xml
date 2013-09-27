@@ -64,7 +64,7 @@
           <param name="visible">True</param>
           <param name="allowSoftSubmit">True</param>
           <param name="label">Search</param>
-          <module name="Paginator" layoutPanel="panel_row1_col1" group="Acknowledged Alerts - Click on the service name to go return to the Livestatus Service Acknowledgement Dashboard">
+          <module name="Paginator" layoutPanel="panel_row1_col1" group="Acknowledged Alerts - Click on the service name to return to the Livestatus Service Acknowledgement Dashboard">
             <param name="count">50000</param>
             <param name="entityName">results</param>
             <param name="groupLabel">Matching events</param>
