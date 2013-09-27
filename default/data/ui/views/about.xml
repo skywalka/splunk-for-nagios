@@ -24,7 +24,7 @@
         <module name="HiddenChartFormatter">
           <param name="chart">bar</param>
           <param name="primaryAxisTitle.text">Sourcetypes</param>
-          <module name="FlashChart">
+          <module name="JSChart">
             <module name="ConvertToDrilldownSearch">
               <module name="ViewRedirector">
                 <param name="viewTarget">flashtimeline</param>

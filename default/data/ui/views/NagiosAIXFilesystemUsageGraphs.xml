@@ -82,7 +82,7 @@
                     <param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
                     <param name="charting.legend.masterLegend"></param>
                     <module name="JobProgressIndicator"/>
-                    <module name="FlashChart">
+                    <module name="JSChart">
                       <param name="width">100%</param>
                       <param name="height">200px</param>
                     </module>

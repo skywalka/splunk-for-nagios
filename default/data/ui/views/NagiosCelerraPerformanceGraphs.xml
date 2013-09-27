@@ -75,7 +75,7 @@
         <module name="HiddenChartFormatter">
           <param name="chart">bar</param>
           <param name="primaryAxisTitle.text">Services</param>
-          <module name="FlashChart">
+          <module name="JSChart">
             <module name="ConvertToDrilldownSearch">
               <module name="ViewRedirector">
                 <param name="viewTarget">flashtimeline</param>
@@ -102,7 +102,7 @@
                         <param name="charting.chart.nullValueMode">connect</param>
     			<param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
     			<param name="charting.legend.masterLegend"></param>
-                        <module name="FlashChart">
+                        <module name="JSChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
                             <module name="ViewRedirector">
@@ -138,7 +138,7 @@
                         <param name="charting.chart.nullValueMode">connect</param>
     			<param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
     			<param name="charting.legend.masterLegend"></param>
-                        <module name="FlashChart">
+                        <module name="JSChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
                             <module name="ViewRedirector">
@@ -171,7 +171,7 @@
                         <param name="charting.chart.nullValueMode">connect</param>
     			<param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
     			<param name="charting.legend.masterLegend"></param>
-                        <module name="FlashChart">
+                        <module name="JSChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
                             <module name="ViewRedirector">
@@ -204,7 +204,7 @@
                         <param name="charting.chart.nullValueMode">connect</param>
     			<param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
     			<param name="charting.legend.masterLegend"></param>
-                        <module name="FlashChart">
+                        <module name="JSChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
                             <module name="ViewRedirector">
@@ -237,7 +237,7 @@
                         <param name="charting.chart.nullValueMode">connect</param>
     			<param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
     			<param name="charting.legend.masterLegend"></param>
-                        <module name="FlashChart">
+                        <module name="JSChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
                             <module name="ViewRedirector">
@@ -270,7 +270,7 @@
                         <param name="charting.chart.nullValueMode">connect</param>
     			<param name="charting.seriesColors">[0xBF6400,0xEA8F00,0xF9D984]</param>
     			<param name="charting.legend.masterLegend"></param>
-                        <module name="FlashChart">
+                        <module name="JSChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
                             <module name="ViewRedirector">
@@ -303,7 +303,7 @@
                         <param name="charting.chart.nullValueMode">connect</param>
     			<param name="charting.seriesColors">[0xF51D30]</param>
     			<param name="charting.legend.masterLegend"></param>
-                        <module name="FlashChart">
+                        <module name="JSChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
                             <module name="ViewRedirector">
@@ -335,7 +335,7 @@
                         <param name="charting.chart">column</param>
     			<param name="charting.seriesColors">[0xFF0000]</param>
     			<param name="charting.legend.masterLegend"></param>
-                        <module name="FlashChart">
+                        <module name="JSChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
                             <module name="ViewRedirector">
@@ -368,7 +368,7 @@
                         <param name="charting.chart.nullValueMode">connect</param>
     			<param name="charting.seriesColors">[0x000000]</param>
     			<param name="charting.legend.masterLegend"></param>
-                        <module name="FlashChart">
+                        <module name="JSChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
                             <module name="ViewRedirector">
@@ -408,7 +408,7 @@
                         <param name="charting.chart.nullValueMode">connect</param>
                         <param name="charting.seriesColors">[0x000000,0x00CF00]</param>
                         <param name="charting.legend.masterLegend"></param>
-                        <module name="FlashChart">
+                        <module name="JSChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
                             <module name="ViewRedirector">
@@ -442,7 +442,7 @@
                         <param name="charting.chart.nullValueMode">connect</param>
     			<param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
     			<param name="charting.legend.masterLegend"></param>
-                        <module name="FlashChart">
+                        <module name="JSChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
                             <module name="ViewRedirector">
@@ -475,7 +475,7 @@
                         <param name="charting.chart.nullValueMode">connect</param>
     			<param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
     			<param name="charting.legend.masterLegend"></param>
-                        <module name="FlashChart">
+                        <module name="JSChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
                             <module name="ViewRedirector">
@@ -508,7 +508,7 @@
                         <param name="charting.chart.nullValueMode">connect</param>
     			<param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
     			<param name="charting.legend.masterLegend"></param>
-                        <module name="FlashChart">
+                        <module name="JSChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
                             <module name="ViewRedirector">
@@ -541,7 +541,7 @@
                         <param name="charting.chart.nullValueMode">connect</param>
     			<param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
     			<param name="charting.legend.masterLegend"></param>
-                        <module name="FlashChart">
+                        <module name="JSChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
                             <module name="ViewRedirector">
@@ -574,7 +574,7 @@
                         <param name="charting.chart.nullValueMode">connect</param>
     			<param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
     			<param name="charting.legend.masterLegend"></param>
-                        <module name="FlashChart">
+                        <module name="JSChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
                             <module name="ViewRedirector">
@@ -607,7 +607,7 @@
                         <param name="charting.chart.nullValueMode">connect</param>
     			<param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
     			<param name="charting.legend.masterLegend"></param>
-                        <module name="FlashChart">
+                        <module name="JSChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
                             <module name="ViewRedirector">
@@ -640,7 +640,7 @@
                         <param name="charting.chart.nullValueMode">connect</param>
     			<param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
     			<param name="charting.legend.masterLegend"></param>
-                        <module name="FlashChart">
+                        <module name="JSChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
                             <module name="ViewRedirector">
@@ -673,7 +673,7 @@
                         <param name="charting.chart.nullValueMode">connect</param>
     			<param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
     			<param name="charting.legend.masterLegend"></param>
-                        <module name="FlashChart">
+                        <module name="JSChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
                             <module name="ViewRedirector">
@@ -706,7 +706,7 @@
                         <param name="charting.chart.nullValueMode">connect</param>
     			<param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
     			<param name="charting.legend.masterLegend"></param>
-                        <module name="FlashChart">
+                        <module name="JSChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
                             <module name="ViewRedirector">
@@ -739,7 +739,7 @@
                         <param name="charting.chart.nullValueMode">connect</param>
     			<param name="charting.seriesColors">[0x002A97,0xF51D30]</param>
     			<param name="charting.legend.masterLegend"></param>
-                        <module name="FlashChart">
+                        <module name="JSChart">
                           <param name="width">100%</param>
                           <module name="ConvertToDrilldownSearch">
                             <module name="ViewRedirector">
