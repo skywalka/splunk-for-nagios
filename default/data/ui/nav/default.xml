@@ -1,7 +1,7 @@
 <nav>
     <view name="about" default='true' />
     <view name="flashtimeline" />
-    <collection label="Native Dashboards">
+    <collection label="Status Dashboards">
      <view name="Nagios" />
      <view name="alert_formsearch" />
      <view name="NagiosHostAvailability" />
@@ -10,10 +10,10 @@
     <collection label="Livestatus Dashboards">
      <view name="NagiosLivestatus" />
      <view name="NagiosAlertsLivestatus" />
+     <view name="NagiosLivestatusHostGroups" />        
+     <view name="NagiosLivestatusServiceGroups" />         
      <view name="NagiosLivestatusHostSLA" />
      <view name="NagiosLivestatusServiceSLA" />
-     <view name="NagiosLivestatusHostGroups" />        
-     <view name="NagiosLivestatusServiceGroups" />                
      <view name="NagiosLivestatusServiceACK" />
      <view name="NagiosDowntimeLivestatus" />
     </collection>
