@@ -53,7 +53,7 @@
               | liveservicelistack 
               | mvexpand liveservicelistack
               | rex field=liveservicelistack "(?&lt;src_host&gt;.*);(?&lt;name&gt;.*);(?&lt;liveservicelistack&gt;.*)"
-              | search name="*"
+              | search name="*" NOT name="DOWN"
               | table src_host name liveservicelistack
               | sort src_host,name
         </param>        
