@@ -372,7 +372,7 @@ owner = admin
 
 [views/NagiosLinuxPerformanceGraphs]
 version = 5.0.3
-modtime = 1379905154.736949000
+modtime = 1380327548.890706000
 
 [views/NagiosLinuxPerformanceGraphs2]
 access = read : [ * ], write : [ admin ]
