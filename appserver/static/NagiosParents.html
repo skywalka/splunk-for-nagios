@@ -1,0 +1,266 @@
+{% extends "toolkit_controls_base.html" %}
+
+{% load splunkmvc %}
+{% load splunk_wftoolkit %}
+
+5: {% block title %}Force-Directed Graph - Web Framework Toolkit{% endblock title %}
+
+{% block css %}
+{{block.super}}
+<style type="text/css">
+#force-directed{
+    height: 500px;
+}
+.splunk-textinput input{
+    width: 100px;
+}
+</style>
+{% endblock css %}
+
+    {% block heading %}Force-Directed Graph{% endblock heading %}
+    {% block explanation %}Force-Directed Graph.{% endblock explanation %}
+
+    {% block example %}
+        {% forcedirected id="force-directed" managerid="search1" %}
+    {% endblock example %}
+
+    {% block usage %}
+    <p>The Force-Directed Graph displays information about connectivity and clustering between nodes in a network. This view displays nodes and their connections to other nodes and lays them out based on a physical simulation. Note that because the layout is based on a simulation, the final result is not guaranteed to be the same every time. 
+    </p>
+        <ul>
+            <li>Require path: <code>splunk_wftoolkit/components/forcedirected/forcedirected</code></li>
+            <li>The Force-Directed Graph is best for visualizing interconnected data where clustering is interesting.</li>
+        </ul>
+        <h4>Example searches</h4>
+        <div><ul>
+            <li>| inputlookup faa.demo.csv | head 200 | stats count by OriginCityName, DestCityName, DestStateName | sort count</li>
+        </ul>
+        </div>
+        <h4>Properties</h4>
+        <table class="table table-striped table-bordered">
+            <tr>
+                <td><b>Name</b></td>
+                <td><b>Type</b></td>
+                <td><b>Default</b></td>
+                <td><b>Description</b></td>
+                <td><b>Try it</b></td>
+            </tr>
+            <tr>
+                <td><code>managerid</code></td>
+                <td><b>string</b></td>
+                <td><b>null</b></td>
+                <td>The search manager bound to the chart.</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td><code>panAndZoom</code></td>
+                <td><b>bool</b></td>
+                <td><b>true</b></td>
+
+                <td>Indicates whether the graph layout is zoomable.</td>
+
+                <td>
+                {% checkbox id="zoom-cb" default=True %}
+                </td>
+            </tr>
+            <tr>
+                <td><code>directional</code></td>
+                <td><b>bool</b></td>
+                <td><b>true</b></td>
+                <td>Indicates whether the graph has directionality (arrows).</td>
+                <td>
+                    {% checkbox id="directional-cb" default=True %}
+                </td>
+            </tr>
+            <tr>
+                <td><code>charges</code></td>
+                <td><b>number</b></td>
+                <td><b>-500</b></td>
+                <td>Sets the charge for the physics simulation.</td>
+                <td>
+                    {% textinput id="charge-tb" default="-500" %}
+                </td>
+            </tr>
+            <tr>
+                <td><code>gravity</code></td>
+                <td><b>number</b></td>
+                <td><b>0.2</b></td>
+                <td>Sets the gravity for the physics simulation. A larger number causes graph nodes to cluster closer together.</td>
+                <td>
+                    {% textinput id="gravity-tb" default="0.2" %}
+                </td>
+            </tr>
+            <tr>
+                <td><code>linkDistance</code></td>
+                <td><b>number</b></td>
+                <td><b>15</b></td>
+                <td>Sets the initial link distance for the physics simulation. A larger number pushes the nodes farther apart.</td>
+                <td>
+                    {% textinput id="link-tb" default="15" %}
+                </td>
+            </tr>
+            <tr>
+                <td><code>swoop</code></td>
+                <td><b>bool</b></td>
+                <td><b>false</b></td>
+                <td>Indicates whether to display links as straight or curved lines. When false, graph links are straight lines.</td>
+                <td>
+                    {% checkbox id="swoop-cb" default=False %}
+                </td>
+            </tr>
+            <tr>
+                <td><code>isStatic</code></td>
+                <td><b>bool</b></td>
+                <td><b>true</b></td>
+                <td>Indicates whether the initial rendering is static or dynamic. When true, the graph initially renders in a still state. When false, the graph is dynamic.</td>
+                <td>
+                    {% checkbox id="isStatic-cb" default=True %}
+                </td>
+            </tr>
+        </table>
+        <h4>Events</h4>
+        <table class="table table-striped table-bordered">
+            <tr>
+                <td><b>Name</b></td>
+                <td><b>Properties</b></td>
+            </tr>
+            <tr>
+                <td><code>click:link</code></td>
+                <td>
+                    <ul>
+                        <li>
+                            <code>source</code>: The source node name.
+                        </li>
+                        <li>
+                            <code>sourceGroup</code>: The source node's group.
+                        </li>
+                        <li>
+                            <code>target</code>: The target node name.
+                        </li>
+                        <li>
+                            <code>targetGroup</code>: The target node's group.
+                        </li>
+                        <li>
+                            <code>value</code>: The link value.
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td><code>click:node</code></td>
+                <td>
+                    <ul>
+                        <li>
+                            <code>name</code>: The node name.
+                        </li>
+                        <li>
+                            <code>value</code>: The node value.
+                        </li>
+                        <li>
+                            <code>group</code>: The node group.
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    {% endblock usage %}
+
+{% block codesample %}
+    require([ 
+        "splunkjs/ready!", 
+        "jquery",
+        "splunk_wftoolkit/components/forcedirected/forcedirected",
+    ], 
+    function(mvc, $, ForceDirected) {
+        var forcegraph = new ForceDirected({
+            'id' : 'example',
+            'managerid' : 'example-search',
+            'el' : $('#example-chart')
+        }).render();
+    });
+{% endblock codesample %}
+
+{% block managers %}
+
+    {%  searchmanager id="search1"
+            search='| inputlookup parents.csv | search src_host=* parents=* host=* | stats count by src_host,parents,host | sort count'
+            cache=True
+    %}
+
+{% endblock managers %}
+
+{% block js %}
+{{block.super}}
+<script type="text/javascript">
+    require([
+        "splunkjs/ready!", 
+        "splunkjs/mvc/utils",
+        "underscore",
+        "jquery",
+        "splunkjs/mvc/dropdownview"
+        ], 
+        function(
+            mvc, 
+            utils,
+            _, 
+            $,
+            DropdownView
+        ){
+            var force = mvc.Components.getInstance("force-directed");
+            var directionalcb = mvc.Components.getInstance("directional-cb");
+            var zoomcb = mvc.Components.getInstance("zoom-cb");
+            var swoopcb = mvc.Components.getInstance("swoop-cb");
+            var isStaticcb = mvc.Components.getInstance("isStatic-cb");
+            var linktb = mvc.Components.getInstance("link-tb");
+            var gravitytb = mvc.Components.getInstance("gravity-tb");
+            var chargetb = mvc.Components.getInstance("charge-tb");
+            
+            // Checkboxes
+            directionalcb.on("change", function(){
+                force.settings.set("directional", directionalcb.val());
+            });
+            zoomcb.on("change", function(){
+                force.settings.set("panAndZoom", zoomcb.val());
+            });
+            swoopcb.on("change", function(){
+                force.settings.set("swoop", swoopcb.val());
+            });
+            isStaticcb.on("change", function(){
+                force.settings.set("isStatic", isStaticcb.val());
+            });
+
+            // Textboxes
+            var errorMsg = "Enter a number"
+            linktb.on("change", function(){
+                checkTextInput(linktb, "linkDistance");
+            });
+            gravitytb.on("change", function(){
+                checkTextInput(gravitytb, "gravity");
+            });
+            chargetb.on("change", function(){
+                checkTextInput(chargetb, "charges");
+            });
+
+            // Texbox validator
+            function checkTextInput(tb, setting){
+                var numberValue = parseFloat(tb.val());
+                if(numberValue){
+                    force.settings.set(setting, numberValue);
+                }
+                else{
+                    tb.val("Enter a number")
+                }
+            }       
+            
+            force.on("click:link", function(e) {
+                console.log("LINK CLICK", e);
+            });   
+            
+            force.on("click:node", function(e) {
+                console.log("NODE CLICK", e);
+            });
+        });
+</script>     
+
+
+{% endblock js %}
