@@ -106,7 +106,12 @@
       </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row2_col1" group="CPU Usage" autoRun="False">
-              <param name="search">timechart span=5m avg(CpuSystem) as System,avg(CpuUser) as User,avg(CpuNice) as Nice,avg(CpuIowait) as Wait</param>
+              <param name="search">timechart span=5m avg(CpuUser) as User, 
+                                                     avg(CpuSystem) as System,
+                                                     avg(CpuIowait) as Wait,
+                                                     avg(CpuNice) as Nice
+                                   | fields _time, Nice, Wait, System, User
+               </param>
               <param name="groupLabel">CPU Usage</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -119,7 +124,7 @@
                         <param name="charting.chart">area</param>
                         <param name="charting.chart.stackMode">stacked</param>
                         <param name="charting.chart.nullValueMode">connect</param>
-    			<param name="charting.seriesColors">[0xFF0000,0x0000FF,0x00FF00,0xFF00FF]</param>
+    			<param name="charting.seriesColors">[0x00FF00,0xFF00FF,0xFF0000,0x0000FF]</param>                          
     			<param name="charting.legend.masterLegend"></param>
                         <module name="JSChart">
                           <param name="width">100%</param>
@@ -176,7 +181,7 @@
             </module>
 
             <module name="HiddenPostProcess" layoutPanel="panel_row3_col1" group="Memory Usage" autoRun="False">
-              <param name="search">eval FreeMB = (freekb - cacheskb)/1024 | eval UsedMB = usedkb/1024 | eval CachesMB = cacheskb/1024 | timechart span=5m avg(UsedMB) as "Used (MB)", avg(CachesMB) as "Cache (MB)", avg(FreeMB) as "Free (MB)"</param>
+              <param name="search">eval FreeMB = (freekb - cacheskb)/1024 | eval UsedMB = usedkb/1024 | eval CachesMB = cacheskb/1024 | timechart span=5m avg(FreeMB) as "Free (MB)", avg(CachesMB) as "Cache (MB)", avg(UsedMB) as "Used (MB)"</param>
               <param name="groupLabel">Memory Usage</param>
               <module name="ViewstateAdapter">
                 <module name="HiddenFieldPicker">
@@ -189,7 +194,7 @@
                         <param name="charting.chart">area</param>
                         <param name="charting.chart.stackMode">stacked</param>
                         <param name="charting.chart.nullValueMode">connect</param>
-    			<param name="charting.seriesColors">[0xFFF200,0x00CF00,0x00FF00]</param>
+    			<param name="charting.seriesColors">[0x00FF00,0x00CF00,0xFFF200]</param>
     			<param name="charting.legend.masterLegend"></param>
                         <module name="JSChart">
                           <param name="width">100%</param>
