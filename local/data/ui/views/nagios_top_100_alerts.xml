@@ -1,0 +1,23 @@
+<form>
+  <label>Top 100 Alerts</label>
+  
+  <fieldset submitButton="true" autoRun="true">
+    <input type="time" searchWhenChanged="true">
+      <label>Time Range:</label>
+      <default>
+        <earliest>-7d@d</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  
+  <row>
+    <panel>
+      <table>
+        <title>Alerts</title>
+        <search ref="Nagios - Top 100 Alerts"></search>
+        <option name="count">20</option>
+      </table>
+    </panel>
+  </row>
+</form>

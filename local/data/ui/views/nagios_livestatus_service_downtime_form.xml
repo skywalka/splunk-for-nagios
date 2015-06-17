@@ -1,0 +1,57 @@
+<form>
+  <label>Livestatus Service Downtime Form</label>
+  
+  <fieldset submitButton="true" autoRun="false">
+    <input type="dropdown" token="hostname" searchWhenChanged="false">
+      <label>Select a Hostname:</label>
+      <search>
+        <query>`nagios_index` `nagios_hosts_sourcetype` 
+               | stats count by display_name</query>
+        <earliest>-4h@h</earliest>
+        <latest>now</latest>
+      </search>
+      <fieldForLabel>display_name</fieldForLabel>
+      <fieldForValue>display_name</fieldForValue>
+      <default>localhost</default>
+    </input>
+    
+    <input type="text" token="service" searchWhenChanged="false">
+      <label>Service:</label>
+      <default>SSH</default>
+      <seed>SSH</seed>
+    </input>
+    
+    <input type="text" token="starttime" searchWhenChanged="false">
+      <label>Start Time:</label>
+      <default>2015-06-17 HH:MM:SS</default>
+      <seed>2015-06-17 HH:MM:SS</seed>
+    </input>
+    
+    <input type="text" token="endtime" searchWhenChanged="false">
+      <label>End Time:</label>
+      <default>2015-06-17 HH:MM:SS</default>
+      <seed>2015-06-17 HH:MM:SS</seed>
+    </input>
+    
+    <input type="text" token="comment" searchWhenChanged="false">
+      <label>Comment:</label>
+      <default>Downtime Scheduled by Splunk</default>
+      <seed>Downtime Scheduled by Splunk</seed>
+    </input>
+  </fieldset>
+  
+  <row>
+    <panel>
+      <table>
+        <search>
+          <query>| stats count                  
+                 | liveservicedowntime $hostname$ "$service$" "$starttime$" "$endtime$" "$comment$" 
+                 | fields - count</query>
+          <earliest></earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+</form>

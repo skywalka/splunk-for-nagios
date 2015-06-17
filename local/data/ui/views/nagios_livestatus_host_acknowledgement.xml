@@ -1,0 +1,52 @@
+<dashboard>
+  <label>Livestatus Host Acknowledgement</label>
+  <row>
+    <panel>
+      <table>
+        <title>Acknowledged Alerts</title>
+        <search>
+          <query>| stats count                  
+                 | livehostlistack 1
+                 | mvexpand livehostlistack                  
+                 | rex field=livehostlistack "(?&lt;host_name&gt;.*);(?&lt;livehostlistack&gt;.*)"                  
+                 | search host_name="*"     
+                 | table host_name livehostlistack                  
+                 | sort host_name
+          </query>
+          <earliest></earliest>
+          <latest></latest>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.auto.interval">30</option>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <title>Unacknowledged Alerts - Click on the host_name to Acknowledge</title>
+        <search>
+          <query>| stats count                  
+                 | livehostlistack 0
+                 | mvexpand livehostlistack                  
+                 | rex field=livehostlistack "(?&lt;host_name&gt;.*);(?&lt;livehostlistack&gt;.*)"                  
+                 | search host_name="*"     
+                 | table host_name livehostlistack                  
+                 | sort host_name
+          </query>
+          <earliest></earliest>
+          <latest></latest>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">row</option>
+        <option name="refresh.auto.interval">30</option>
+        <drilldown target="_blank">
+          <link>
+            <![CDATA[
+                   /app/SplunkForNagios/nagios_livestatus_host_acknowledgement_form?form.host_name=$row.host_name$&form.global_time.earliest=$earliest$&form.global_time.latest=$latest$
+          ]]>
+          </link>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+</dashboard>

@@ -1,0 +1,51 @@
+<form>
+  <label>Livestatus Host and Service Downtime</label>
+  
+  <fieldset submitButton="true" autoRun="true">
+    <input type="dropdown" token="hostname" searchWhenChanged="true">
+      <label>Select a Hostname:</label>
+      <search>
+        <query>`nagios_index` `nagios_hosts_sourcetype` 
+               | stats count by display_name</query>
+        <earliest>-4h@h</earliest>
+        <latest>now</latest>
+      </search>
+      <fieldForLabel>display_name</fieldForLabel>
+      <fieldForValue>display_name</fieldForValue>
+      <default>localhost</default>
+    </input>
+  </fieldset>
+  
+  <row>
+    <panel>
+      <table>
+        <title>Results</title>
+        <search>
+          <query>| stats count 
+                 | liveservicelistdowntime $hostname$
+                 | table liveservicelistdowntime
+                 | mvexpand liveservicelistdowntime
+                 | rex field=liveservicelistdowntime "(?&lt;host_name&gt;.*),(?&lt;service&gt;.*),(?&lt;liveservicestate&gt;.*),(?&lt;liveserviceindowntime&gt;.*),(?&lt;liveserviceinhostdowntime&gt;.*)"
+                 | table host_name service liveservicestate liveserviceindowntime liveserviceinhostdowntime 
+                 | sort host_name,service
+          </query>
+          <earliest></earliest>
+          <latest></latest>
+        </search>
+        <option name="count">20</option>
+        <drilldown target="_blank">
+          <link field="host_name">
+            <![CDATA[
+                   /app/SplunkForNagios/nagios_livestatus_host_downtime_form?form.hostname=$row.host_name$&form.global_time.earliest=$earliest$&form.global_time.latest=$latest$
+          ]]>
+          </link>
+          <link field="service">
+            <![CDATA[
+                   /app/SplunkForNagios/nagios_livestatus_service_downtime_form?form.hostname=$row.host_name$&form.service=$row.service$&form.global_time.earliest=$earliest$&form.global_time.latest=$latest$
+          ]]>
+          </link>
+        </drilldown>        
+      </table>
+    </panel>
+  </row>
+</form>

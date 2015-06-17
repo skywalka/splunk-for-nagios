@@ -1,0 +1,37 @@
+<form script="autodiscover.js, viz_calendarheatmap.js">
+  <label>Livestatus Calendar Heatmap</label>
+  
+  <row>
+    <panel>
+      <input type="time" searchWhenChanged="true">
+        <default>
+          <earliest>-72h@h</earliest>
+          <latest>now</latest>
+        </default>
+      </input>
+      
+      <html>
+        <h2>Nagios Alerts by Day and Hour</h2>
+        <div id="calendarheatmap_search" class="splunk-manager" data-require="splunkjs/mvc/searchmanager" data-options='{
+          "search": "`nagios_index` `nagios_core_sourcetype` eventname=\"SERVICE ALERT\" OR eventname=\"HOST ALERT\" | timechart span=1h count",
+          "preview": true,
+          "earliest_time": {
+            "type": "token_safe",
+            "value": "$$earliest$$"
+          },
+          "latest_time": {
+            "type": "token_safe",
+            "value": "$$latest$$"
+          }
+        }'>
+        </div>
+        <div id="calendarheatmap" class="splunk-view" data-require="app/SplunkForNagios/components/calendarheatmap/calendarheatmap" data-options='{
+          "managerid": "calendarheatmap_search",
+          "domain": "day",
+          "subDomain": "hour"
+        }'>
+        </div>
+      </html>
+    </panel>
+  </row>
+</form>

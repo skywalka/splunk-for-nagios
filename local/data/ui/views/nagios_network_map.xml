@@ -1,0 +1,32 @@
+<form script="autodiscover.js">
+  <label>Livestatus Network Map</label>
+  
+  <row>
+    <panel>
+      <html>
+        <h2>Force-Directed Graph</h2>
+        <div id="forcedirected_search" class="splunk-manager" data-require="splunkjs/mvc/searchmanager" data-options='{
+          "search": "| stats count | liveparents | mvexpand liveparents_results | rex field=liveparents_results \"(?&lt;host_name&gt;[^;].*);(?&lt;service&gt;[^;].*);(?&lt;parents&gt;.*)\" | eval parents=split(parents, \",\") | mvexpand parents | stats count by host_name parents",
+          "preview": true,
+          "earliest_time": {
+            "type": "token_safe",
+            "value": "$$earliest$$"
+          },
+          "latest_time": {
+            "type": "token_safe",
+            "value": "$$latest$$"
+          }
+        }'>
+        </div>
+        <div id="forcedirected" class="splunk-view" data-require="app/SplunkForNagios/components/forcedirected/forcedirected" data-options='{
+          "managerid": "forcedirected_search",
+          "height": "500px",
+          "panAndZoom": false,
+          "isStatic": false
+        }'>
+        </div>
+      </html>
+
+    </panel>
+  </row>
+</form>

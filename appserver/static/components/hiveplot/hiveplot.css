@@ -1,0 +1,32 @@
+.axis {
+    stroke: #000;
+    stroke-width: 1.5px;
+}
+
+.node {
+    stroke: #000;
+}
+
+text.node {
+    opacity: 0.5;
+}
+
+.node.active {
+}
+
+.link {
+    fill: none;
+    stroke: #999;
+    stroke-width: 1.5px;
+    stroke-opacity: .3;
+}
+
+.link.active {
+    stroke: red;
+    stroke-width: 3px;
+    stroke-opacity: 1;
+}
+
+.link.hidden, .node.hidden, .axis.hidden {
+    opacity: 0.2;
+}

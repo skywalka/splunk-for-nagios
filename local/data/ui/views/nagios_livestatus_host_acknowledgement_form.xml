@@ -1,0 +1,31 @@
+<form>
+  <label>Livestatus Host Acknowledgement Form</label>
+
+  <fieldset submitButton="true" autoRun="true">
+    <input type="text" token="host_name" searchWhenChanged="true">
+      <label>Hostname:</label>
+    </input>
+
+    <input type="text" token="comment" searchWhenChanged="true">
+      <label>Comment:</label>
+      <default>Acknowledged by Splunk</default>
+      <seed>Acknowledged by Splunk</seed>
+    </input>
+  </fieldset>
+
+  <row>
+    <panel>
+      <table>
+        <search>
+          <query>| stats count                  
+                 | livehostack $host_name$ "$comment$" 
+                 | fields - count
+          </query>
+          <earliest></earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+</form>

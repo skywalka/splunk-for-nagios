@@ -1,0 +1,237 @@
+<form>
+  <label>Livestatus Network Health</label>
+  
+  <row>
+    <panel>
+      <chart>
+        <title>Host Health</title>
+        <search>
+          <query>| stats count
+           | livehostsupstatus
+           | stats max(livehoststotalstatus) AS livehoststotalstatus, max(livehostsupstatus) as livehostsupstatus
+           | eval y1=0 
+           | eval y2=livehoststotalstatus*.80 
+           | eval y3=livehoststotalstatus*.90 
+           | eval y4=livehoststotalstatus*.99 
+           | eval y5=livehoststotalstatus  
+           | gauge livehostsupstatus y1 y2 y3 y4 y5</query>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">fillerGauge</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="charting.chart.orientation">x</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.chart.usePercentageValue">true</option>
+        <option name="charting.gaugeColors">[0xBF3030,0xf34e5f,0xf59e03,0xFFE800,0x84E900]</option>
+        <option name="refresh.auto.interval">10</option>
+      </chart>
+    </panel>
+    
+    <panel>
+      <chart>
+        <title>Service Health</title>
+        <search>
+          <query>| stats count
+           | liveserviceokstatus
+           | stats max(liveserviceokstatus) AS liveserviceokstatus, max(liveservicetotalstatus) as liveservicetotalstatus
+           | eval y1=0 
+           | eval y2=liveservicetotalstatus*.80 
+           | eval y3=liveservicetotalstatus*.90 
+           | eval y4=liveservicetotalstatus*.99 
+           | eval y5=liveservicetotalstatus  
+           | gauge liveserviceokstatus y1 y2 y3 y4 y5</query>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">fillerGauge</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="charting.chart.orientation">x</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.chart.usePercentageValue">true</option>
+        <option name="charting.gaugeColors">[0xBF3030,0xf34e5f,0xf59e03,0xFFE800,0x84E900]</option>
+        <option name="refresh.auto.interval">10</option>
+      </chart>
+    </panel>
+  </row>
+  
+  <row>
+    <panel>
+      <single>
+        <title>Hosts - Up</title>
+        <search>
+          <query>| stats count 
+                 | livehostsupstatus 
+                 | stats max(livehostsupstatus) AS livehostsupstatus 
+                 | rangemap field=livehostsupstatus low=0-0 low=1-1 default=low</query>
+        </search>
+        <option name="classField">range</option>
+        <option name="refresh.auto.interval">10</option>
+      </single>
+    </panel>
+    
+    <panel>
+      <single>
+        <title>Down</title>
+        <search>
+          <query>| stats count 
+                 | livehostsdownstatus 
+                 | stats max(livehostsdownstatus) AS livehostsdownstatus  
+                 | rangemap field=livehostsdownstatus low=0-0 severe=1-1 default=severe</query>
+        </search>
+        <option name="classField">range</option>
+        <option name="refresh.auto.interval">10</option>
+      </single>
+    </panel>
+    
+    <panel>
+      <single>
+        <title>Unreachable</title>
+        <search>
+          <query>| stats count 
+                 | livehostsunreachablestatus 
+                 | stats max(livehostsunreachablestatus) AS livehostsunreachablestatus 
+                 | rangemap field=livehostsunreachablestatus low=0-0 high=1-1 default=high</query>
+        </search>
+        <option name="classField">range</option>
+        <option name="refresh.auto.interval">10</option>
+      </single>
+    </panel>
+  </row>
+  
+  <row>
+    <panel>
+      <single>
+        <title>Services - OK</title>
+        <search>
+          <query>| stats count 
+                 | liveserviceokstatus 
+                 | stats max(liveserviceokstatus) AS liveserviceokstatus 
+                 | rangemap field=liveserviceokstatus low=0-0 low=1-1 default=low</query>
+        </search>
+        <option name="classField">range</option>
+        <option name="refresh.auto.interval">10</option>
+      </single>
+    </panel>
+    
+    <panel>
+      <single>
+        <title>Warning</title>
+        <search>
+          <query>| stats count 
+                 | liveservicewarningstatus 
+                 | stats max(liveservicewarningstatus) AS liveservicewarningstatus 
+                 | rangemap field=liveservicewarningstatus low=0-0 elevated=1-1 default=elevated</query>
+        </search>
+        <option name="classField">range</option>
+        <option name="refresh.auto.interval">10</option>
+      </single>
+    </panel>
+    
+    <panel>
+      <single>
+        <title>Critical</title>
+        <search>
+          <query>| stats count 
+                 | liveservicecriticalstatus 
+                 | stats max(liveservicecriticalstatus) AS liveservicecriticalstatus 
+                 | rangemap field=liveservicecriticalstatus low=0-0 severe=1-1 default=severe</query>
+        </search>
+        <option name="classField">range</option>
+        <option name="refresh.auto.interval">10</option>
+      </single>
+    </panel>
+    
+    <panel>
+      <single>
+        <title>Unknown</title>
+        <search>
+          <query>| stats count 
+                 | liveserviceunknownstatus 
+                 | stats max(liveserviceunknownstatus) AS liveserviceunknownstatus 
+                 | rangemap field=liveserviceunknownstatus low=0-0 high=1-1 default=high</query>
+        </search>
+        <option name="classField">range</option>
+        <option name="refresh.auto.interval">10</option>
+      </single>
+    </panel>
+  </row>
+  
+  <row>
+    <panel>
+      <table>
+        <title>Host Alerts</title>
+        <search>
+          <query>| stats count 
+| livehoststatus 666 all
+| mvexpand livehoststatus_results 
+| rex field=livehoststatus_results "(?&lt;host_name&gt;.*);(?&lt;src_ip&gt;.*);(?&lt;alias&gt;.*);(?&lt;livehoststatus&gt;.*)" 
+| table host_name src_ip alias livehoststatus   
+| search host_name=*
+| sort host_name</query>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">true</option>
+        <option name="dataOverlayMode">heatmap</option>
+        <option name="drilldown">cell</option>
+        <option name="count">10</option>
+        <option name="refresh.auto.interval">10</option>
+      </table>
+    </panel>
+
+    <panel>
+      <table>
+        <title>Service Alerts</title>
+        <search>
+          <query>| stats count 
+| liveservicestate 666 all  
+| mvexpand liveservicestatus_results 
+| rex field=liveservicestatus_results "(?&lt;host_name&gt;.*);(?&lt;service&gt;.*);(?&lt;body&gt;.*);(?&lt;liveservicestatus&gt;.*)"  
+| table host_name service body liveservicestatus    
+| search host_name=* 
+| sort host_name</query>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">true</option>
+        <option name="dataOverlayMode">heatmap</option>
+        <option name="drilldown">cell</option>
+        <option name="count">10</option>
+        <option name="refresh.auto.interval">10</option>
+      </table>
+    </panel>
+  </row>
+</form>

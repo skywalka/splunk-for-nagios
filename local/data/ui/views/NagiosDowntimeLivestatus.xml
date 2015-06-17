@@ -1,0 +1,74 @@
+<view autoCancelInterval="90" isVisible="true" objectMode="SimpleForm" onunloadCancelJobs="true" template="dashboard.html">
+  <label>Livestatus Host and Service Downtime</label>
+  <module name="AccountBar" layoutPanel="appHeader"/>
+  <module name="AppBar" layoutPanel="navigationHeader"/>
+  <module name="Message" layoutPanel="messaging">
+    <param name="filter">*</param>
+    <param name="clearOnJobDispatch">False</param>
+    <param name="maxSize">1</param>
+  </module>
+  <module name="Message" layoutPanel="messaging">
+    <param name="filter">splunk.search.job</param>
+    <param name="clearOnJobDispatch">True</param>
+    <param name="maxSize">1</param>
+  </module>
+  <module name="TitleBar" layoutPanel="viewHeader">
+    <param name="actionsMenuFilter">dashboard</param>
+  </module>
+  <module name="HiddenSearch" layoutPanel="viewHeader">
+    <param name="search">earliest=-24h index=nagios sourcetype=nagios:core eventname="INITIAL SERVICE STATE" host_name="$nagiosdevice$" 
+      | dedup src_host,name 
+      | liveservicelistdowntime 
+      | table src_host name liveservicestate liveserviceindowntime liveserviceinhostdowntime 
+      | sort src_host,name</param>
+    <module name="SearchSelectLister">
+      <param name="search">earliest=-24h index="nagios" eventname="INITIAL HOST STATE" 
+        | rex ".+INITIAL HOST STATE\: (?P&lt;device&gt;[^;]*)(?=;)"
+        | stats count by device</param>
+      <param name="selected">changeme</param>
+      <param name="label">Select a Hostname</param>
+      <param name="settingToCreate">nagiosdevice_setting</param>
+      <param name="searchFieldsToDisplay">
+        <list>
+          <param name="value">device</param>
+          <param name="label">device</param>
+        </list>
+      </param>
+      <param name="searchWhenChanged">True</param>
+      <module name="ConvertToIntention">
+        <param name="settingToConvert">nagiosdevice_setting</param>
+        <param name="intention">
+          <param name="name">stringreplace</param>
+          <param name="arg">
+            <param name="nagiosdevice">
+              <param name="default">changeme</param>
+              <param name="fillOnEmpty">True</param>
+              <param name="value">$target$</param>
+            </param>
+          </param>
+        </param>
+        <module name="SubmitButton">
+          <param name="allowSoftSubmit">True</param>
+          <param name="label">Submit</param>
+          <param name="updatePermalink">True</param>            
+      <module name="HiddenFieldPicker">
+        <param name="strictMode">True</param>
+        <module name="JobProgressIndicator">
+          <module name="JobStatus">
+          <module name="SimpleResultsTable" layoutPanel="panel_row1_col1" group="Click on the src_host or service name to Schedule Downtime">
+	    <param name="dataOverlayMode">heatmap</param>
+            <param name="count">500</param>
+            <param name="groupLabel">Click on the src_host or service name to Schedule Downtime</param>
+            <param name="drilldown">all</param>
+		<module name="SimpleDrilldown">
+         	<param name="links">{"name": "/app/SplunkForNagios/NagiosDowntimeLivestatusform?form.name=$row.name$&#38;form.src_host=$row.src_host$", "src_host": "/app/SplunkForNagios/NagiosDowntimeLivestatushostform?form.src_host=$row.src_host$"}</param>
+        	</module>
+            </module>
+           </module>
+          </module>
+        </module>
+          </module>
+        </module>
+      </module>
+    </module>
+</view>

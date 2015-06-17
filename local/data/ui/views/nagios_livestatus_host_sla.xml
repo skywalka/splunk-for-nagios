@@ -1,0 +1,42 @@
+<form>
+  <label>Livestatus Host SLA</label>
+  
+  <fieldset submitButton="true" autoRun="true">
+    <input type="dropdown" token="hostname" searchWhenChanged="true">
+      <label>Select a Hostname:</label>
+      <search>
+        <query>`nagios_index` `nagios_hosts_sourcetype` 
+               | stats count by display_name</query>
+        <earliest>-4h@h</earliest>
+        <latest>now</latest>
+      </search>
+      <fieldForLabel>display_name</fieldForLabel>
+      <fieldForValue>display_name</fieldForValue>
+      <default>localhost</default>
+    </input>
+    
+    <input type="text" token="daysago" searchWhenChanged="true">
+      <label>Enter the number of days:</label>
+      <default>7</default>
+    </input>    
+  </fieldset>  
+  
+  <row>
+    <panel>
+      <table>
+        <title>Results</title>
+        <search>
+          <query>| stats count 
+                 | livehostsla $hostname$ $daysago$
+                 | mvexpand livehostsla           
+                 | rex field=livehostsla "(?&lt;host_name&gt;.*);(?&lt;livehostsla&gt;.*)"          
+                 | eval livehostsla=round(livehostsla*100,2)
+                 | search host_name=*        
+                 | table host_name livehostsla</query>
+          <earliest></earliest>
+          <latest></latest>
+        </search>
+      </table>
+    </panel>
+  </row>
+</form>

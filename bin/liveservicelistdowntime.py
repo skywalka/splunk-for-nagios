@@ -1,40 +1,48 @@
 # Script to list service problems in downtime by accessing MK Livestatus
-# Required fields to be passed to this script from Splunk: src_host, name
-import socket,string,mklivestatus
-import sys,splunk.Intersplunk
+# Required argument to be passed to this script from Splunk: host_name
+import socket,string,sys,re,mklivestatus
+import splunk.Intersplunk
 
 results = []
 
+if len(sys.argv) != 2:
+    print "Usage: %s [host_name]" % sys.argv[0]
+    sys.exit(1)
+
+host_name2 = sys.argv[1]
+host_name = host_name2.lower()
+
 try:
-
     results,dummyresults,settings = splunk.Intersplunk.getOrganizedResults()
-
     for r in results:
-        if "_raw" in r:
-            if "src_host" in r:
-                if "name" in r:
-                    try:
-		        PORT = mklivestatus.PORT
-		        content = [ "GET services\nFilter: host_name = ", (r["src_host"]), "\nFilter: service_description = ", (r["name"]), "\nAnd: 2\nColumns: host_name service_description state scheduled_downtime_depth host_scheduled_downtime_depth\n" ]
-    		        query = "".join(content)
-		        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		        s.connect(((r["host"]), PORT))
-		        s.send(query)
-		        s.shutdown(socket.SHUT_WR)
-		        data = s.recv(100000000)
-			liveservicelistdowntime2 = data.strip()
-			liveservicelistdowntime = liveservicelistdowntime2.split(";")
-			s.close()
-                        r["src_host"] = liveservicelistdowntime[0]
-                        r["name"] = liveservicelistdowntime[1]
-                        r["liveservicestate"] = liveservicelistdowntime[2]
-                        r["liveserviceindowntime"] = liveservicelistdowntime[3]
-                        r["liveserviceinhostdowntime"] = liveservicelistdowntime[4]
-                    except:
-                        r["src_host"] = "n/a"
-                        r["name"] = "n/a"
-                        r["liveserviceindt"] = "n/a"
-                        r["liveserviceinhdt"] = "n/a"
+        try:
+	    HOST = mklivestatus.HOST
+            PORT = mklivestatus.PORT
+    	    for h in HOST:
+		content = [ "GET services\nFilter: host_name = ", host_name, "\nColumns: host_name service_description state scheduled_downtime_depth host_scheduled_downtime_depth\nSeparators: 10 44 44 124\n" ]
+    	        query = "".join(map(str,content))
+    	        try:
+        	    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        	    s.connect((h, PORT))
+    		except socket.error, (value,message): 
+        	    if s: 
+		    	s.close() 
+		    	#Error: Could not open socket: connection refused (MK Livestatus not setup in xinetd?)
+		    	break
+	        s.send(query)
+	        s.shutdown(socket.SHUT_WR)
+	        data = s.recv(100000000)
+    		data2 = (re.findall(r'(No UNIX socket)', data))
+		if data2:
+		    #Error: MK Livestatus module not loaded?
+		    s.close()
+		else:
+		    liveservicelistdowntime2 = data.strip()
+		    liveservicelistdowntime = liveservicelistdowntime2.split("\n")
+		    s.close()
+                r["liveservicelistdowntime"] = liveservicelistdowntime
+        except:
+            r["liveservicelistdowntime"] = "UNKNOWN"
 
 except:
     import traceback

@@ -1,0 +1,39 @@
+<form>
+  <label>Livestatus Service Alerts</label>
+  
+  <fieldset submitButton="true" autoRun="true">
+    <input type="dropdown" token="hostname" searchWhenChanged="true">
+      <label>Select a Hostname:</label>
+      <search>
+        <query>`nagios_index` `nagios_hosts_sourcetype` 
+               | stats count by display_name</query>
+        <earliest>-4h@h</earliest>
+        <latest>now</latest>
+      </search>
+      <fieldForLabel>display_name</fieldForLabel>
+      <fieldForValue>display_name</fieldForValue>
+      <default>All</default>
+      <choice value="All">All</choice>
+    </input>
+  </fieldset>
+  
+  <row>
+    <panel>
+      <table>
+        <title>Results</title>
+        <search>
+          <query>| stats count  
+                 | liveservicestate 666 $hostname$   
+                 | mvexpand liveservicestatus_results  
+                 | rex field=liveservicestatus_results "(?&lt;host_name&gt;.*);(?&lt;service&gt;.*);(?&lt;body&gt;.*);(?&lt;liveservicestatus&gt;.*)"   
+                 | table host_name service body liveservicestatus     
+                 | search host_name=*  
+                 | sort host_name
+          </query>
+        </search>
+        <option name="count">20</option>
+        <option name="refresh.auto.interval">10</option>
+      </table>
+    </panel>
+  </row>
+</form>

@@ -1,0 +1,75 @@
+<form script="autodiscover.js">
+  <label>About</label>
+  
+  <row>
+    <panel>
+      <html>
+<p>
+    Analytics For Nagios integrates the monitoring solution "Nagios" with Splunk
+</p>
+
+<p>
+    <h2>Features</h2>
+<ul>
+    <li>Schedule Saved Searches in Splunk to <strong>send alerts to Nagios</strong></li>
+    <li>Status Dashboard featuring recent Warning and Critical Alerts and Notifications</li>
+    <li>Host Availability Dashboard &amp; Top 100 Alerts</li>
+    <li>Host Dashboards with Graphs of metal level metrics (CPU, Memory, Swap, Load, Disk Usage, Network Interface Utilization, Processes, etc) sourced from Nagios Plugin Performance Data (Linux, AIX, BSD and Windows hosts supported)</li>
+    <li>Cisco Network Dashboards with Graphs of Network Interface Utilization, CPU, Memory, Temperature and Gateway Usage sourced from Nagios Plugin Performance Data</li>
+    <li>NAS Dashboards with Graphs of Storage Usage, Quota Usage, SAVVOL Usage, Connections by Protocol (EMC Isilon and Celerra supported)</li>
+    <li>External lookup scripts for integration with <a href="http://mathias-kettner.de/checkmk_livestatus.html">MK Livestatus</a> - featuring 8 dashboards updated with <strong>live</strong> status data from Nagios</li>
+    <li>Acknowledge Service Alerts and Schedule Host &amp; Service Downtime in Nagios directly from Splunk (via MK Livestatus)</li>
+    <li>Nagios Alerts Form Search with an auto-populating drop-down list of all device names to easily display relevant alert history</li>
+    <li>Search Nagios alerts and notifications and trend problems over time</li>
+    <li>Over 40 field extractions, compliant with the <a href="http://www.splunk.com/base/Documentation/latest/Knowledge/UnderstandandusetheCommonInformationModel">Common Information Model</a></li>
+    <li>14 Saved Searches - featuring a CMDB report and Host &amp; Service Group reports</li>
+    <li>5 Event Types - featuring Scheduled Downtime for Hosts &amp; Services</li>
+</ul>
+</p>
+<p>
+    <h2>Feedback Welcome</h2>
+<ul>
+    <li>Web: <a href="http://verypowerful.info/">verypowerful.info</a></li>
+    <li>Email: <a href="mailto:luke@verypowerful.info">luke@verypowerful.info</a></li>
+    <li>Twitter: <a href="http://twitter.com/skywalka">@skywalka</a></li>
+    <li>GitHub: <a href="https://github.com/skywalka/splunk-for-nagios">github.com/skywalka/splunk-for-nagios</a></li>
+</ul>
+</p>
+
+      </html>
+    </panel>
+  </row>
+  
+  <row>
+    <panel>
+      <input type="time" searchWhenChanged="true">
+        <default>
+          <earliest>-4h@h</earliest>
+          <latest>now</latest>
+        </default>
+      </input>
+      
+      <html>
+        <h2>Top Nagios Sourcetypes by Index</h2>
+        <div id="sankey_search" class="splunk-manager" data-require="splunkjs/mvc/searchmanager" data-options='{
+          "search": "index=* sourcetype=nagios* | stats count by sourcetype index",
+          "preview": true,
+          "earliest_time": {
+            "type": "token_safe",
+            "value": "$$earliest$$"
+          },
+          "latest_time": {
+            "type": "token_safe",
+            "value": "$$latest$$"
+          }
+        }'>
+        </div>
+        <div id="sankey" class="splunk-view" data-require="app/SplunkForNagios/components/sankey/sankey" data-options='{
+          "managerid": "sankey_search",
+          "height": "400px"
+        }'>
+        </div>
+      </html>
+    </panel>
+  </row>
+</form>

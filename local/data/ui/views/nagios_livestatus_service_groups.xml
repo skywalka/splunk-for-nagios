@@ -1,0 +1,19 @@
+<dashboard>
+  <label>Livestatus Service Groups</label>
+  <row>
+    <panel>
+      <table>
+        <title>Nagios Service Groups</title>
+        <search ref="Nagios Service Groups"></search>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <title>Service Status for all Service Groups</title>
+        <search ref="Service Status for all Service Groups"></search>
+      </table>
+    </panel>
+  </row>
+</dashboard>

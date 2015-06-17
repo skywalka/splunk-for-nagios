@@ -1,0 +1,52 @@
+<dashboard>
+  <label>Livestatus Service Acknowledgement</label>
+  
+  <row>
+    <panel>
+      <table>
+        <title>Acknowledged Alerts</title>
+        <search>
+          <query>| stats count
+                 | liveservicelistack 1
+                 | mvexpand liveservicelistack
+                 | rex field=liveservicelistack "(?&lt;host_name&gt;.*);(?&lt;service&gt;.*);(?&lt;liveservicelistack&gt;.*)"
+                 | search service="*" NOT service="DOWN"
+                 | table host_name service liveservicelistack
+                 | sort host_name,service</query>
+          <earliest></earliest>
+          <latest></latest>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.auto.interval">30</option>
+      </table>
+    </panel>
+
+    <panel>
+      <table>
+        <title>Unacknowledged Alerts - Click on the service name to Acknowledge</title>
+        <search>
+          <query>| stats count
+                 | liveservicelistack 0
+                 | mvexpand liveservicelistack
+                 | rex field=liveservicelistack "(?&lt;host_name&gt;.*);(?&lt;service&gt;.*);(?&lt;liveservicelistack&gt;.*)"
+                 | search service="*" NOT service="DOWN"
+                 | table host_name service liveservicelistack
+                 | sort host_name,service</query>
+          <earliest></earliest>
+          <latest></latest>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">row</option>
+        <option name="refresh.auto.interval">30</option>
+        <drilldown target="_blank">
+        <link>
+          <![CDATA[
+                   /app/SplunkForNagios/nagios_livestatus_service_acknowledgement_form?form.service=$row.service$&form.host_name=$row.host_name$&form.global_time.earliest=$earliest$&form.global_time.latest=$latest$
+          ]]>
+        </link>
+      </drilldown>
+      </table>
+    </panel>
+  </row>  
+</dashboard>

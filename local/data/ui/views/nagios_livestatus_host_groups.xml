@@ -1,0 +1,19 @@
+<dashboard>
+  <label>Livestatus Host Groups</label>
+  <row>
+    <panel>
+      <table>
+        <title>Nagios Host Groups</title>
+        <search ref="Nagios Host Groups"></search>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <title>Host Status for all Host Groups</title>
+        <search ref="Host Status for all Host Groups"></search>
+      </table>
+    </panel>
+  </row>
+</dashboard>

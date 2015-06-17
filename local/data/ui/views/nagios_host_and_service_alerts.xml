@@ -1,0 +1,42 @@
+<form>
+  <label>Host and Service Alerts</label>
+  
+  <fieldset submitButton="true" autoRun="true">
+    <input type="dropdown" token="hostname" searchWhenChanged="true">
+      <label>Select a Hostname:</label>
+      <search>
+        <query>`nagios_index` `nagios_hosts_sourcetype` 
+               | stats count by display_name</query>
+        <earliest>-4h@h</earliest>
+        <latest>now</latest>
+      </search>
+      <fieldForLabel>display_name</fieldForLabel>
+      <fieldForValue>display_name</fieldForValue>
+      <default>localhost</default>
+    </input>
+    
+    <input type="time" searchWhenChanged="true">
+      <label>Time Range:</label>
+      <default>
+        <earliest>-60m@m</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  
+  <row>
+    <panel>
+      <table>
+        <title>Results</title>
+        <search>
+          <query>`nagios_index` `nagios_core_sourcetype` host_name="$hostname$" 
+(eventname="SERVICE ALERT" OR eventname="INITIAL SERVICE STATE" NOT status_code="OK") OR 
+(eventname="HOST ALERT" OR eventname="INITIAL HOST STATE" status_code="DOWN")
+| eval name=if(eventname=="HOST ALERT","Host",service) 
+| table _time,host_name,name,status_code,body
+| sort - _time</query>
+        </search>
+      </table>
+    </panel>
+  </row>
+</form>
