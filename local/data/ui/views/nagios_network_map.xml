@@ -1,12 +1,22 @@
 <form script="autodiscover.js">
   <label>Livestatus Network Map</label>
   
+  <fieldset submitButton="true" autoRun="true">
+    <input type="time" searchWhenChanged="true">
+      <label>Time Range:</label>
+      <default>
+        <earliest>0</earliest>
+        <latest></latest>
+      </default>
+    </input>
+  </fieldset>  
+  
   <row>
     <panel>
       <html>
         <h2>Force-Directed Graph</h2>
         <div id="forcedirected_search" class="splunk-manager" data-require="splunkjs/mvc/searchmanager" data-options='{
-          "search": "| stats count | liveparents | mvexpand liveparents_results | rex field=liveparents_results \"(?&lt;host_name&gt;[^;].*);(?&lt;service&gt;[^;].*);(?&lt;parents&gt;.*)\" | eval parents=split(parents, \",\") | mvexpand parents | stats count by host_name parents",
+          "search": "| stats count | liveparents | mvexpand liveparents_results | rex field=liveparents_results \"(?&lt;host_name&gt;[^;].*);(?&lt;status&gt;[^;].*);(?&lt;parents&gt;.*)\" | eval lp=len(parents) | eval parents=if(lp = 0,\"Nagios Process\",parents) | eval status=if(lp = 0,2,status) | eval parents=split(parents, \",\") | mvexpand parents | stats first(status) AS count by parents host_name",
           "preview": true,
           "earliest_time": {
             "type": "token_safe",
@@ -21,12 +31,11 @@
         <div id="forcedirected" class="splunk-view" data-require="app/SplunkForNagios/components/forcedirected/forcedirected" data-options='{
           "managerid": "forcedirected_search",
           "height": "500px",
-          "panAndZoom": false,
+          "panAndZoom": true,
           "isStatic": false
         }'>
         </div>
       </html>
-
     </panel>
   </row>
 </form>

@@ -1,5 +1,5 @@
 <form script="autodiscover.js, viz_calendarheatmap.js">
-  <label>Livestatus Calendar Heatmap</label>
+  <label>Calendar Heatmap</label>
   
   <row>
     <panel>
@@ -11,7 +11,7 @@
       </input>
       
       <html>
-        <h2>Nagios Alerts by Day and Hour</h2>
+        <h2>Alerts by Day and Hour</h2>
         <div id="calendarheatmap_search" class="splunk-manager" data-require="splunkjs/mvc/searchmanager" data-options='{
           "search": "`nagios_index` `nagios_core_sourcetype` eventname=\"SERVICE ALERT\" OR eventname=\"HOST ALERT\" | timechart span=1h count",
           "preview": true,

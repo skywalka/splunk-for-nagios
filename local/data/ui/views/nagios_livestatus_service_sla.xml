@@ -5,13 +5,12 @@
     <input type="dropdown" token="hostname" searchWhenChanged="true">
       <label>Select a Hostname:</label>
       <search>
-        <query>`nagios_index` `nagios_hosts_sourcetype` 
-               | stats count by display_name</query>
-        <earliest>-4h@h</earliest>
+        <query>`nagios_hosts`</query>
+        <earliest>-24h@h</earliest>
         <latest>now</latest>
       </search>
-      <fieldForLabel>display_name</fieldForLabel>
-      <fieldForValue>display_name</fieldForValue>
+      <fieldForLabel>host_name</fieldForLabel>
+      <fieldForValue>host_name</fieldForValue>
       <default>localhost</default>
     </input>
     

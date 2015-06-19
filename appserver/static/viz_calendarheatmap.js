@@ -24,11 +24,13 @@ function(
 
         calendarheatmap.on("click", function(e) {
             var earliest = e.date.getTime() / 1000;
-            var latest   = earliest + 60;
+            //var latest   = earliest + 60;
+            var latest   = earliest + 3600;
 
             var calendarheatmap_search = mvc.Components.get("calendarheatmap_search");
             var search = calendarheatmap_search.search.get("search");
-            search = /^([^|]+)/.exec(search)[1].trim() + " sourcetype=" + e.series;
+            //search = /^([^|]+)/.exec(search)[1].trim() + " sourcetype=" + e.series;
+            search = /^([^|]+)/.exec(search)[1].trim();
 
             var url = "/app/SplunkForNagios/search?earliest=" + earliest + "&latest=" + latest + "&q=" + encodeURIComponent(search);
 

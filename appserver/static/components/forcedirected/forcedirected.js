@@ -197,7 +197,7 @@ define(function(require, exports, module) {
                 .linkDistance(this.linkDistance)
                 .size([width, height]);
 
-            this.color = d3.scale.category20();
+            this.color = d3.scale.category20d();
 
             this.tooltips = new Tooltips(graph);
 

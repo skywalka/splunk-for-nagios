@@ -12,7 +12,7 @@ try:
 	    HOST = mklivestatus.HOST
             PORT = mklivestatus.PORT
     	    for h in HOST:
-		content = [ "GET services\nColumns: host_name description host_parents\n" ]
+		content = [ "GET hosts\nColumns: host_name state host_parents\n" ]
     	        query = "".join(map(str,content))
     	        try:
         	    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

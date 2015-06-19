@@ -1,0 +1,42 @@
+<nav>
+    <view name="nagios_about" default='true' />
+    <view name="flashtimeline" />
+    <collection label="Status Dashboards">
+     <view name="Nagios" />
+     <view name="alert_formsearch" />
+     <view name="NagiosHostAvailability" />
+     <view name="NagiosTop100Alerts" />
+    </collection>        
+    <collection label="Livestatus Dashboards">
+     <view name="NagiosLivestatus" />
+     <view name="NagiosAlertsLivestatus" />
+     <view name="NagiosLivestatusHostGroups" />        
+     <view name="NagiosLivestatusServiceGroups" />         
+     <view name="NagiosLivestatusHostSLA" />
+     <view name="NagiosLivestatusServiceSLA" />
+     <view name="NagiosLivestatusServiceACK" />
+     <view name="NagiosDowntimeLivestatus" />
+    </collection>
+    <collection label="Performance Dashboards">
+        <view name="NagiosLinuxPerformanceGraphs"/>
+        <view name="nagios_linux_performance_graphs"/>
+        <view name="NagiosLinuxPuppetPerformanceGraphs"/>
+        <view name="NagiosNixFilesystemUsageGraphs"/>
+        <view name="NagiosAIXPerformanceGraphs"/>
+        <view name="NagiosAIXFilesystemUsageGraphs"/>
+        <view name="NagiosBSDPerformanceGraphs"/>
+        <view name="NagiosWinPerformanceGraphs"/>
+        <divider />
+        <view name="NagiosSplunkLicenseUsageGraph"/>
+    </collection>
+  <collection label="Other Dashboards">
+    <view source="unclassified" />
+  </collection>    
+    <collection label="Searches &amp; Reports">
+        <collection label="Reports">
+            <saved source="unclassified" match="report" />
+        </collection>
+        <divider />
+        <saved source="unclassified" />
+    </collection>
+</nav>
