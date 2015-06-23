@@ -838,7 +838,7 @@ modtime = 1434091803.580156000
 [views/nagios_host_availability]
 owner = admin
 version = 6.2.3
-modtime = 1434321636.746500000
+modtime = 1435058036.827779000
 
 [views/nagios_top_100_alerts]
 owner = admin
