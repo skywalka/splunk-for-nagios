@@ -4,7 +4,8 @@
   <fieldset submitButton="true" autoRun="true">
     <input type="dropdown" token="hostname" searchWhenChanged="true">
       <label>Select a Hostname:</label>
-      <search>`nagios_hosts`</query>
+      <search>
+        <query>`nagios_hosts`</query>
         <earliest>-24h@h</earliest>
         <latest>now</latest>
       </search>
@@ -26,10 +27,9 @@
     <panel>
       <chart>
         <search>
-          <query>`nagios_index` `nagios_core_sourcetype` eventname="CURRENT HOST STATE" OR eventname="HOST ALERT" OR
-eventname="INITIAL HOST STATE"
-host_name="$hostname$" status_code=DOWN OR status_code=UP
-| timechart count by status_code</query>
+          <query>`nagios_index` `nagios_core_sourcetype` eventname="CURRENT HOST STATE" OR eventname="HOST ALERT" 
+                 OR eventname="INITIAL HOST STATE" host_name="$hostname$" status_code=DOWN OR status_code=UP 
+                 | timechart count by status_code</query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
