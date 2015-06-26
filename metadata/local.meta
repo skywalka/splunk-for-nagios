@@ -948,7 +948,7 @@ access = read : [ * ], write : [ admin, power ]
 export = none
 owner = admin
 version = 6.2.3
-modtime = 1434691732.717738000
+modtime = 1435301874.686001000
 
 [macros/nagios_hosts]
 access = read : [ * ], write : [ admin ]
