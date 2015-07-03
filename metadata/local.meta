@@ -848,7 +848,7 @@ modtime = 1434431992.624568000
 [views/nagios_livestatus]
 owner = admin
 version = 6.2.3
-modtime = 1434670787.015154000
+modtime = 1435905949.442519000
 
 [views/nagios_livestatus_service_alerts]
 owner = admin
@@ -948,7 +948,7 @@ access = read : [ * ], write : [ admin, power ]
 export = none
 owner = admin
 version = 6.2.3
-modtime = 1435898996.763385000
+modtime = 1435907107.098245000
 
 [macros/nagios_hosts]
 access = read : [ * ], write : [ admin ]
