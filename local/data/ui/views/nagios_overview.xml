@@ -1,0 +1,165 @@
+<form>
+  <label>Nagios Overview</label>
+  
+  <fieldset submitButton="true" autoRun="true">
+    <input type="dropdown" token="hostname" searchWhenChanged="true">
+      <label>Select a Hostname:</label>
+      <search>
+        <query>`nagios_hosts`</query>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </search>
+      <fieldForLabel>host_name</fieldForLabel>
+      <fieldForValue>host_name</fieldForValue>
+      <choice value="*">All</choice>
+      <default>*</default>
+    </input>
+    
+    <input type="time" searchWhenChanged="true">
+      <label>Time Range:</label>
+      <default>
+        <earliest>-60m@m</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>  
+  
+  <row>
+    <panel>
+      <chart>
+        <title>Alerts over time</title>
+        <search>
+          <query>`nagios_index` `nagios_core_sourcetype` host_name="$hostname$" (eventname="SERVICE ALERT" OR eventname="INITIAL SERVICE STATE" NOT status_code="OK") OR (eventname="HOST ALERT" OR eventname="INITIAL HOST STATE" status_code="DOWN") 
+| eval name=if(eventname=="HOST ALERT","Host",service)  
+| timechart count by name usenull=f
+          </query>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
+        <option name="charting.axisTitleY.visibility">collapsed</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">stacked</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="charting.axisLabelsY.integerUnits">true</option>
+      </chart>
+    </panel>
+    
+    <panel>
+      <chart>
+        <title>Notifications over time</title>
+        <search>
+          <query>`nagios_index` `nagios_core_sourcetype` host_name="$hostname$" eventname="SERVICE NOTIFICATION" status_code!="OK" 
+| timechart count by service usenull=f
+          </query>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
+        <option name="charting.axisTitleY.visibility">collapsed</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">stacked</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="charting.axisLabelsY.integerUnits">true</option>
+      </chart>
+    </panel>    
+  </row>
+  
+  <row>
+    <panel>
+      <chart>
+        <title>Top Alerts by Host</title>
+        <search>
+          <query>`nagios_index` `nagios_core_sourcetype` host_name="$hostname$" (eventname="HOST ALERT" OR eventname="INITIAL HOST STATE" status_code="DOWN")  
+| top host_name
+          </query>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">bar</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">none</option>
+        <option name="charting.axisLabelsY.integerUnits">true</option>
+        <option name="charting.seriesColors">[0xFF0000]</option>
+      </chart>
+    </panel>
+    
+    <panel>
+      <chart>
+        <title>Top Alerts by Service</title>
+        <search>
+          <query>`nagios_index` `nagios_core_sourcetype` host_name="$hostname$" (eventname="SERVICE ALERT" OR eventname="INITIAL SERVICE STATE" NOT status_code="OK") 
+| top service
+          </query>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">bar</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">none</option>
+        <option name="charting.axisLabelsY.integerUnits">true</option>
+        <option name="charting.seriesColors">[0xFF9900]</option>
+      </chart>
+    </panel>    
+  </row>
+</form>

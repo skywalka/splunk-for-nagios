@@ -1,0 +1,65 @@
+<form>
+  <label>Nagios Recurring Alerts</label>
+  
+  <fieldset submitButton="true" autoRun="true">
+    <input type="dropdown" token="hostname" searchWhenChanged="true">
+      <label>Select a Hostname:</label>
+      <search>
+        <query>`nagios_hosts`</query>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </search>
+      <fieldForLabel>host_name</fieldForLabel>
+      <fieldForValue>host_name</fieldForValue>
+      <choice value="*">All</choice>
+      <default>*</default>
+    </input>
+    
+    <input type="time" searchWhenChanged="true">
+      <label>Time Range:</label>
+      <default>
+        <earliest>@y</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  
+  <row>
+    <panel>
+      <chart>
+        <title>Alert Age &amp; Frequency of Occurrence</title>
+        <search>
+          <query>`nagios_index` `nagios_core_sourcetype` host_name="$hostname$" eventname="SERVICE ALERT" status_code!="OK"
+| eval name=host_name.":".service 
+| eval day=strftime(_time, "%Y-%m-%d")
+| stats dc(day) AS num, latest(_time) AS latest, earliest(_time) AS earliest by name 
+| eval age=round((latest-earliest)/86400,1)
+| table name age num
+| rename age AS "Age between earliest and latest occurrence", num AS "Number of days occurring"
+          </query>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">scatter</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">none</option>
+      </chart>
+    </panel>
+  </row>
+</form>

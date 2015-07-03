@@ -1013,3 +1013,15 @@ owner = admin
 version = 6.2.3
 modtime = 1434687749.322921000
 
+[views/nagios_overview]
+owner = admin
+version = 6.2.3
+modtime = 1435879692.046936000
+
+[views/nagios_recurring_alerts]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = admin
+version = 6.2.3
+modtime = 1435896916.798556000
+
