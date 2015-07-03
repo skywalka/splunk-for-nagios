@@ -948,7 +948,7 @@ access = read : [ * ], write : [ admin, power ]
 export = none
 owner = admin
 version = 6.2.3
-modtime = 1435301874.686001000
+modtime = 1435898996.763385000
 
 [macros/nagios_hosts]
 access = read : [ * ], write : [ admin ]
@@ -1016,12 +1016,19 @@ modtime = 1434687749.322921000
 [views/nagios_overview]
 owner = admin
 version = 6.2.3
-modtime = 1435879692.046936000
+modtime = 1435897977.322786000
 
 [views/nagios_recurring_alerts]
 access = read : [ * ], write : [ admin, power ]
 export = none
 owner = admin
 version = 6.2.3
-modtime = 1435896916.798556000
+modtime = 1435897960.936730000
+
+[views/nagios_top_100_hosts_by_performance]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = admin
+version = 6.2.3
+modtime = 1435903277.537910000
 

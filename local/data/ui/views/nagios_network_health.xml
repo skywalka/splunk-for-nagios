@@ -47,7 +47,7 @@
       <table>
         <title>Warning and Critical Alerts</title>
         <search>
-          <query>`nagios_index` `nagios_core_sourcetype` sourcetype="nagios:core" (eventname="SERVICE ALERT" NOT status_code="OK") OR (eventname="HOST ALERT" status_code="DOWN")
+          <query>`nagios_index` `nagios_core_sourcetype` (eventname="SERVICE ALERT" NOT status_code="OK") OR (eventname="HOST ALERT" status_code="DOWN")
 | eval name=if(eventname=="HOST ALERT","Host",service) 
 | table _time,host_name,name,status_code,body
 | sort - _time</query>

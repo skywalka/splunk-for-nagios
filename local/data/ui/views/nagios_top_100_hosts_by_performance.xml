@@ -1,0 +1,83 @@
+<form script="autodiscover.js, viz_bubblechart.js">
+  <label>Top 100 Hosts by Performance</label>
+  <description>with contextual drilldown</description>
+  
+  <fieldset submitButton="true" autoRun="true">
+    <input type="time" searchWhenChanged="true">
+      <default>
+        <earliest>-4h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="text" token="term" id="input_term"/>
+    <input type="text" token="category" id="input_category"/>
+  </fieldset>
+
+  <row>
+    <panel>
+      <html>
+        <h2>Top 100 Hosts by CPU Usage</h2>
+        <div id="bubblechart_search" class="splunk-manager" data-require="splunkjs/mvc/searchmanager" data-options='{
+          "preview": true,
+          "search": "`nagios_index` `nagios_core_serviceperfxi` idle | eval idle=trim(idle,\"%\") | stats avg(idle) AS Idle by src_host | eval Used=round(100-Idle,2) | table src_host Used",
+          "earliest_time": {
+            "type": "token_safe",
+            "value": "$$earliest$$"
+            },
+          "latest_time": {
+            "type": "token_safe",
+            "value": "$$latest$$"
+          }
+        }'>
+        </div>
+        <div id="bubblechart" class="splunk-view" data-require="app/custom_vizs/components/bubblechart/bubblechart" data-options='{
+          "managerid": "bubblechart_search",
+          "nameField": "src_host",
+          "valueField": "Used",
+          "categoryField": "src_host",
+          "height": 400
+        }'>
+        </div>
+      </html>
+    </panel>
+  </row>
+  
+  <row>
+    <panel>
+      <chart id="timechart" depends="$term$">
+        <title>Host: $term$</title>
+        <search>
+          <query>`nagios_index` `nagios_core_serviceperfxi` idle src_host="$term$"
+| eval idle=trim(idle,"%")
+| timechart avg(idle) AS Idle 
+| eval Used=round(100-Idle,2)
+| fields - Idle
+          </query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">none</option>
+      </chart>
+    </panel>
+  </row>    
+</form>

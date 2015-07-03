@@ -29,10 +29,10 @@
         <title>Warning and Critical Alerts</title>
         <search>
           <query>`nagios_index` `nagios_core_sourcetype` (eventname="SERVICE ALERT" status="WARNING" OR status="CRITICAL") 
-                 OR (eventname="HOST ALERT" status_code="DOWN") host_name="$hostname$"
+                 OR (eventname="HOST ALERT" status_code="DOWN") src_host="$hostname$"
                  | rename status_code AS status
                  | eval name=if(eventname="HOST ALERT","Host",service)
-                 | table host_name, name, status, body</query>
+                 | table src_host, name, status, body</query>
         </search>
       </table>
     </panel>
@@ -42,14 +42,14 @@
         <title>Top 10 Service Notifications</title>
         <search>
           <query>`nagios_index` `nagios_core_sourcetype` eventname="SERVICE NOTIFICATION"            
-                 (status="WARNING" OR status="CRITICAL") host_name="$hostname$"            
-                 | dedup service host_name            
+                 (status="WARNING" OR status="CRITICAL") src_host="$hostname$"            
+                 | dedup service src_host            
                  | top service limit="10"            
                  | fields +  service count</query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
-        <option name="charting.axisTitleX.visibility">collapsed</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
         <option name="charting.axisTitleY.visibility">collapsed</option>
         <option name="charting.axisTitleY2.visibility">visible</option>
         <option name="charting.axisX.scale">linear</option>
@@ -67,7 +67,8 @@
         <option name="charting.drilldown">all</option>
         <option name="charting.layout.splitSeries">0</option>
         <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
-        <option name="charting.legend.placement">none</option>
+        <option name="charting.legend.placement">bottom</option>
+        <option name="charting.axisLabelsY.integerUnits">true</option>
       </chart>
     </panel>
   </row>
@@ -77,12 +78,12 @@
       <chart>
         <title>CPU Usage</title>
         <search>
-          <query>`nagios_index` `nagios_core_serviceperfxi` host_name="$hostname$" 
+          <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$" 
                  | timechart avg(idle) AS Idle, avg(iowait) AS Wait, avg(system) AS System, avg(user) AS User</query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
-        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
         <option name="charting.axisTitleY.visibility">visible</option>
         <option name="charting.axisTitleY2.visibility">visible</option>
         <option name="charting.axisX.scale">linear</option>
@@ -111,12 +112,12 @@
       <chart>
         <title>Load Average</title>
         <search>
-          <query>`nagios_index` `nagios_core_serviceperfxi` host_name="$hostname$"                                     
+          <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$"                                     
             | timechart avg(load15) as "Load 15m", avg(load5) as "Load 5m", avg(load1) as "Load 1m"</query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
-        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
         <option name="charting.axisTitleY.visibility">visible</option>
         <option name="charting.axisTitleY2.visibility">visible</option>
         <option name="charting.axisX.scale">linear</option>
@@ -147,7 +148,7 @@
       <chart>
         <title>Memory Usage</title>
         <search>
-          <query>`nagios_index` `nagios_core_serviceperfxi` host_name="$hostname$"
+          <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$"
             | eval mem_free=(mem-mem_used-mem_cached-mem_buffers-mem_shared) 
             | timechart avg(mem_free) as "Free (MB)",                            
                         avg(mem_buffers) as "Buffers (MB)",                            
@@ -157,7 +158,7 @@
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
-        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
         <option name="charting.axisTitleY.visibility">visible</option>
         <option name="charting.axisTitleY2.visibility">visible</option>
         <option name="charting.axisX.scale">linear</option>
@@ -186,12 +187,12 @@
       <chart>
         <title>Swap Usage</title>
         <search>
-          <query>`nagios_index` `nagios_core_serviceperfxi` host_name="$hostname$"
+          <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$"
             | timechart avg(swap_free) as "Free (MB)", avg(swap_used) as "Used (MB)"</query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
-        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
         <option name="charting.axisTitleY.visibility">visible</option>
         <option name="charting.axisTitleY2.visibility">visible</option>
         <option name="charting.axisX.scale">linear</option>
@@ -222,12 +223,12 @@
       <chart>
         <title>Total Processes</title>
         <search>
-          <query>`nagios_index` `nagios_core_serviceperfxi` host_name="$hostname$"
+          <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$"
                  | timechart avg(processes) as Processes</query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
-        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
         <option name="charting.axisTitleY.visibility">collapsed</option>
         <option name="charting.axisTitleY2.visibility">visible</option>
         <option name="charting.axisX.scale">linear</option>
@@ -256,13 +257,13 @@
       <chart>
         <title>HTTP</title>
         <search>
-          <query>`nagios_index` `nagios_core_serviceperfxi` host_name="$hostname$"
-                 service_checkcommand=check_http  
+          <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$"
+                 service_output=http*
                  | timechart avg(time) AS Time, avg(size) AS Size</query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
-        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
         <option name="charting.axisTitleY.visibility">visible</option>
         <option name="charting.axisTitleY2.visibility">visible</option>
         <option name="charting.axisX.scale">linear</option>
@@ -293,12 +294,12 @@
       <chart>
         <title>NTP Offset</title>
         <search>
-          <query>`nagios_index` `nagios_core_serviceperfxi` host_name="$hostname$"
+          <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$"
                  | timechart avg(offset) as "Offset (secs)"</query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
-        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
         <option name="charting.axisTitleY.visibility">collapsed</option>
         <option name="charting.axisTitleY2.visibility">visible</option>
         <option name="charting.axisX.scale">linear</option>
@@ -327,7 +328,7 @@
       <chart>
         <title>Network Traffic</title>
         <search>
-          <query>`nagios_index` `nagios_core_serviceperfxi` host_name="$hostname$"
+          <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$"
                  | sort _time  
                  | delta inAbsolut as inabs_change                                                
                  | delta outAbsolut as outabs_change                                                
@@ -340,7 +341,7 @@
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
-        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
         <option name="charting.axisTitleY.visibility">visible</option>
         <option name="charting.axisTitleY2.visibility">visible</option>
         <option name="charting.axisX.scale">linear</option>
@@ -371,12 +372,12 @@
       <chart>
         <title>Advanced Ping</title>
         <search>
-          <query>`nagios_index` `nagios_core_hostperfxi` host_name="$hostname$"
+          <query>`nagios_index` `nagios_core_hostperfxi` src_host="$hostname$"
                  | timechart avg(pl) as "Packet Loss (%)", avg(rta) as "Latency (ms)"</query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
-        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
         <option name="charting.axisTitleY.visibility">visible</option>
         <option name="charting.axisTitleY2.visibility">visible</option>
         <option name="charting.axisX.scale">linear</option>

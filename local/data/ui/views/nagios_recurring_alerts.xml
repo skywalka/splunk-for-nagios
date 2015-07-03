@@ -1,5 +1,5 @@
 <form>
-  <label>Nagios Recurring Alerts</label>
+  <label>Recurring Alerts</label>
   
   <fieldset submitButton="true" autoRun="true">
     <input type="dropdown" token="hostname" searchWhenChanged="true">
