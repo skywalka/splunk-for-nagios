@@ -1,7 +1,7 @@
 <form>
-  <label>Nagios Linux Performance Graphs</label>
+  <label>Linux Performance Graphs</label>
   
-  <fieldset submitButton="false" autoRun="true">
+  <fieldset submitButton="true" autoRun="true">
     <input type="dropdown" token="hostname" searchWhenChanged="true">
       <label>Select a Hostname:</label>
       <search>
@@ -12,6 +12,54 @@
       <fieldForLabel>host_name</fieldForLabel>
       <fieldForValue>host_name</fieldForValue>
       <default>localhost</default>
+    </input>
+    
+    <input type="dropdown" token="span_period" searchWhenChanged="true">
+      <label>Span:</label>
+      <default>Automatic</default>
+
+      <!-- Span Periods for timechart -->
+      <choice value="">Automatic</choice>
+      <choice value="span=1s">1 second</choice>
+      <choice value="span=5s">5 seconds</choice>
+      <choice value="span=10s">10 seconds</choice>
+      <choice value="span=15s">15 seconds</choice>
+      <choice value="span=30s">30 seconds</choice>
+      <choice value="span=1m">1 minute</choice>
+      <choice value="span=5m">5 minutes</choice>
+      <choice value="span=10m">10 minutes</choice>
+      <choice value="span=15m">15 minutes</choice>
+      <choice value="span=30m">30 minutes</choice>
+      <choice value="span=45m">45 minutes</choice>
+      <choice value="span=1h">1 hour</choice>
+      <choice value="span=2h">2 hours</choice>
+      <choice value="span=3h">3 hours</choice>
+      <choice value="span=4h">4 hours</choice>
+      <choice value="span=6h">6 hours</choice>
+      <choice value="span=8h">8 hours</choice>
+      <choice value="span=12h">12 hours</choice>
+      <choice value="span=1d">1 day</choice>
+      <choice value="span=1w">1 week</choice>
+      <choice value="span=1mon">1 month</choice>
+      <choice value="span=12mon">1 year</choice>
+    </input>
+    
+    <input type="dropdown" searchWhenChanged="true" token="stat_name">
+      <label>Calculation:</label>
+      <default>Average</default>
+      <!-- Stat Calculation for timechart -->
+      <choice value="avg">Average</choice>
+      <choice value="median">Median</choice>
+      <choice value="max">Peak</choice>
+    </input>
+    
+    <input type="dropdown" searchWhenChanged="true" token="gaps_name">
+      <label>Gaps:</label>
+      <default>Connect</default>
+      <!-- Stat Calculation for timechart -->
+      <choice value="connect">Connect</choice>
+      <choice value="gaps">Gaps</choice>
+      <choice value="zero">Zero</choice>
     </input>
     
     <input type="time" searchWhenChanged="true">
@@ -60,7 +108,7 @@
         <option name="charting.chart.bubbleMaximumSize">50</option>
         <option name="charting.chart.bubbleMinimumSize">10</option>
         <option name="charting.chart.bubbleSizeBy">area</option>
-        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.chart.nullValueMode">$gaps_name$</option>
         <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
         <option name="charting.chart.stackMode">default</option>
         <option name="charting.chart.style">shiny</option>
@@ -79,7 +127,7 @@
         <title>CPU Usage</title>
         <search>
           <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$" 
-                 | timechart avg(idle) AS Idle, avg(iowait) AS Wait, avg(system) AS System, avg(user) AS User</query>
+                 | timechart $span_period$ $stat_name$(idle) AS Idle, $stat_name$(iowait) AS Wait, $stat_name$(system) AS System, $stat_name$(user) AS User</query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
@@ -94,7 +142,7 @@
         <option name="charting.chart.bubbleMaximumSize">50</option>
         <option name="charting.chart.bubbleMinimumSize">10</option>
         <option name="charting.chart.bubbleSizeBy">area</option>
-        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.chart.nullValueMode">$gaps_name$</option>
         <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
         <option name="charting.chart.stackMode">stacked</option>
         <option name="charting.chart.style">shiny</option>
@@ -113,7 +161,7 @@
         <title>Load Average</title>
         <search>
           <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$"                                     
-            | timechart avg(load15) as "Load 15m", avg(load5) as "Load 5m", avg(load1) as "Load 1m"</query>
+            | timechart $span_period$ $stat_name$(load15) as "Load 15m", $stat_name$(load5) as "Load 5m", $stat_name$(load1) as "Load 1m"</query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
@@ -128,7 +176,7 @@
         <option name="charting.chart.bubbleMaximumSize">50</option>
         <option name="charting.chart.bubbleMinimumSize">10</option>
         <option name="charting.chart.bubbleSizeBy">area</option>
-        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.chart.nullValueMode">$gaps_name$</option>
         <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
         <option name="charting.chart.stackMode">default</option>
         <option name="charting.chart.style">shiny</option>
@@ -150,11 +198,11 @@
         <search>
           <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$"
             | eval mem_free=(mem-mem_used-mem_cached-mem_buffers-mem_shared) 
-            | timechart avg(mem_free) as "Free (MB)",                            
-                        avg(mem_buffers) as "Buffers (MB)",                            
-                        avg(mem_cached) as "Cache (MB)",                              
-                        avg(mem_shared) as "Shared (MB)",                             
-                        avg(mem_used) as "Used (MB)"</query>
+            | timechart $span_period$ $stat_name$(mem_free) as "Free (MB)",                            
+                        $stat_name$(mem_buffers) as "Buffers (MB)",                            
+                        $stat_name$(mem_cached) as "Cache (MB)",                              
+                        $stat_name$(mem_shared) as "Shared (MB)",                             
+                        $stat_name$(mem_used) as "Used (MB)"</query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
@@ -169,7 +217,7 @@
         <option name="charting.chart.bubbleMaximumSize">50</option>
         <option name="charting.chart.bubbleMinimumSize">10</option>
         <option name="charting.chart.bubbleSizeBy">area</option>
-        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.chart.nullValueMode">$gaps_name$</option>
         <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
         <option name="charting.chart.stackMode">stacked</option>
         <option name="charting.chart.style">shiny</option>
@@ -188,7 +236,7 @@
         <title>Swap Usage</title>
         <search>
           <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$"
-            | timechart avg(swap_free) as "Free (MB)", avg(swap_used) as "Used (MB)"</query>
+            | timechart $span_period$ $stat_name$(swap_free) as "Free (MB)", $stat_name$(swap_used) as "Used (MB)"</query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
@@ -203,7 +251,7 @@
         <option name="charting.chart.bubbleMaximumSize">50</option>
         <option name="charting.chart.bubbleMinimumSize">10</option>
         <option name="charting.chart.bubbleSizeBy">area</option>
-        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.chart.nullValueMode">$gaps_name$</option>
         <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
         <option name="charting.chart.stackMode">stacked</option>
         <option name="charting.chart.style">shiny</option>
@@ -224,7 +272,7 @@
         <title>Total Processes</title>
         <search>
           <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$"
-                 | timechart avg(processes) as Processes</query>
+                 | timechart $span_period$ $stat_name$(processes) as Processes</query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
@@ -239,7 +287,7 @@
         <option name="charting.chart.bubbleMaximumSize">50</option>
         <option name="charting.chart.bubbleMinimumSize">10</option>
         <option name="charting.chart.bubbleSizeBy">area</option>
-        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.chart.nullValueMode">$gaps_name$</option>
         <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
         <option name="charting.chart.stackMode">default</option>
         <option name="charting.chart.style">shiny</option>
@@ -259,7 +307,7 @@
         <search>
           <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$"
                  service_output=http*
-                 | timechart avg(time) AS Time, avg(size) AS Size</query>
+                 | timechart $span_period$ $stat_name$(time) AS Time, $stat_name$(size) AS Size</query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
@@ -274,7 +322,7 @@
         <option name="charting.chart.bubbleMaximumSize">50</option>
         <option name="charting.chart.bubbleMinimumSize">10</option>
         <option name="charting.chart.bubbleSizeBy">area</option>
-        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.chart.nullValueMode">$gaps_name$</option>
         <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
         <option name="charting.chart.stackMode">default</option>
         <option name="charting.chart.style">shiny</option>
@@ -295,7 +343,7 @@
         <title>NTP Offset</title>
         <search>
           <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$"
-                 | timechart avg(offset) as "Offset (secs)"</query>
+                 | timechart $span_period$ $stat_name$(offset) as "Offset (secs)"</query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
@@ -310,7 +358,7 @@
         <option name="charting.chart.bubbleMaximumSize">50</option>
         <option name="charting.chart.bubbleMinimumSize">10</option>
         <option name="charting.chart.bubbleSizeBy">area</option>
-        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.chart.nullValueMode">$gaps_name$</option>
         <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
         <option name="charting.chart.stackMode">default</option>
         <option name="charting.chart.style">shiny</option>
@@ -352,7 +400,7 @@
         <option name="charting.chart.bubbleMaximumSize">50</option>
         <option name="charting.chart.bubbleMinimumSize">10</option>
         <option name="charting.chart.bubbleSizeBy">area</option>
-        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.chart.nullValueMode">$gaps_name$</option>
         <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
         <option name="charting.chart.stackMode">default</option>
         <option name="charting.chart.style">shiny</option>
@@ -373,7 +421,7 @@
         <title>Advanced Ping</title>
         <search>
           <query>`nagios_index` `nagios_core_hostperfxi` src_host="$hostname$"
-                 | timechart avg(pl) as "Packet Loss (%)", avg(rta) as "Latency (ms)"</query>
+                 | timechart $span_period$ $stat_name$(pl) as "Packet Loss (%)", $stat_name$(rta) as "Latency (ms)"</query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
@@ -388,7 +436,7 @@
         <option name="charting.chart.bubbleMaximumSize">50</option>
         <option name="charting.chart.bubbleMinimumSize">10</option>
         <option name="charting.chart.bubbleSizeBy">area</option>
-        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.chart.nullValueMode">$gaps_name$</option>
         <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
         <option name="charting.chart.stackMode">default</option>
         <option name="charting.chart.style">shiny</option>
