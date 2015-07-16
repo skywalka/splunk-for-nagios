@@ -1,41 +1,31 @@
 <nav>
-    <view name="about" default='true' />
+    <view name="nagios_about" default='true' />
     <view name="flashtimeline" />
     <collection label="Status Dashboards">
-     <view name="Nagios" />
-     <view name="alert_formsearch" />
-     <view name="NagiosHostAvailability" />
-     <view name="NagiosTop100Alerts" />
+     <view name="nagios_network_health" />
+     <view name="nagios_overview" />
+     <view name="nagios_recurring_alerts" />
+     <view name="nagios_host_and_service_alerts" />
+     <view name="nagios_host_availability" />
+     <view name="nagios_top_100_alerts" />
     </collection>        
     <collection label="Livestatus Dashboards">
-     <view name="NagiosLivestatus" />
-     <view name="NagiosAlertsLivestatus" />
-     <view name="NagiosLivestatusHostGroups" />        
-     <view name="NagiosLivestatusServiceGroups" />         
-     <view name="NagiosLivestatusHostSLA" />
-     <view name="NagiosLivestatusServiceSLA" />
-     <view name="NagiosLivestatusServiceACK" />
-     <view name="NagiosDowntimeLivestatus" />
+     <view name="nagios_livestatus" />
+     <view name="nagios_livestatus_service_alerts" />
+     <view name="nagios_calendar_heatmap" />
+     <view name="nagios_network_map" /> 
+     <view name="nagios_livestatus_host_groups" />        
+     <view name="nagios_livestatus_service_groups" />         
+     <view name="nagios_livestatus_host_sla" />
+     <view name="nagios_livestatus_service_sla" />
+     <view name="nagios_livestatus_host_acknowledgement" />
+     <view name="nagios_livestatus_service_acknowledgement" />
+     <view name="nagios_livestatus_host_and_service_downtime" />
     </collection>
     <collection label="Performance Dashboards">
-        <view name="NagiosLinuxPerformanceGraphs"/>
-        <view name="NagiosLinuxPuppetPerformanceGraphs"/>
-        <view name="NagiosNixFilesystemUsageGraphs"/>
-        <view name="NagiosAIXPerformanceGraphs"/>
-        <view name="NagiosAIXFilesystemUsageGraphs"/>
-        <view name="NagiosBSDPerformanceGraphs"/>
-        <view name="NagiosWinPerformanceGraphs"/>
-        <divider />
-        <view name="NagiosIsilonPerformanceGraphs"/>
-        <view name="NagiosCelerraPerformanceGraphs"/>
-        <divider />
-        <view name="NagiosCiscoHardwarePerformanceGraphs"/>
-        <view name="NagiosCiscoHardwareTemperatureGraphs"/>
-        <view name="NagiosCiscoGatewayActivityGraphs"/>
-        <view name="NagiosCiscoNetworkActivityGraphs"/>
-        <view name="NagiosCiscoNetworkMultiInterfaceActivityGraphs"/>
-        <divider />
-        <view name="NagiosSplunkLicenseUsageGraph"/>
+        <view name="nagios_linux_performance_graphs"/>
+        <view name="nagios_linux_disk_usage"/>
+        <view name="nagios_top_100_hosts_by_performance" />
     </collection>
   <collection label="Other Dashboards">
     <view source="unclassified" />
