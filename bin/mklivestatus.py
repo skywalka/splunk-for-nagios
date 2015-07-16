@@ -1,4 +1,4 @@
 # Configs for mk-livestatus lookup scripts
-HOST = [ 'nagios1' ]
+HOST = [ 'nagios' ]
 PORT = 6557
 
