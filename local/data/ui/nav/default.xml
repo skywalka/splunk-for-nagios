@@ -8,12 +8,10 @@
      <view name="nagios_host_and_service_alerts" />
      <view name="nagios_host_availability" />
      <view name="nagios_top_100_alerts" />
-     <view name="nagios_top_100_hosts_by_performance" />
     </collection>        
     <collection label="Livestatus Dashboards">
      <view name="nagios_livestatus" />
      <view name="nagios_livestatus_service_alerts" />
-     <view name="nagios_recurring_alerts" />
      <view name="nagios_calendar_heatmap" />
      <view name="nagios_network_map" /> 
      <view name="nagios_livestatus_host_groups" />        
@@ -27,6 +25,7 @@
     <collection label="Performance Dashboards">
         <view name="nagios_linux_performance_graphs"/>
         <view name="nagios_linux_disk_usage"/>
+        <view name="nagios_top_100_hosts_by_performance" />
     </collection>
   <collection label="Other Dashboards">
     <view source="unclassified" />
