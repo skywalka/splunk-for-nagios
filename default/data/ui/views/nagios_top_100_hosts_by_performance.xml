@@ -19,7 +19,7 @@
         <h2>Top 100 Hosts by CPU Usage</h2>
         <div id="bubblechart_search" class="splunk-manager" data-require="splunkjs/mvc/searchmanager" data-options='{
           "preview": true,
-          "search": "`nagios_index` `nagios_core_serviceperfxi` idle | eval idle=trim(idle,\"%\") | stats avg(idle) AS Idle by src_host | eval Used=round(100-Idle,2) | table src_host Used",
+          "search": "`nagios_index` `nagios_core_serviceperf` idle | eval idle=trim(idle,\"%\") | stats avg(idle) AS Idle by src_host | eval Used=round(100-Idle,2) | table src_host Used",
           "earliest_time": {
             "type": "token_safe",
             "value": "$$earliest$$"
@@ -47,7 +47,7 @@
       <chart id="timechart" depends="$term$">
         <title>Host: $term$</title>
         <search>
-          <query>`nagios_index` `nagios_core_serviceperfxi` idle src_host="$term$"
+          <query>`nagios_index` `nagios_core_serviceperf` idle src_host="$term$"
 | eval idle=trim(idle,"%")
 | timechart avg(idle) AS Idle 
 | eval Used=round(100-Idle,2)

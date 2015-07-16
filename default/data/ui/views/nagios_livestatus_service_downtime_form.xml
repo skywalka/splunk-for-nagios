@@ -1,5 +1,5 @@
 <form>
-  <label>Livestatus Host Downtime Form</label>
+  <label>Livestatus Service Downtime Form</label>
   
   <fieldset submitButton="true" autoRun="false">
     <input type="dropdown" token="hostname" searchWhenChanged="false">
@@ -14,13 +14,19 @@
       <default>localhost</default>
     </input>
     
+    <input type="text" token="service" searchWhenChanged="false">
+      <label>Service:</label>
+      <default>SSH</default>
+    </input>
+    
     <input type="text" token="starttime" searchWhenChanged="false">
       <label>Start Time:</label>
-      <default>2015-06-17 HH:MM:SS</default>
+      <default>YYYY-MM-DD HH:MM:SS</default>
     </input>
+    
     <input type="text" token="endtime" searchWhenChanged="false">
       <label>End Time:</label>
-      <default>2015-06-17 HH:MM:SS</default>
+      <default>YYYY-MM-DD HH:MM:SS</default>
     </input>
     
     <input type="text" token="comment" searchWhenChanged="false">
@@ -34,7 +40,7 @@
       <table>
         <search>
           <query>| stats count                  
-                 | livehostdowntime $hostname$ "$starttime$" "$endtime$" "$comment$" 
+                 | liveservicedowntime $hostname$ "$service$" "$starttime$" "$endtime$" "$comment$" 
                  | fields - count</query>
           <earliest></earliest>
           <latest></latest>

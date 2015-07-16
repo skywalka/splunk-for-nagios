@@ -652,7 +652,7 @@ modtime = 1378531858.934443000
 
 [nav/default]
 version = 6.2.3
-modtime = 1436941670.867495000
+modtime = 1437020689.071069000
 
 [views/NagiosAlertsLivestatus]
 version = 5.0.3
@@ -828,13 +828,6 @@ owner = admin
 version = 6.2.3
 modtime = 1434091768.009029000
 
-[macros/nagios_core_perfdata_sourcetype]
-access = read : [ * ], write : [ admin ]
-export = none
-owner = admin
-version = 6.2.3
-modtime = 1434091803.580156000
-
 [views/nagios_host_availability]
 owner = admin
 version = 6.2.3
@@ -880,26 +873,26 @@ modtime = 1434425132.545396000
 [views/nagios_livestatus_service_acknowledgement]
 owner = admin
 version = 6.2.3
-modtime = 1434432294.055232000
+modtime = 1437023895.447816000
 
 [views/nagios_livestatus_service_acknowledgement_form]
 owner = admin
 version = 6.2.3
-modtime = 1434430152.681232000
+modtime = 1437022998.024197000
 
 [views/nagios_livestatus_host_acknowledgement]
 access = read : [ * ], write : [ admin, power ]
 export = none
 owner = admin
 version = 6.2.3
-modtime = 1434433114.874247000
+modtime = 1437022505.854069000
 
 [views/nagios_livestatus_host_acknowledgement_form]
 access = read : [ * ], write : [ admin, power ]
 export = none
 owner = admin
 version = 6.2.3
-modtime = 1434433228.043322000
+modtime = 1437022962.665482000
 
 [views/nagios_about]
 access = read : [ * ], write : [ admin, power ]
@@ -913,28 +906,28 @@ access = read : [ * ], write : [ admin, power ]
 export = none
 owner = admin
 version = 6.2.3
-modtime = 1434686219.155670000
+modtime = 1437023697.326793000
 
 [views/nagios_livestatus_service_downtime_form]
 access = read : [ * ], write : [ admin, power ]
 export = none
 owner = admin
 version = 6.2.3
-modtime = 1434518677.892620000
+modtime = 1437023031.526821000
 
 [views/nagios_livestatus_host_downtime_form]
 access = read : [ * ], write : [ admin, power ]
 export = none
 owner = admin
 version = 6.2.3
-modtime = 1434519367.991062000
+modtime = 1437022772.622940000
 
 [views/nagios_network_map]
 access = read : [ * ], write : [ admin, power ]
 export = none
 owner = admin
 version = 6.2.3
-modtime = 1434592604.405071000
+modtime = 1437022707.576751000
 
 [views/nagios_calendar_heatmap]
 access = read : [ * ], write : [ admin, power ]
@@ -955,7 +948,7 @@ access = read : [ * ], write : [ admin ]
 export = none
 owner = admin
 version = 6.2.3
-modtime = 1434683945.822348000
+modtime = 1437024083.578747000
 
 [macros/nagios_core_host_alert]
 access = read : [ * ], write : [ admin ]
@@ -990,28 +983,14 @@ access = read : [ * ], write : [ admin ]
 export = none
 owner = admin
 version = 6.2.3
-modtime = 1434687645.409424000
+modtime = 1437024029.312812000
 
 [macros/nagios_core_serviceperf]
 access = read : [ * ], write : [ admin ]
 export = none
 owner = admin
 version = 6.2.3
-modtime = 1434687764.188582000
-
-[macros/nagios_core_serviceperfxi]
-access = read : [ * ], write : [ admin ]
-export = none
-owner = admin
-version = 6.2.3
-modtime = 1434687771.639202000
-
-[macros/nagios_core_hostperfxi]
-access = read : [ * ], write : [ admin ]
-export = none
-owner = admin
-version = 6.2.3
-modtime = 1434687749.322921000
+modtime = 1437024054.418180000
 
 [views/nagios_overview]
 owner = admin

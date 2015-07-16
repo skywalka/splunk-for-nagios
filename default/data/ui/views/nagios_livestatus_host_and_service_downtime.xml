@@ -1,5 +1,6 @@
 <form>
   <label>Livestatus Host and Service Downtime</label>
+  <description>Click on the host_name or service name to schedule downtime.</description>
   
   <fieldset submitButton="true" autoRun="true">
     <input type="dropdown" token="hostname" searchWhenChanged="true">

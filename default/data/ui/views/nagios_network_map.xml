@@ -1,15 +1,5 @@
-<form script="autodiscover.js">
+<dashboard script="autodiscover.js">
   <label>Livestatus Network Map</label>
-  
-  <fieldset submitButton="true" autoRun="true">
-    <input type="time" searchWhenChanged="true">
-      <label>Time Range:</label>
-      <default>
-        <earliest>0</earliest>
-        <latest></latest>
-      </default>
-    </input>
-  </fieldset>  
   
   <row>
     <panel>
@@ -20,11 +10,11 @@
           "preview": true,
           "earliest_time": {
             "type": "token_safe",
-            "value": "$$earliest$$"
+            "value": "0"
           },
           "latest_time": {
             "type": "token_safe",
-            "value": "$$latest$$"
+            "value": ""
           }
         }'>
         </div>
@@ -38,4 +28,4 @@
       </html>
     </panel>
   </row>
-</form>
+</dashboard>

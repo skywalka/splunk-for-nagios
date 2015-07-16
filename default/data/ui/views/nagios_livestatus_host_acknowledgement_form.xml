@@ -9,7 +9,6 @@
     <input type="text" token="comment" searchWhenChanged="true">
       <label>Comment:</label>
       <default>Acknowledged by Splunk</default>
-      <seed>Acknowledged by Splunk</seed>
     </input>
   </fieldset>
 

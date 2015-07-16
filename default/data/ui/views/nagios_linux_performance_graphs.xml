@@ -126,7 +126,7 @@
       <chart>
         <title>CPU Usage</title>
         <search>
-          <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$" 
+          <query>`nagios_index` `nagios_core_serviceperf` src_host="$hostname$" 
                  | timechart $span_period$ $stat_name$(idle) AS Idle, $stat_name$(iowait) AS Wait, $stat_name$(system) AS System, $stat_name$(user) AS User</query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
@@ -160,7 +160,7 @@
       <chart>
         <title>Load Average</title>
         <search>
-          <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$"                                     
+          <query>`nagios_index` `nagios_core_serviceperf` src_host="$hostname$"                                     
             | timechart $span_period$ $stat_name$(load15) as "Load 15m", $stat_name$(load5) as "Load 5m", $stat_name$(load1) as "Load 1m"</query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
@@ -196,7 +196,7 @@
       <chart>
         <title>Memory Usage</title>
         <search>
-          <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$"
+          <query>`nagios_index` `nagios_core_serviceperf` src_host="$hostname$"
             | eval mem_free=(mem-mem_used-mem_cached-mem_buffers-mem_shared) 
             | timechart $span_period$ $stat_name$(mem_free) as "Free (MB)",                            
                         $stat_name$(mem_buffers) as "Buffers (MB)",                            
@@ -235,7 +235,7 @@
       <chart>
         <title>Swap Usage</title>
         <search>
-          <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$"
+          <query>`nagios_index` `nagios_core_serviceperf` src_host="$hostname$"
             | timechart $span_period$ $stat_name$(swap_free) as "Free (MB)", $stat_name$(swap_used) as "Used (MB)"</query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
@@ -271,7 +271,7 @@
       <chart>
         <title>Total Processes</title>
         <search>
-          <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$"
+          <query>`nagios_index` `nagios_core_serviceperf` src_host="$hostname$"
                  | timechart $span_period$ $stat_name$(processes) as Processes</query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
@@ -305,7 +305,7 @@
       <chart>
         <title>HTTP</title>
         <search>
-          <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$"
+          <query>`nagios_index` `nagios_core_serviceperf` src_host="$hostname$"
                  service_output=http*
                  | timechart $span_period$ $stat_name$(time) AS Time, $stat_name$(size) AS Size</query>
         </search>
@@ -342,7 +342,7 @@
       <chart>
         <title>NTP Offset</title>
         <search>
-          <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$"
+          <query>`nagios_index` `nagios_core_serviceperf` src_host="$hostname$"
                  | timechart $span_period$ $stat_name$(offset) as "Offset (secs)"</query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
@@ -376,7 +376,7 @@
       <chart>
         <title>Network Traffic</title>
         <search>
-          <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$"
+          <query>`nagios_index` `nagios_core_serviceperf` src_host="$hostname$"
                  | sort _time  
                  | delta inAbsolut as inabs_change                                                
                  | delta outAbsolut as outabs_change                                                
@@ -420,7 +420,7 @@
       <chart>
         <title>Advanced Ping</title>
         <search>
-          <query>`nagios_index` `nagios_core_hostperfxi` src_host="$hostname$"
+          <query>`nagios_index` `nagios_core_hostperf` src_host="$hostname$"
                  | timechart $span_period$ $stat_name$(pl) as "Packet Loss (%)", $stat_name$(rta) as "Latency (ms)"</query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>

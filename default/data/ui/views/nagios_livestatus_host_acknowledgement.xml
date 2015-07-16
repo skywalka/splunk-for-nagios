@@ -1,5 +1,7 @@
-<dashboard>
+<dashboard refresh="30">
   <label>Livestatus Host Acknowledgement</label>
+  <description>Dashboard refreshed every 30 seconds</description>
+  
   <row>
     <panel>
       <table>

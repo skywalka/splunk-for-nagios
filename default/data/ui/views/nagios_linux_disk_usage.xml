@@ -17,7 +17,7 @@
     <input type="dropdown" token="fs" searchWhenChanged="true">
       <label>Select a Filesystem:</label>
       <search>
-        <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$" disk filesystem=*
+        <query>`nagios_index` `nagios_core_serviceperf` src_host="$hostname$" disk filesystem=*
                | stats count by filesystem</query>
         <earliest>-24h@h</earliest>
         <latest>now</latest>
@@ -88,7 +88,7 @@
       <chart>
         <title>Filesystem Usage over time</title>
         <search>
-          <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$" disk filesystem="$fs$"
+          <query>`nagios_index` `nagios_core_serviceperf` src_host="$hostname$" disk filesystem="$fs$"
                  | timechart $span_period$ $stat_name$(storage_free) AS "Free (MB)", $stat_name$(storage_used) AS "Used (MB)"</query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>

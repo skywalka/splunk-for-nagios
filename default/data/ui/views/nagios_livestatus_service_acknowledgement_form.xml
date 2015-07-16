@@ -5,7 +5,6 @@
     <input type="text" token="host_name" searchWhenChanged="true">
       <label>Hostname:</label>
       <default>localhost</default>
-      <seed>localhost</seed>
     </input>
     
     <input type="text" token="service" searchWhenChanged="true">
@@ -15,7 +14,6 @@
     <input type="text" token="comment" searchWhenChanged="true">
       <label>Comment:</label>
       <default>Acknowledged by Splunk</default>
-      <seed>Acknowledged by Splunk</seed>
     </input>
   </fieldset>
   
