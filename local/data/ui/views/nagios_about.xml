@@ -14,9 +14,7 @@
     <li>Schedule Saved Searches in Splunk to <strong>send alerts to Nagios</strong></li>
     <li>Status Dashboard featuring recent Warning and Critical Alerts and Notifications</li>
     <li>Host Availability Dashboard &amp; Top 100 Alerts</li>
-    <li>Host Dashboards with Graphs of metal level metrics (CPU, Memory, Swap, Load, Disk Usage, Network Interface Utilization, Processes, etc) sourced from Nagios Plugin Performance Data (Linux, AIX, BSD and Windows hosts supported)</li>
-    <li>Cisco Network Dashboards with Graphs of Network Interface Utilization, CPU, Memory, Temperature and Gateway Usage sourced from Nagios Plugin Performance Data</li>
-    <li>NAS Dashboards with Graphs of Storage Usage, Quota Usage, SAVVOL Usage, Connections by Protocol (EMC Isilon and Celerra supported)</li>
+    <li>Host Dashboards with Graphs of metal level metrics (CPU, Memory, Swap, Load, Disk Usage, Network Interface Utilization, Processes, etc) sourced from Nagios Plugin Performance Data</li>
     <li>External lookup scripts for integration with <a href="http://mathias-kettner.de/checkmk_livestatus.html">MK Livestatus</a> - featuring 8 dashboards updated with <strong>live</strong> status data from Nagios</li>
     <li>Acknowledge Service Alerts and Schedule Host &amp; Service Downtime in Nagios directly from Splunk (via MK Livestatus)</li>
     <li>Nagios Alerts Form Search with an auto-populating drop-down list of all device names to easily display relevant alert history</li>
@@ -38,9 +36,7 @@
 
       </html>
     </panel>
-  </row>
-  
-  <row>
+
     <panel>
       <input type="time" searchWhenChanged="true">
         <default>
