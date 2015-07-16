@@ -652,7 +652,7 @@ modtime = 1378531858.934443000
 
 [nav/default]
 version = 6.2.3
-modtime = 1434685497.137835000
+modtime = 1436941670.867495000
 
 [views/NagiosAlertsLivestatus]
 version = 5.0.3
@@ -906,7 +906,7 @@ access = read : [ * ], write : [ admin, power ]
 export = none
 owner = admin
 version = 6.2.3
-modtime = 1434513508.239215000
+modtime = 1436939315.512385000
 
 [views/nagios_livestatus_host_and_service_downtime]
 access = read : [ * ], write : [ admin, power ]
@@ -1031,4 +1031,11 @@ export = none
 owner = admin
 version = 6.2.3
 modtime = 1435903277.537910000
+
+[views/nagios_linux_disk_usage]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = admin
+version = 6.2.3
+modtime = 1436941589.812207000
 

@@ -1,0 +1,121 @@
+<form>
+  <label>Linux Filesystem Usage</label>
+  
+  <fieldset submitButton="true" autoRun="true">
+    <input type="dropdown" token="hostname" searchWhenChanged="true">
+      <label>Select a Hostname:</label>
+      <search>
+        <query>`nagios_hosts`</query>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </search>
+      <fieldForLabel>host_name</fieldForLabel>
+      <fieldForValue>host_name</fieldForValue>
+      <default>localhost</default>
+    </input>
+    
+    <input type="dropdown" token="fs" searchWhenChanged="true">
+      <label>Select a Filesystem:</label>
+      <search>
+        <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$" disk filesystem=*
+               | stats count by filesystem</query>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </search>
+      <fieldForLabel>filesystem</fieldForLabel>
+      <fieldForValue>filesystem</fieldForValue>
+      <default>/</default>
+    </input>    
+    
+    <input type="dropdown" token="span_period" searchWhenChanged="true">
+      <label>Span:</label>
+      <default>Automatic</default>
+      <!-- Span Periods for timechart -->
+      <choice value="">Automatic</choice>
+      <choice value="span=1s">1 second</choice>
+      <choice value="span=5s">5 seconds</choice>
+      <choice value="span=10s">10 seconds</choice>
+      <choice value="span=15s">15 seconds</choice>
+      <choice value="span=30s">30 seconds</choice>
+      <choice value="span=1m">1 minute</choice>
+      <choice value="span=5m">5 minutes</choice>
+      <choice value="span=10m">10 minutes</choice>
+      <choice value="span=15m">15 minutes</choice>
+      <choice value="span=30m">30 minutes</choice>
+      <choice value="span=45m">45 minutes</choice>
+      <choice value="span=1h">1 hour</choice>
+      <choice value="span=2h">2 hours</choice>
+      <choice value="span=3h">3 hours</choice>
+      <choice value="span=4h">4 hours</choice>
+      <choice value="span=6h">6 hours</choice>
+      <choice value="span=8h">8 hours</choice>
+      <choice value="span=12h">12 hours</choice>
+      <choice value="span=1d">1 day</choice>
+      <choice value="span=1w">1 week</choice>
+      <choice value="span=1mon">1 month</choice>
+      <choice value="span=12mon">1 year</choice>
+    </input>
+    
+    <input type="dropdown" searchWhenChanged="true" token="stat_name">
+      <label>Calculation:</label>
+      <default>Average</default>
+      <!-- Stat Calculation for timechart -->
+      <choice value="avg">Average</choice>
+      <choice value="median">Median</choice>
+      <choice value="max">Peak</choice>
+    </input>
+    
+    <input type="dropdown" searchWhenChanged="true" token="gaps_name">
+      <label>Gaps:</label>
+      <default>Connect</default>
+      <!-- Stat Calculation for timechart -->
+      <choice value="connect">Connect</choice>
+      <choice value="gaps">Gaps</choice>
+      <choice value="zero">Zero</choice>
+    </input>
+    
+    <input type="time" searchWhenChanged="true">
+      <label>Time Range:</label>
+      <default>
+        <earliest>-60m@m</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+   
+  <row>
+    <panel>
+      <chart>
+        <title>Filesystem Usage over time</title>
+        <search>
+          <query>`nagios_index` `nagios_core_serviceperfxi` src_host="$hostname$" disk filesystem="$fs$"
+                 | timechart $span_period$ $stat_name$(storage_free) AS "Free (MB)", $stat_name$(storage_used) AS "Used (MB)"</query>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">false</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">area</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">$gaps_name$</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">stacked</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">bottom</option>
+        <option name="charting.fieldColors">
+          {"Free (MB)": 0x00FF00, "Used (MB)": 0x002A97}
+        </option>
+      </chart>
+    </panel>
+  </row>
+</form>
