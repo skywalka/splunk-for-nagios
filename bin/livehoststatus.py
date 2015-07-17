@@ -61,9 +61,7 @@ try:
 		    #Error: MK Livestatus module not loaded?
 		    s.close()
 		else:
-		    livehosts2 = data.strip()
-	            table2 = data.strip()
-	            table = table2.split("\n")
+	            table = data.split("\n")
 	            s.close()
     	    	r["livehoststatus_results"] = table
         except:
