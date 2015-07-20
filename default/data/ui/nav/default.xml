@@ -8,6 +8,7 @@
      <view name="nagios_host_and_service_alerts" />
      <view name="nagios_host_availability" />
      <view name="nagios_top_100_alerts" />
+     <view name="nagios_gearman_worker_dashboard" />
     </collection>        
     <collection label="Livestatus Dashboards">
      <view name="nagios_livestatus" />
