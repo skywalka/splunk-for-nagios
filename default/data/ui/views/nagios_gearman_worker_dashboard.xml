@@ -1,0 +1,135 @@
+<form>
+  <label>Gearman Workers</label>
+  
+  <fieldset submitButton="true" autoRun="true">
+    <input type="dropdown" searchWhenChanged="true" token="stat_name">
+      <label>Calculation:</label>
+      <default>Average</default>
+      <!-- Stat Calculation for timechart -->
+      <choice value="avg">Average</choice>
+      <choice value="median">Median</choice>
+      <choice value="max">Peak</choice>
+    </input>
+    
+    <input type="time" searchWhenChanged="true">
+      <label>Time Range:</label>
+      <default>
+        <earliestTime>-24h@h</earliestTime>
+        <latestTime>now</latestTime>
+      </default>
+    </input>
+  </fieldset>
+  
+  <row>
+    <panel>
+      <single>
+        <title>Host Checks per Minute</title>
+        <searchString>index=nagios sourcetype=nagios:gearman eventname="got host job" 
+                      | bin span=1m _time 
+                      | stats count by _time 
+                      | stats $stat_name$(count) as count 
+                      | eval count=round(count)</searchString>
+      </single>
+    </panel>
+    
+    <panel>
+      <single>
+        <title>Service Checks per Minute</title>
+        <searchString>index=nagios sourcetype=nagios:gearman eventname="got service job" 
+                      | bin span=1m _time 
+                      | stats count by _time 
+                      | stats $stat_name$(count) as count 
+                      | eval count=round(count)</searchString>
+      </single>
+    </panel>
+  </row>
+  
+  <row>
+    <panel>
+      <chart>
+        <title>Host Checks - Last 15 Minutes</title>
+        <searchString>index=nagios sourcetype=nagios:gearman eventname="got host job" 
+                      | timechart span=1m count</searchString>
+        <earliestTime>-15m@m</earliestTime>
+        <latestTime>now</latestTime>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">minimal</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+      </chart>
+    </panel>
+    
+    <panel>
+      <chart>
+        <title>Service Checks - Last 15 Minutes</title>
+        <searchString>index=nagios sourcetype=nagios:gearman eventname="got service job" 
+                      | timechart span=1m count</searchString>
+        <earliestTime>-15m@m</earliestTime>
+        <latestTime>now</latestTime>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">minimal</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+      </chart>
+    </panel>
+  </row>
+  
+  <row>
+    <panel>
+      <table>
+        <title>Host Check timeouts</title>
+        <searchString>index=nagios sourcetype=nagios:gearman timeout hostcheck 
+                      | stats $stat_name$(timeout) as timeout by host_name 
+                      | eval timeout=round(timeout)</searchString>
+      </table>
+    </panel>
+    
+    <panel>
+      <table>
+        <title>Service Check timeouts</title>
+        <searchString>index=nagios sourcetype=nagios:gearman timeout servicecheck 
+                      | stats $stat_name$(timeout) as timeout by host_name service 
+                      | eval timeout=round(timeout)</searchString>
+      </table>
+    </panel>
+  </row>
+  
+  <row>
+    <panel>
+      <table>
+        <title>Errors</title>
+        <searchString>index=nagios sourcetype=nagios:gearman severity!=DEBUG severity!=INFO 
+                      | stats count by host_name severity eventname body</searchString>
+      </table>
+    </panel>
+  </row>
+</form>
+
