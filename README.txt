@@ -2,7 +2,7 @@ Splunk for Nagios
 =================
 
 Documentation:
-http://apps.splunk.com/app/352/
+http://splunkbase.splunk.com/app/352/
 
 Feedback Welcome:
 Web: http://verypowerful.info
