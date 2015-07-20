@@ -1,0 +1,106 @@
+body,.dashboard-body,.footer,.header,.app-bar,.dashboard-panel,.dashboard-cell {
+        background: #333 !important;
+	color: #eee;
+}
+a {
+        color: #ccc;
+}
+a:hover {
+        color: #fff;
+}
+.dashboard-row .dashboard-panel .panel-head h3,.dashboard-header h2, p.description, .nav-footer>li>a {
+        color: #ddd;
+        text-shadow: none;
+}
+.table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(odd) > th {
+        background-color: #666 !important;
+}
+.table .table, .table-striped>tbody>tr>td {
+    color: white;
+}
+.table .table, .table-striped>tbody>tr:nth-child(even)>td {
+        background-color: #888 !important;
+}
+.table-chrome > thead > tr > th {
+        background-image: linear-gradient(to bottom, #888, #666);
+        color: white !important;
+        text-shadow: none;
+}
+.table-chrome > thead > tr > th:hover {
+        background-image: linear-gradient(to bottom, #666, #444) !important;
+        color: white !important;
+        text-shadow: none;
+}
+.table-chrome .sorts a {
+        text-decoration: none;
+        color: #ddd;
+}
+.highlighted td {
+        background: #aaa !important;
+}
+svg>rect {
+        fill: #333 !important;
+}
+svg text {
+        fill: #fff !important;
+}
+#.single-value .single-result {
+#       color: #fff;
+#       font-size: 30px;
+#       font-weight: bold;
+#}
+#.SingleValue .singleResult {
+#     font-size: 34px;
+# }
+.splunk-paginator a.selected {
+        background: #000;
+}
+.highcharts-container {
+background-color:#333;
+}
+#.dashboard-row .dashboard-panel {
+#border:none;
+#}
+
+.dashboard-header H2 {
+font-size: 30px;
+text-align: center;
+}
+
+.single-value .before-label {
+    margin-right: 1em;
+    font-size: 40px;
+    /* padding-bottom: 20px; */
+    color: red;
+}
+
+.single-value .single-result {
+    font-size: 24px;
+    font-weight: bold;
+    word-wrap: break-word;
+#    color: #00FFCC; 
+    color: #fff;
+#    line-height: 1.2;
+}
+
+#.dashboard-row .dashboard-panel .panel-body .splunk-single {
+#  min-height: 40px;
+#  text-align: center;
+#  padding-top: 50px;
+#}
+#single-value .severe, .single-value.severe .single-result {
+#font-size: 40px;
+#}
+
+h2.panel-title {
+color: #06F8E0;
+}
+
+.view-mode .refresh-time-indicator .time-freshness {
+font-size: 9px;
+}
+
+.single-value .yellow .single-result{
+color: yellow;
+}
+
