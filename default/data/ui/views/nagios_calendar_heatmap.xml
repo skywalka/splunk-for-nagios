@@ -5,7 +5,7 @@
     <panel>
       <input type="time" searchWhenChanged="true">
         <default>
-          <earliest>-72h@h</earliest>
+          <earliest>-7d@d</earliest>
           <latest>now</latest>
         </default>
       </input>
