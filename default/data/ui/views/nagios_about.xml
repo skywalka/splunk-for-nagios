@@ -12,16 +12,22 @@
     <h2>Features</h2>
 <ul>
     <li>Schedule Saved Searches in Splunk to <strong>send alerts to Nagios</strong></li>
-    <li>Status Dashboard featuring recent Warning and Critical Alerts and Notifications</li>
-    <li>Host Availability Dashboard &amp; Top 100 Alerts</li>
-    <li>Host Dashboards with Graphs of metal level metrics (CPU, Memory, Swap, Load, Disk Usage, Network Interface Utilization, Processes, etc) sourced from Nagios Plugin Performance Data</li>
-    <li>External lookup scripts for integration with <a href="http://mathias-kettner.de/checkmk_livestatus.html">MK Livestatus</a> - featuring 8 dashboards updated with <strong>live</strong> status data from Nagios</li>
-    <li>Acknowledge Service Alerts and Schedule Host &amp; Service Downtime in Nagios directly from Splunk (via MK Livestatus)</li>
+    <li>Status dashboard featuring recent Warning and Critical Alerts and Notifications</li>
+    <li>Overview dashboard featuring Alerts &amp; Notifications over time</li>
+    <li>Recurring Alerts dashboard</li>
+    <li>Gearman Workers dashboard</li>
+    <li>Calendar Heatmap dashboard</li>
+    <li>Network Map</li>
+    <li>Host Availability dashboard &amp; Top 100 Alerts</li>
+    <li>Host dashboards with Graphs of metal level metrics (CPU, Memory, Swap, Load, Disk Usage, Network Interface Utilization, Processes, etc) sourced from Nagios Plugin Performance Data</li>
+    <li>External lookup scripts for integration with <a href="http://mathias-kettner.de/checkmk_livestatus.html">MK Livestatus</a> - featuring various dashboards updated with <strong>live</strong> status data from Nagios</li>
+    <li>Acknowledge Host &amp; Service Alerts and Schedule Host &amp; Service Downtime in Nagios directly from Splunk (via MK Livestatus)</li>
     <li>Nagios Alerts Form Search with an auto-populating drop-down list of all device names to easily display relevant alert history</li>
     <li>Search Nagios alerts and notifications and trend problems over time</li>
-    <li>Over 40 field extractions, compliant with the <a href="http://www.splunk.com/base/Documentation/latest/Knowledge/UnderstandandusetheCommonInformationModel">Common Information Model</a></li>
-    <li>14 Saved Searches - featuring a CMDB report and Host &amp; Service Group reports</li>
-    <li>5 Event Types - featuring Scheduled Downtime for Hosts &amp; Services</li>
+    <li>Field extractions compliant with the <a href="http://docs.splunk.com/Documentation/Splunk/latest/Knowledge/UnderstandandusetheCommonInformationModel">Common Information Model</a></li>
+    <li>Saved Searches - featuring a CMDB report and Host &amp; Service Group reports</li>
+    <li>Event Types - featuring Scheduled Downtime for Hosts &amp; Services</li>
+    <li>Macros - all dashboards use search macros for ease of use</li>
 </ul>
 </p>
 <p>
