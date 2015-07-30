@@ -1,6 +1,6 @@
 <form>
   <label>Gearman Workers</label>
-  
+
   <fieldset submitButton="true" autoRun="true">
     <input type="dropdown" searchWhenChanged="true" token="stat_name">
       <label>Calculation:</label>
@@ -10,48 +10,52 @@
       <choice value="median">Median</choice>
       <choice value="max">Peak</choice>
     </input>
-    
+
     <input type="time" searchWhenChanged="true">
       <label>Time Range:</label>
       <default>
-        <earliestTime>-24h@h</earliestTime>
-        <latestTime>now</latestTime>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
       </default>
     </input>
   </fieldset>
-  
+
   <row>
     <panel>
       <single>
         <title>Host Checks per Minute</title>
-        <searchString>index=nagios sourcetype=nagios:gearman eventname="got host job" 
-                      | bin span=1m _time 
-                      | stats count by _time 
-                      | stats $stat_name$(count) as count 
-                      | eval count=round(count)</searchString>
+        <search>
+                <query>`nagios_index` `nagios_gearman_sourcetype` eventname="got host job"
+                      | bin span=1m _time
+                      | stats count by _time
+                      | stats $stat_name$(count) as count
+                      | eval count=round(count)</query>
+        </search>
       </single>
     </panel>
-    
+
     <panel>
       <single>
         <title>Service Checks per Minute</title>
-        <searchString>index=nagios sourcetype=nagios:gearman eventname="got service job" 
-                      | bin span=1m _time 
-                      | stats count by _time 
-                      | stats $stat_name$(count) as count 
-                      | eval count=round(count)</searchString>
+        <search>
+                <query>`nagios_index` `nagios_gearman_sourcetype` eventname="got service job"
+                      | bin span=1m _time
+                      | stats count by _time
+                      | stats $stat_name$(count) as count
+                      | eval count=round(count)</query>
+        </search>
       </single>
     </panel>
   </row>
-  
+
   <row>
     <panel>
       <chart>
         <title>Host Checks - Last 15 Minutes</title>
-        <searchString>index=nagios sourcetype=nagios:gearman eventname="got host job" 
-                      | timechart span=1m count</searchString>
-        <earliestTime>-15m@m</earliestTime>
-        <latestTime>now</latestTime>
+        <search>
+                <query>earliest=-15m@m `nagios_index` `nagios_gearman_sourcetype` eventname="got host job"
+                      | timechart span=1m count</query>
+        </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
         <option name="charting.axisTitleX.visibility">visible</option>
@@ -72,14 +76,14 @@
         <option name="charting.legend.placement">right</option>
       </chart>
     </panel>
-    
+
     <panel>
       <chart>
         <title>Service Checks - Last 15 Minutes</title>
-        <searchString>index=nagios sourcetype=nagios:gearman eventname="got service job" 
-                      | timechart span=1m count</searchString>
-        <earliestTime>-15m@m</earliestTime>
-        <latestTime>now</latestTime>
+        <search>
+                <query>earliest=-15m@m `nagios_index` `nagios_gearman_sourcetype` eventname="got service job"
+                      | timechart span=1m count</query>
+        </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
         <option name="charting.axisTitleX.visibility">visible</option>
@@ -101,33 +105,39 @@
       </chart>
     </panel>
   </row>
-  
+
   <row>
     <panel>
       <table>
         <title>Host Check timeouts</title>
-        <searchString>index=nagios sourcetype=nagios:gearman timeout hostcheck 
-                      | stats $stat_name$(timeout) as timeout by host_name 
-                      | eval timeout=round(timeout)</searchString>
+        <search>
+                <query>`nagios_index` `nagios_gearman_sourcetype` timeout hostcheck
+                      | stats $stat_name$(timeout) as timeout by host_name
+                      | eval timeout=round(timeout)</query>
+        </search>
       </table>
     </panel>
-    
+
     <panel>
       <table>
         <title>Service Check timeouts</title>
-        <searchString>index=nagios sourcetype=nagios:gearman timeout servicecheck 
-                      | stats $stat_name$(timeout) as timeout by host_name service 
-                      | eval timeout=round(timeout)</searchString>
+        <search>
+                <query>`nagios_index` `nagios_gearman_sourcetype` timeout servicecheck
+                      | stats $stat_name$(timeout) as timeout by host_name service
+                      | eval timeout=round(timeout)</query>
+        </search>
       </table>
     </panel>
   </row>
-  
+
   <row>
     <panel>
       <table>
         <title>Errors</title>
-        <searchString>index=nagios sourcetype=nagios:gearman severity!=DEBUG severity!=INFO 
-                      | stats count by host_name severity eventname body</searchString>
+        <search>
+                <query>`nagios_index` sourcetype=nagios:gearman severity!=DEBUG severity!=INFO
+                      | stats count by host_name severity eventname body</query>
+        </search>
       </table>
     </panel>
   </row>
