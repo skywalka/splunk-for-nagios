@@ -1,5 +1,5 @@
-Splunk for Nagios
-=================
+Analytics for Nagios
+====================
 
 Documentation:
 http://splunkbase.splunk.com/app/352/
