@@ -52,7 +52,7 @@
         <option name="charting.layout.splitSeries">0</option>
         <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
         <option name="charting.legend.placement">right</option>
-        <option name="charting.seriesColors">[0xFF0000,0x00FF00]</option>
+        <option name="charting.fieldColors">{"UP": 0x00FF00, "DOWN": 0xFF0000}</option>
       </chart>
     </panel>
   </row>
