@@ -23,6 +23,6 @@ for h in HOST:
 	print "Error connecting to %s on port %d: " % (h, PORT) + data
 	s.close()
     else:
-    	table = data.split()
+    	table = data.strip('\n')
     	s.close()
 	print table
